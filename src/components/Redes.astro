@@ -1,0 +1,45 @@
+---
+// RF-13: redes de Hatun Joven. Íconos oficiales de simple-icons; LinkedIn dibujado aparte
+// (la marca no está en simple-icons). Abren en pestaña nueva.
+import { siInstagram, siFacebook, siTiktok } from 'simple-icons';
+import { contacto } from '../content/home';
+
+interface Props { tono?: 'claro' | 'oscuro'; etiquetas?: boolean; class?: string }
+const { tono = 'oscuro', etiquetas = false, class: className = '' } = Astro.props;
+
+const linkedin = 'M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z';
+const iconos: Record<string, string> = {
+  instagram: siInstagram.path,
+  facebook: siFacebook.path,
+  tiktok: siTiktok.path,
+  linkedin,
+};
+---
+{contacto.redes.length > 0 && (
+  <ul class:list={['redes', `redes--${tono}`, { 'redes--etiquetas': etiquetas }, className]}>
+    {contacto.redes.map((r) => (
+      <li>
+        <a href={r.url} target="_blank" rel="noopener" aria-label={etiquetas ? undefined : `Hatun Joven en ${r.nombre}`}>
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d={iconos[r.id]} /></svg>
+          {etiquetas && <span>{r.nombre}</span>}
+        </a>
+      </li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .redes { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .redes a {
+    display: inline-flex; align-items: center; gap: 0.55rem; min-width: 2.9rem; height: 2.9rem; justify-content: center;
+    border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 1rem;
+    transition: background-color 0.2s, color 0.2s, transform 0.25s var(--ease);
+  }
+  .redes--etiquetas { gap: 0.5rem; }
+  .redes--etiquetas a { padding-inline: 0.8rem 0.95rem; gap: 0.45rem; font-size: 0.95rem; height: 2.75rem; }
+  .redes a:hover { transform: translateY(-2px); }
+  .redes--oscuro a { border: 2px solid var(--indigo); color: var(--indigo); }
+  .redes--oscuro a:hover { background: var(--indigo); color: var(--marfil); }
+  .redes--claro a { border: 2px solid rgb(247 242 233 / 0.55); color: var(--marfil); }
+  .redes--claro a:hover { background: var(--verde); border-color: var(--verde); color: var(--indigo); }
+</style>

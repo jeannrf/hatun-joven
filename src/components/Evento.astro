@@ -1,0 +1,72 @@
+---
+// SRS 5 (#evento): lugar, fecha, mapa (RF-10) y zonas.
+import { evento, encuentro } from '../content/home';
+
+const q = encodeURIComponent(evento.mapaConsulta);
+const mapaEmbed = `https://www.google.com/maps?q=${q}&output=embed`;
+---
+<section class="evt" id="evento" aria-labelledby="evt-t">
+  <div class="wrap evt__in">
+    <div class="evt__info">
+      <h2 class="evt__t d" id="evt-t">{encuentro.titulo}</h2>
+      <p class="evt__bajada">{encuentro.bajada}</p>
+
+      <dl class="evt__datos">
+        <div><dt>Fecha</dt><dd>{evento.fechaLarga}</dd></div>
+        <div><dt>Horario</dt><dd>{encuentro.horario}</dd></div>
+        <div><dt>Lugar</dt><dd>{evento.lugar}, {evento.ciudad}</dd></div>
+      </dl>
+    </div>
+
+    <!-- RF-10: mapa embebido; carga diferida para no pesar en la primera vista (RNF-02). -->
+    <div class="mapa">
+      <iframe
+        class="mapa__frame"
+        src={mapaEmbed}
+        title={`Mapa: ${evento.lugar}, ${evento.ciudad}`}
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <ul class="evt__zonas">
+      {encuentro.zonas.map((z) => (
+        <li class="zona">
+          <p class="zona__num"><span class="d">{z.numero}</span> {z.unidad}</p>
+          <p class="zona__nombre d">{z.nombre}</p>
+          <p class="zona__det">{z.detalle}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+
+<style>
+  .evt { padding-block: clamp(5rem, 10vw, 9rem) clamp(2rem, 4vw, 3rem); }
+  .evt__in { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 4vw, 4rem); align-items: stretch; }
+  .evt__info { display: grid; gap: clamp(1.25rem, 2vw, 1.75rem); align-content: center; }
+  .evt__t { font-size: clamp(2.75rem, 6vw, 5.5rem); }
+  .evt__bajada { font-size: clamp(1.2rem, 1.7vw, 1.5rem); line-height: 1.4; max-width: 34ch; }
+  .evt__datos { display: grid; gap: 0.8rem; padding-block: 1.1rem; border-block: 3px dashed rgb(42 27 180 / 0.3); }
+  .evt__datos div { display: grid; grid-template-columns: 6rem 1fr; gap: 1rem; align-items: baseline; }
+  .evt__datos dt { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.8; }
+  .evt__datos dd { margin: 0; font-weight: 700; font-size: clamp(1.1rem, 1.4vw, 1.3rem); }
+
+  .mapa { position: relative; min-height: 22rem; border: 3px solid var(--indigo); border-radius: 1rem; overflow: hidden; background: var(--marfil-hondo); }
+  .mapa__frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+  .evt__zonas { grid-column: 1 / -1; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.5rem); }
+  .zona { display: grid; gap: 0.4rem; padding: clamp(1.25rem, 2.5vw, 2rem); border-radius: 1rem; background: var(--indigo); color: var(--marfil); }
+  .zona__num { font-weight: 700; font-size: 1.1rem; }
+  .zona__num .d { font-size: clamp(3rem, 5.5vw, 5rem); color: var(--verde); line-height: 0.9; margin-right: 0.15em; }
+  .zona__nombre { font-size: clamp(1.4rem, 2.2vw, 2rem); }
+  .zona__det { font-size: 1.05rem; line-height: 1.45; }
+
+  @media (max-width: 860px) {
+    .evt__in { grid-template-columns: 1fr; }
+    .mapa { min-height: 18rem; }
+    .evt__zonas { grid-template-columns: 1fr; }
+  }
+</style>

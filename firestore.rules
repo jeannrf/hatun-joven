@@ -1,0 +1,49 @@
+rules_version = '2';
+
+// La web solo puede CREAR registros válidos. Nadie lee, edita ni borra desde el navegador:
+// el equipo revisa las respuestas en la consola de Firebase.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function texto(v, max) { return v is string && v.size() > 0 && v.size() <= max; }
+    function textoOpcional(v, max) { return v == null || (v is string && v.size() <= max); }
+
+    // RF-04: inscripción de participantes (desde 14 años: consentimiento propio, Ley 29733).
+    match /inscripciones/{id} {
+      allow create: if request.resource.data.keys().hasOnly([
+            'nombres', 'apellidoPaterno', 'apellidoMaterno', 'edad', 'colegio', 'celular', 'consentimiento', 'creado'])
+        && texto(request.resource.data.nombres, 80)
+        && texto(request.resource.data.apellidoPaterno, 60)
+        && texto(request.resource.data.apellidoMaterno, 60)
+        && request.resource.data.edad is int
+        && request.resource.data.edad >= 14 && request.resource.data.edad <= 35
+        && texto(request.resource.data.colegio, 120)
+        && texto(request.resource.data.celular, 20)
+        && request.resource.data.consentimiento == true
+        && request.resource.data.creado == request.time;
+      allow read, update, delete: if false;
+    }
+
+    // RF-06: postulación de aliados (sponsors o comunidades).
+    match /aliados/{id} {
+      allow create: if request.resource.data.keys().hasOnly([
+            'organizacion', 'contacto', 'cargo', 'correo', 'celular', 'tipo', 'mensaje',
+            'consentimiento', 'creado'])
+        && texto(request.resource.data.organizacion, 120)
+        && texto(request.resource.data.contacto, 120)
+        && textoOpcional(request.resource.data.get('cargo', null), 80)
+        && texto(request.resource.data.correo, 120)
+        && texto(request.resource.data.celular, 20)
+        && request.resource.data.tipo in ['sponsor', 'comunidad']
+        && textoOpcional(request.resource.data.get('mensaje', null), 2000)
+        && request.resource.data.consentimiento == true
+        && request.resource.data.creado == request.time;
+      allow read, update, delete: if false;
+    }
+
+    // Todo lo demás, cerrado.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

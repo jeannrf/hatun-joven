@@ -1,0 +1,39 @@
+---
+// Manga vertical: vueltas de tejido apiladas como en las mangas reales del Chuto,
+// con franjas finas de color entre motivos. Aquí entran los colores secundarios.
+import { cells, width, type Motif } from './motifs';
+const c = 8;
+const cols = 30;
+const vueltas: Array<{ m: Motif; fg: string; bg: string; franja: string[] }> = [
+  { m: 'llama', fg: '#F7F2E9', bg: '#1d1186', franja: ['#F2B705', '#EE270F'] },
+  { m: 'rombo', fg: '#F2B705', bg: '#F22E9A', franja: ['#9439F0', '#F7F2E9'] },
+  { m: 'venado', fg: '#4DF234', bg: '#1d1186', franja: ['#EE270F', '#F2B705'] },
+  { m: 'flor', fg: '#F7F2E9', bg: '#9439F0', franja: ['#F22E9A', '#F7F2E9'] },
+  { m: 'greca', fg: '#F2B705', bg: '#1d1186', franja: ['#4DF234', '#EE270F'] },
+];
+const rowH = 14;
+let y = 0;
+const rows = vueltas.map((v) => {
+  const w = width(v.m);
+  const n = Math.floor(cols / (w + 2));
+  const off = Math.floor((cols - n * (w + 2) + 2) / 2);
+  const r = { ...v, y, xs: Array.from({ length: n }, (_, i) => off + i * (w + 2)) };
+  y += rowH + v.franja.length;
+  return r;
+});
+const H = y;
+---
+<svg class="manga" viewBox={`0 0 ${cols * c} ${H * c}`} xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" aria-hidden="true">
+  {rows.map((r) => (
+    <g>
+      <rect y={r.y * c} width={cols * c} height={rowH * c} fill={r.bg} />
+      {r.xs.map((x) => (
+        <g fill={r.fg}>{cells(r.m).map(([cx, cy]) => <rect x={(x + cx) * c} y={(r.y + 2 + cy) * c} width={c} height={c} />)}</g>
+      ))}
+      {r.franja.map((f, i) => <rect y={(r.y + rowH + i) * c} width={cols * c} height={c} fill={f} />)}
+    </g>
+  ))}
+</svg>
+<style>
+  .manga { display: block; width: 100%; height: auto; border-radius: 0.4rem; }
+</style>

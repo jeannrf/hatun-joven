@@ -1,0 +1,303 @@
+---
+// Modales de inscripción (RF-04/05), sponsor y comunidad aliada (RF-06). Guardan en Firestore (RF-08).
+import KnitBand from './KnitBand.astro';
+import FormAliado from './FormAliado.astro';
+import { modales } from '../content/home';
+
+const cerrar = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>`;
+---
+<!-- Inscripción -->
+<dialog class="modal" id="modal-inscripcion" aria-labelledby="mi-t">
+  <div class="modal__band"><KnitBand cell={4} motifs={['llama', 'rombo', 'venado', 'rombo']} fg="var(--indigo)" bg="var(--marfil)" accents={['var(--indigo)', 'var(--magenta)', 'var(--indigo)', 'var(--magenta)']} /></div>
+  <div class="modal__in">
+    <header class="modal__hd">
+      <h2 class="modal__t d" id="mi-t">{modales.inscripcion.titulo}</h2>
+      <p class="modal__bajada">{modales.inscripcion.bajada}</p>
+      <button class="modal__x" type="button" data-cerrar aria-label="Cerrar" set:html={cerrar} />
+    </header>
+
+    <form class="form" data-form="inscripciones" novalidate>
+      <div class="campo campo--full">
+        <label for="i-nombres">Nombres</label>
+        <input id="i-nombres" name="nombres" autocomplete="given-name" required maxlength="80" />
+        <p class="campo__error" id="i-nombres-e" aria-live="polite"></p>
+      </div>
+      <div class="campo">
+        <label for="i-paterno">Apellido paterno</label>
+        <input id="i-paterno" name="apellidoPaterno" autocomplete="family-name" required maxlength="60" />
+        <p class="campo__error" id="i-paterno-e" aria-live="polite"></p>
+      </div>
+      <div class="campo">
+        <label for="i-materno">Apellido materno</label>
+        <input id="i-materno" name="apellidoMaterno" autocomplete="additional-name" required maxlength="60" />
+        <p class="campo__error" id="i-materno-e" aria-live="polite"></p>
+      </div>
+      <div class="campo">
+        <label for="i-edad">Edad</label>
+        <input id="i-edad" name="edad" type="number" inputmode="numeric" min="14" max="35" required />
+        <p class="campo__error" id="i-edad-e" aria-live="polite"></p>
+      </div>
+      <div class="campo">
+        <label for="i-celular">Celular (WhatsApp)</label>
+        <input id="i-celular" name="celular" type="tel" inputmode="tel" autocomplete="tel" placeholder="9XX XXX XXX" required />
+        <p class="campo__error" id="i-celular-e" aria-live="polite"></p>
+      </div>
+      <div class="campo campo--full">
+        <label for="i-colegio">Colegio o institución</label>
+        <input id="i-colegio" name="colegio" autocomplete="organization" required maxlength="120" />
+        <p class="campo__error" id="i-colegio-e" aria-live="polite"></p>
+      </div>
+
+      <div class="check campo--full">
+        <input id="i-consentimiento" name="consentimiento" type="checkbox" required />
+        <label for="i-consentimiento">{modales.consentimiento}</label>
+        <p class="campo__error" id="i-consentimiento-e" aria-live="polite"></p>
+      </div>
+      <div class="trampa" aria-hidden="true"><label>No llenar <input name="web" tabindex="-1" autocomplete="off" /></label></div>
+      <div class="form__pie campo--full">
+        <button class="btn btn--p" type="submit">Inscribirme</button>
+        <p class="form__estado" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+    <div class="exito" hidden tabindex="-1">
+      <p class="exito__t d">{modales.inscripcion.exitoTitulo}</p>
+      <p>{modales.inscripcion.exito}</p>
+      <button class="btn btn--s" type="button" data-cerrar>Cerrar</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Sponsor -->
+<dialog class="modal" id="modal-sponsor" aria-labelledby="ms-t">
+  <div class="modal__band"><KnitBand cell={4} motifs={['rombo', 'greca']} fg="var(--indigo)" bg="var(--marfil)" accents={['var(--magenta)', 'var(--indigo)']} /></div>
+  <div class="modal__in">
+    <header class="modal__hd">
+      <h2 class="modal__t d" id="ms-t">{modales.sponsor.titulo}</h2>
+      <p class="modal__bajada">{modales.sponsor.bajada}</p>
+      <button class="modal__x" type="button" data-cerrar aria-label="Cerrar" set:html={cerrar} />
+    </header>
+    <FormAliado tipo="sponsor" />
+    <div class="exito" hidden tabindex="-1">
+      <p class="exito__t d">{modales.sponsor.exitoTitulo}</p>
+      <p>{modales.sponsor.exito}</p>
+      <button class="btn btn--s" type="button" data-cerrar>Cerrar</button>
+    </div>
+    <p class="modal__cruce"><button type="button" data-modal="comunidad">{modales.sponsor.cruce}</button></p>
+  </div>
+</dialog>
+
+<!-- Comunidad aliada -->
+<dialog class="modal" id="modal-comunidad" aria-labelledby="mc-t">
+  <div class="modal__band"><KnitBand cell={4} motifs={['flor', 'llama']} fg="var(--indigo)" bg="var(--marfil)" accents={['var(--magenta)', 'var(--indigo)']} /></div>
+  <div class="modal__in">
+    <header class="modal__hd">
+      <h2 class="modal__t d" id="mc-t">{modales.comunidad.titulo}</h2>
+      <p class="modal__bajada">{modales.comunidad.bajada}</p>
+      <button class="modal__x" type="button" data-cerrar aria-label="Cerrar" set:html={cerrar} />
+    </header>
+    <FormAliado tipo="comunidad" />
+    <div class="exito" hidden tabindex="-1">
+      <p class="exito__t d">{modales.comunidad.exitoTitulo}</p>
+      <p>{modales.comunidad.exito}</p>
+      <button class="btn btn--s" type="button" data-cerrar>Cerrar</button>
+    </div>
+    <p class="modal__cruce"><button type="button" data-modal="sponsor">{modales.comunidad.cruce}</button></p>
+  </div>
+</dialog>
+
+<script>
+  // ---------- Abrir / cerrar ----------
+  const dialogos: Record<string, HTMLDialogElement> = {
+    inscripcion: document.getElementById('modal-inscripcion') as HTMLDialogElement,
+    sponsor: document.getElementById('modal-sponsor') as HTMLDialogElement,
+    comunidad: document.getElementById('modal-comunidad') as HTMLDialogElement,
+  };
+  // #aliados ahora es una sección: el menú baja hasta ella; los botones con data-modal abren el formulario.
+  const porHref: Record<string, string> = { '#inscribete': 'inscripcion', '#comunidad': 'comunidad' };
+
+  function reiniciar(d: HTMLDialogElement) {
+    const f = d.querySelector<HTMLFormElement>('form')!;
+    const exito = d.querySelector<HTMLElement>('.exito')!;
+    if (!exito.hidden) { exito.hidden = true; f.hidden = false; f.reset(); }
+  }
+  function abrir(cual: string) {
+    Object.values(dialogos).forEach((d) => d.open && d.close());
+    const d = dialogos[cual];
+    if (!d) return;
+    reiniciar(d);
+    d.showModal();
+    document.documentElement.classList.add('con-modal');
+    d.querySelector<HTMLInputElement>('input:not([type=checkbox]):not([name=web])')?.focus();
+  }
+  Object.values(dialogos).forEach((d) => {
+    d.addEventListener('close', () => {
+      if (!Object.values(dialogos).some((x) => x.open)) document.documentElement.classList.remove('con-modal');
+    });
+    // Clic fuera de la tarjeta (en el fondo) cierra.
+    d.addEventListener('click', (e) => { if (e.target === d) d.close(); });
+    d.querySelectorAll('[data-cerrar]').forEach((b) => b.addEventListener('click', () => d.close()));
+  });
+  document.addEventListener('click', (e) => {
+    const el = (e.target as HTMLElement).closest<HTMLElement>('[data-modal], a[href="#inscribete"], a[href="#comunidad"]');
+    if (!el) return;
+    const cual = el.dataset.modal ?? porHref[el.getAttribute('href')!];
+    if (!cual) return;
+    e.preventDefault();
+    abrir(cual);
+  });
+  if (porHref[location.hash]) abrir(porHref[location.hash]);
+
+  // ---------- Validación (RF-07) ----------
+  const limpiarCel = (v: string) => v.replace(/[\s-]/g, '').replace(/^\+?51/, '');
+  const celularOk = (v: string) => /^9\d{8}$/.test(limpiarCel(v));
+  const correoOk = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+
+  type Regla = (v: string, f: HTMLFormElement) => string;
+  const reglas: Record<string, Regla> = {
+    nombres: (v) => (v.trim().length < 2 ? 'Escribe tus nombres.' : ''),
+    apellidoPaterno: (v) => (v.trim().length < 2 ? 'Escribe tu apellido paterno.' : ''),
+    apellidoMaterno: (v) => (v.trim().length < 2 ? 'Escribe tu apellido materno.' : ''),
+    edad: (v) => {
+      if (!v) return 'Escribe tu edad.';
+      const n = Number(v);
+      return Number.isInteger(n) && n >= 14 && n <= 35 ? '' : 'La inscripción es desde los 14 años.';
+    },
+    colegio: (v) => (v.trim().length < 2 ? 'Escribe tu colegio o institución.' : ''),
+    celular: (v) => (celularOk(v) ? '' : 'Escribe un celular de 9 dígitos que empiece con 9.'),
+    correo: (v) => (!v.trim() ? 'Escribe un correo de contacto.' : correoOk(v.trim()) ? '' : 'Revisa el correo, parece incompleto.'),
+    organizacion: (v) => (v.trim().length < 2 ? 'Escribe el nombre de la organización o comunidad.' : ''),
+    contacto: (v) => (v.trim().length < 3 ? 'Escribe el nombre de la persona de contacto.' : ''),
+  };
+  const checks: Record<string, (f: HTMLFormElement) => string> = {
+    consentimiento: () => 'Necesitamos tu autorización para guardar tus datos.',
+  };
+
+  type Campo = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+  function validar(c: Campo, f: HTMLFormElement) {
+    let msg = '';
+    if (c instanceof HTMLInputElement && c.type === 'checkbox') msg = !c.checked && checks[c.name] ? checks[c.name](f) : '';
+    else if (reglas[c.name]) msg = reglas[c.name](c.value, f);
+    const err = document.getElementById(`${c.id}-e`);
+    if (err) { err.textContent = msg; c.setAttribute('aria-describedby', err.id); }
+    c.setAttribute('aria-invalid', String(!!msg));
+    return !msg;
+  }
+  const camposDe = (f: HTMLFormElement) =>
+    [...f.querySelectorAll<Campo>('input:not([name=web]), select, textarea')].filter((c) => !c.closest('[hidden]'));
+
+  // ---------- Envío a Firestore (RF-08) ----------
+  document.querySelectorAll<HTMLFormElement>('.modal .form').forEach((f) => {
+    camposDe(f).forEach((c) => {
+      c.addEventListener('blur', () => { if (c.value || c.hasAttribute('aria-invalid')) validar(c, f); });
+      c.addEventListener('change', () => { if (c.getAttribute('aria-invalid') === 'true') validar(c, f); });
+    });
+
+    const estado = f.querySelector<HTMLElement>('.form__estado')!;
+    const boton = f.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const exito = f.closest('.modal')!.querySelector<HTMLElement>('.exito')!;
+    const textoBoton = boton.textContent ?? '';
+
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      estado.textContent = '';
+      const malos = camposDe(f).filter((c) => !validar(c, f));
+      if (malos.length) { malos[0].focus(); estado.textContent = 'Revisa los campos marcados.'; return; }
+
+      const v = (n: string) => ((f.elements.namedItem(n) as HTMLInputElement | null)?.value ?? '').trim();
+      const coleccion = f.dataset.form as 'inscripciones' | 'aliados';
+      let datos: Record<string, unknown>;
+      if (coleccion === 'inscripciones') {
+        datos = { nombres: v('nombres'), apellidoPaterno: v('apellidoPaterno'), apellidoMaterno: v('apellidoMaterno'), edad: Number(v('edad')), colegio: v('colegio'), celular: limpiarCel(v('celular')), consentimiento: true };
+      } else {
+        datos = { tipo: f.dataset.tipo, organizacion: v('organizacion'), contacto: v('contacto'), correo: v('correo'), celular: limpiarCel(v('celular')), consentimiento: true };
+        if (v('cargo')) datos.cargo = v('cargo');
+        if (v('mensaje')) datos.mensaje = v('mensaje');
+      }
+
+      boton.disabled = true; boton.textContent = 'Enviando…';
+      try {
+        if (!v('web')) { // honeypot vacío = persona real (RNF-09)
+          const { guardar } = await import('../lib/firebase'); // Firebase se descarga solo al enviar
+          await guardar(coleccion, datos);
+        }
+        f.hidden = true; exito.hidden = false; exito.focus();
+        f.reset();
+        camposDe(f).forEach((c) => c.removeAttribute('aria-invalid'));
+      } catch (err) {
+        console.error(err);
+        estado.textContent = 'No pudimos enviar tus datos. Revisa tu conexión e inténtalo de nuevo.';
+      } finally {
+        boton.disabled = false; boton.textContent = textoBoton;
+      }
+    });
+  });
+</script>
+
+<style is:global>
+  html.con-modal { overflow: hidden; }
+
+  .modal {
+    width: min(100% - 2rem, 46rem); max-height: min(100dvh - 2rem, 58rem); padding: 0; margin: auto;
+    border: 3px solid var(--indigo); border-radius: 1rem; background: #fffdf8; color: var(--indigo);
+    box-shadow: 0 30px 60px -20px rgb(10 5 60 / 0.6); overflow: auto; overscroll-behavior: contain;
+  }
+  .modal::backdrop { background: rgb(20 12 90 / 0.62); }
+  .modal__band { line-height: 0; position: sticky; top: 0; z-index: 1; }
+  .modal__in { padding: clamp(1.5rem, 3.5vw, 2.5rem); display: grid; gap: 1.5rem; }
+  .modal__hd { position: relative; display: grid; gap: 0.6rem; padding-right: 3rem; }
+  .modal__t { font-size: clamp(2rem, 4.2vw, 3rem); }
+  .modal__bajada { font-size: clamp(1.05rem, 1.4vw, 1.2rem); line-height: 1.45; }
+  .modal__x {
+    position: absolute; top: -0.25rem; right: -0.25rem; width: 2.75rem; height: 2.75rem; display: grid; place-items: center;
+    border: 0; border-radius: 50%; background: var(--indigo); color: var(--marfil); cursor: pointer; transition: background-color 0.2s;
+  }
+  .modal__x:hover { background: var(--magenta); }
+  .modal__cruce { border-top: 2px dashed rgb(42 27 180 / 0.3); padding-top: 1.1rem; }
+  .modal__cruce button { font: 700 1rem/1.4 var(--texto); color: var(--indigo); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 2px; text-decoration-color: var(--magenta); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .modal[open] { animation: modal-in 0.35s var(--ease); }
+    .modal[open]::backdrop { animation: fondo-in 0.3s ease; }
+    @keyframes modal-in { from { transform: translateY(24px) scale(0.98); opacity: 0; } }
+    @keyframes fondo-in { from { opacity: 0; } }
+  }
+
+  .modal .form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.15rem; }
+  .modal .campo--full { grid-column: 1 / -1; }
+  .modal .campo { display: grid; gap: 0.4rem; align-content: start; }
+  .modal .campo label, .modal legend { font-weight: 700; font-size: 1rem; }
+  .modal .opc { font-weight: 400; opacity: 0.8; }
+  .modal input:not([type=checkbox]), .modal select, .modal textarea {
+    width: 100%; font: 400 1.05rem/1.4 var(--texto); color: var(--indigo);
+    background: var(--marfil); border: 2px solid rgb(42 27 180 / 0.45); border-radius: 0.6rem;
+    padding: 0.75rem 0.9rem; min-height: 3rem; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .modal textarea { resize: vertical; min-height: 6rem; }
+  .modal input::placeholder { color: rgb(42 27 180 / 0.6); }
+  .modal input:focus-visible, .modal select:focus-visible, .modal textarea:focus-visible { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgb(242 46 154 / 0.45); }
+  .modal [aria-invalid='true'] { border-color: var(--error) !important; }
+  .modal .campo__error, .modal .form__estado { font-size: 0.92rem; font-weight: 700; color: var(--error); }
+  .modal .campo__error:empty, .modal .form__estado:empty { display: none; }
+
+  .modal .check { display: grid; grid-template-columns: auto 1fr; gap: 0.25rem 0.75rem; align-items: start; }
+  .modal .check input { width: 1.35rem; height: 1.35rem; margin-top: 0.15rem; accent-color: var(--magenta); }
+  .modal .check label { font-weight: 400; font-size: 0.98rem; line-height: 1.45; }
+  .modal .check .campo__error { grid-column: 2; }
+
+  .modal fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+
+  .modal .trampa { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .modal .form__pie { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 0.25rem; }
+  .modal .form__pie .btn[disabled] { opacity: 0.7; cursor: progress; }
+
+  .modal .exito { display: grid; gap: 1rem; justify-items: start; }
+  .modal .exito:focus { outline: none; }
+  .modal .exito__t { font-size: clamp(2rem, 3.4vw, 2.75rem); color: var(--magenta); }
+  .modal .exito p { font-size: 1.15rem; line-height: 1.5; max-width: 44ch; }
+
+  @media (max-width: 560px) {
+    .modal { width: 100%; max-width: none; max-height: 100dvh; height: 100dvh; border-radius: 0; border-width: 0; }
+    .modal .form { grid-template-columns: 1fr; }
+    .modal .form__pie .btn { width: 100%; }
+  }
+</style>

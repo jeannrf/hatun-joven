@@ -1,0 +1,126 @@
+---
+import KnitBand from './KnitBand.astro';
+import Redes from './Redes.astro';
+import { cierre, cronograma, evento, hero, nosotros } from '../content/home';
+import { cells } from './motifs';
+
+// Fondo sutil: rombo tejido en una retícula de 8 px (SRS: elementos gráficos como fondos sutiles).
+const rombo = cells('rombo').map(([x, y]) => `<rect x='${x * 8}' y='${y * 8}' width='8' height='8'/>`).join('');
+const fondo = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160' shape-rendering='crispEdges'><g fill='#F7F2E9' fill-opacity='0.07'>${rombo}</g><g fill='#F7F2E9' fill-opacity='0.07' transform='translate(80 80)'>${rombo}</g></svg>`)}")`;
+const llama = cells('llama');
+const venado = cells('venado');
+// "¿Te vemos" / "en Jauja?": la S final lleva los pétalos como sombrerito.
+const [l1, l2] = (() => { const i = cierre.titulo.lastIndexOf(' en '); return [cierre.titulo.slice(0, i), cierre.titulo.slice(i + 1)]; })();
+const b = cronograma.bloques;
+const horario = `${b[0].inicio} – ${b[b.length - 1].fin}`;
+const diasRestantes = Math.max(0, Math.floor((new Date(evento.fechaISO).getTime() - Date.now()) / 86400000));
+---
+<footer class="cie">
+  <KnitBand motifs={['rombo', 'venado', 'flor', 'llama']} accents={['var(--marfil)', 'var(--verde)', 'var(--marfil)', 'var(--marfil)']} />
+  <div class="cie__body" style={`--fondo:${fondo}`}>
+    <div class="wrap">
+      <div class="cie__main">
+        <div class="cie__copy">
+          <h2 class="cie__t d">
+            <span class="cie__l">{l1.slice(0, -1)}<span class="cie__s">{l1.slice(-1)}<img class="cie__sombrero" src="/img/sombrero.webp" width="369" height="270" alt="" aria-hidden="true" loading="lazy" decoding="async" /></span></span>
+            <span class="cie__l">{l2}</span>
+          </h2>
+          <div class="cie__ctas">
+            <a class="btn btn--p" href={hero.ctaPrimario.href} data-modal={hero.ctaPrimario.modal}>{hero.ctaPrimario.label}</a>
+            <a class="btn btn--claro" href={hero.ctaSecundario.href} data-modal={hero.ctaSecundario.modal}>{hero.ctaSecundario.label}</a>
+          </div>
+          <a class="cie__comunidad" href="#comunidad">¿Quieres ser comunidad aliada?</a>
+        </div>
+        <article class="pas" aria-labelledby="pas-t">
+          <div class="pas__band"><KnitBand cell={4} motifs={['llama', 'rombo', 'venado', 'rombo']} fg="var(--indigo)" bg="var(--marfil)" accents={['var(--indigo)', 'var(--magenta)', 'var(--indigo)', 'var(--magenta)']} /></div>
+          <div class="pas__body">
+            <h3 class="pas__t d" id="pas-t">Pasaporte <span>Hatun Joven</span></h3>
+            <dl class="pas__datos">
+              <div><dt>Fecha</dt><dd>{evento.fechaLarga}</dd></div>
+              <div><dt>Horario</dt><dd>{horario}</dd></div>
+              <div><dt>Lugar</dt><dd>{evento.lugar}, {evento.ciudad}</dd></div>
+            </dl>
+            <p class="pas__falta"><span class="d" data-cd-dias={evento.fechaISO}>{diasRestantes}</span> días para vernos</p>
+          </div>
+          <img class="pas__sello" src="/img/chuto-rostro.webp" width="284" height="292" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+        </article>
+      </div>
+
+      <div class="cie__pie">
+        <div class="cie__caravana" aria-hidden="true">
+          <svg viewBox="0 0 10 10" width="40" height="40" shape-rendering="crispEdges" fill="var(--marfil)">{llama.map(([x, y]) => <rect x={x} y={y} width="1" height="1" />)}</svg>
+          <svg viewBox="0 0 10 10" width="40" height="40" shape-rendering="crispEdges" fill="var(--verde)">{venado.map(([x, y]) => <rect x={x} y={y} width="1" height="1" />)}</svg>
+          <svg viewBox="0 0 10 10" width="32" height="32" shape-rendering="crispEdges" fill="var(--amarillo)">{llama.map(([x, y]) => <rect x={x} y={y} width="1" height="1" />)}</svg>
+        </div>
+        <p class="cie__lema">{nosotros.lema.join(' · ')} <strong>{cierre.hashtag}</strong></p>
+        <Redes tono="claro" />
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const d = document.querySelector<HTMLElement>('[data-cd-dias]');
+  if (d) {
+    const ms = new Date(d.dataset.cdDias!).getTime() - Date.now();
+    if (ms <= 0) d.closest('.pas__falta')!.textContent = '¡Hoy es Hatun Joven!';
+    else d.textContent = String(Math.floor(ms / 86400000));
+  }
+</script>
+
+<style>
+  .cie__body { background: var(--fondo) 0 0 / 160px 160px repeat, var(--indigo); color: var(--marfil); padding-block: clamp(5rem, 9vw, 9rem) 2.5rem; overflow: hidden; }
+  .cie__main { display: grid; grid-template-columns: auto auto; justify-content: center; align-items: center; gap: clamp(2.5rem, 5vw, 5.5rem); }
+  .cie__copy { display: grid; gap: clamp(1.25rem, 2vw, 1.75rem); justify-items: start; }
+  .cie__t { font-size: clamp(3rem, 8.5vw, 8rem); line-height: 1; }
+  .cie__ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.5rem; }
+  .cie__comunidad { font-weight: 700; font-size: clamp(1.05rem, 1.3vw, 1.2rem); text-decoration-color: var(--verde); text-underline-offset: 0.25em; }
+  .cie__comunidad:hover { color: var(--verde); }
+  .cie__ctas .btn { box-shadow: none; font-size: clamp(1.25rem, 1.5vw, 1.45rem); min-height: clamp(3.5rem, 4.2vw, 4.25rem); padding-inline: clamp(1.75rem, 2.2vw, 2.25rem); }
+  .cie__copy { position: relative; }
+  .cie__l { display: block; }
+  .cie__s { position: relative; display: inline-block; }
+  /* El sombrero del Chuto (pieza gráfica oficial) puesto sobre la S, inclinado. */
+  .cie__sombrero { position: absolute; left: 28%; bottom: 77%; width: 0.72em; max-width: none; height: auto; transform: translateX(-46%) rotate(52deg); transform-origin: 50% 85%; pointer-events: none; }
+
+  /* Pasaporte: tarjeta Marfil con franja tejida, perforación y el Chuto como sello. */
+  .pas {
+    position: relative; width: clamp(19rem, 30vw, 27rem); background: var(--marfil); color: var(--indigo);
+    border-radius: 0.75rem; overflow: hidden; transform: rotate(3deg);
+    box-shadow: 0 24px 40px -24px rgb(10 5 60 / 0.7);
+    -webkit-mask: radial-gradient(circle 0.7rem at 0 62%, #0000 98%, #000) , radial-gradient(circle 0.7rem at 100% 62%, #0000 98%, #000);
+    -webkit-mask-composite: source-in; mask-composite: intersect;
+  }
+  .pas__band { line-height: 0; }
+  .pas__body { padding: 1.5rem clamp(1.25rem, 2vw, 1.75rem) 1.75rem; display: grid; gap: 1.1rem; }
+  .pas__t { font-size: clamp(1.6rem, 2.4vw, 2.2rem); line-height: 0.95; }
+  .pas__t span { display: block; color: var(--magenta); }
+  .pas__datos { display: grid; gap: 0.7rem; padding-bottom: 1.1rem; border-bottom: 3px dashed rgb(42 27 180 / 0.35); }
+  .pas__datos div { display: grid; grid-template-columns: 5.25rem 1fr; gap: 0.75rem; align-items: baseline; }
+  .pas__datos dt { font-weight: 700; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75; }
+  .pas__datos dd { margin: 0; font-weight: 700; font-size: clamp(1rem, 1.15vw, 1.1rem); line-height: 1.3; }
+  .pas__falta { font-weight: 700; font-size: 1.05rem; display: flex; align-items: baseline; gap: 0.5rem; padding-right: 5.5rem; }
+  .pas__falta .d { font-size: clamp(2.5rem, 3.6vw, 3.5rem); color: var(--magenta); line-height: 0.9; }
+  .pas__sello { position: absolute; right: 0.25rem; bottom: -0.5rem; width: 7rem; height: auto; transform: rotate(-8deg); }
+
+  @media (prefers-reduced-motion: no-preference) {
+      .pas { transition: transform 0.5s var(--ease); }
+    .pas:hover { transform: rotate(0deg) translateY(-6px); }
+  }
+
+  .cie__pie { position: relative; margin-top: clamp(6rem, 10vw, 9.5rem); padding-top: 1.5rem; border-top: 2px solid rgb(247 242 233 / 0.25); display: flex; flex-wrap: wrap; gap: 1rem 2rem; align-items: center; justify-content: space-between; }
+  /* Una llama y un venado caminan sobre la línea del pie. */
+  .cie__caravana { position: absolute; bottom: 100%; left: 0; display: flex; align-items: flex-end; gap: 0.75rem; margin-bottom: 2px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .cie__caravana { animation: caminar 38s linear infinite; }
+    .cie__caravana svg { animation: paso 0.5s steps(2) infinite; }
+    @keyframes caminar { from { left: -10rem; } to { left: 100%; } }
+    @keyframes paso { 50% { translate: 0 -2px; } }
+  }
+  .cie__lema strong { color: var(--verde); margin-left: 0.5em; }
+
+  @media (max-width: 760px) {
+    .cie__main { grid-template-columns: 1fr; justify-content: stretch; }
+      .pas { width: 100%; max-width: 24rem; justify-self: center; transform: rotate(1.5deg); margin-top: 1rem; }
+  }
+</style>

@@ -1,0 +1,58 @@
+---
+import { cronograma } from '../content/home';
+import { cells, type Motif } from './motifs';
+const marcas: Motif[] = ['rombo', 'llama', 'flor', 'venado', 'rombo', 'greca', 'flor', 'llama'];
+---
+<section class="cro" id="cronograma" aria-labelledby="cro-t">
+  <div class="wrap">
+    <header class="cro__hd">
+      <h2 class="cro__t d" id="cro-t">{cronograma.titulo}</h2>
+    </header>
+
+    <ol class="cro__lista">
+      {cronograma.bloques.map((b, i) => (
+        <li class:list={['fila', { 'fila--top': b.destacado }]}>
+          <p class="fila__hora d"><time>{b.inicio}</time><span aria-hidden="true">–</span><span class="sr-only"> a </span><time>{b.fin}</time></p>
+          <svg class="fila__marca" viewBox="0 0 10 10" width="40" height="40" aria-hidden="true" shape-rendering="crispEdges">
+            {cells(marcas[i]).map(([x, y]) => <rect x={x} y={y} width="1" height="1" />)}
+          </svg>
+          <p class="fila__act">{b.actividad}</p>
+        </li>
+      ))}
+    </ol>
+
+    {cronograma.nota && <p class="cro__nota">{cronograma.nota}</p>}
+  </div>
+</section>
+
+<style>
+  .cro { padding-block: var(--sec) clamp(2.5rem, 5vw, 4rem); }
+  .cro__hd { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1.5rem; margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+  .cro__t { font-size: clamp(1.6rem, 8.4vw, 6rem); white-space: nowrap; text-wrap: nowrap; }
+
+  .cro__lista { list-style: none; padding: 0; border-top: 4px solid var(--indigo); }
+  .fila {
+    display: grid; grid-template-columns: minmax(9rem, 14rem) 2.5rem 1fr; align-items: center; gap: clamp(1rem, 3vw, 2.5rem);
+    padding: 1.1rem clamp(1rem, 2vw, 1.5rem); border-bottom: 2px dashed rgb(42 27 180 / 0.35);
+    transition: background-color 0.25s;
+  }
+  .fila:hover { background: var(--marfil-hondo); }
+  .fila__hora { font-size: clamp(1.4rem, 2.4vw, 2rem); display: flex; gap: 0.25em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .fila__marca { fill: var(--indigo); }
+  .fila__act { font-weight: 700; font-size: clamp(1.15rem, 1.8vw, 1.5rem); line-height: 1.35; }
+
+  .fila--top { background: var(--magenta); color: #fff; border-bottom-color: transparent; border-radius: 0.4rem; margin-block: 0.4rem; transform: rotate(-0.6deg); }
+  .fila--top:hover { background: var(--magenta-hondo); }
+  .fila--top .fila__marca { fill: var(--marfil); }
+  .fila--top .fila__hora { font-size: clamp(1.5rem, 2.4vw, 2rem); }
+  .fila--top .fila__act { font: 400 clamp(1.5rem, 2.6vw, 2.25rem)/1 var(--display); text-transform: uppercase; }
+
+  .cro__nota { margin-top: 1rem; font-size: 0.95rem; }
+
+  @media (max-width: 640px) {
+    .fila { grid-template-columns: 1fr 2rem; grid-template-areas: "hora marca" "act act"; row-gap: 0.35rem; }
+    .fila__hora { grid-area: hora; }
+    .fila__marca { grid-area: marca; width: 2rem; height: 2rem; justify-self: end; }
+    .fila__act { grid-area: act; }
+      }
+</style>

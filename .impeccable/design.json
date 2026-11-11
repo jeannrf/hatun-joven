@@ -1,0 +1,433 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-11T16:25:30+00:00",
+  "title": "Design System: Hatun Joven",
+  "extensions": {
+    "colorMeta": {
+      "marfil": {
+        "role": "neutral",
+        "displayName": "Marfil Lana",
+        "canonical": "#f7f2e9",
+        "oklch": "oklch(96.3% 0.013 82)",
+        "tonalRamp": [
+          "oklch(15% 0.007 82)",
+          "oklch(26% 0.013 82)",
+          "oklch(38% 0.013 82)",
+          "oklch(49% 0.013 82)",
+          "oklch(61% 0.013 82)",
+          "oklch(72% 0.013 82)",
+          "oklch(84% 0.013 82)",
+          "oklch(95% 0.007 82)"
+        ]
+      },
+      "marfil-hondo": {
+        "role": "neutral",
+        "displayName": "Marfil Hondo",
+        "canonical": "#ece4d4",
+        "oklch": "oklch(92.1% 0.023 85)",
+        "tonalRamp": [
+          "oklch(15% 0.002 85)",
+          "oklch(26% 0.006 85)",
+          "oklch(38% 0.009 85)",
+          "oklch(49% 0.012 85)",
+          "oklch(61% 0.015 85)",
+          "oklch(72% 0.018 85)",
+          "oklch(84% 0.021 85)",
+          "oklch(95% 0.011 85)"
+        ]
+      },
+      "indigo": {
+        "role": "secondary",
+        "displayName": "Índigo Telar",
+        "canonical": "#2a1bb4",
+        "oklch": "oklch(38.2% 0.220 273)",
+        "tonalRamp": [
+          "oklch(15% 0.082 273)",
+          "oklch(26% 0.191 273)",
+          "oklch(38% 0.219 273)",
+          "oklch(49% 0.193 273)",
+          "oklch(61% 0.165 273)",
+          "oklch(72% 0.137 273)",
+          "oklch(84% 0.109 273)",
+          "oklch(95% 0.040 273)"
+        ]
+      },
+      "indigo-hondo": {
+        "role": "secondary",
+        "displayName": "Índigo Hondo",
+        "canonical": "#1d1186",
+        "oklch": "oklch(30.7% 0.177 273)",
+        "tonalRamp": [
+          "oklch(15% 0.073 273)",
+          "oklch(26% 0.169 273)",
+          "oklch(38% 0.163 273)",
+          "oklch(49% 0.140 273)",
+          "oklch(61% 0.118 273)",
+          "oklch(72% 0.096 273)",
+          "oklch(84% 0.073 273)",
+          "oklch(95% 0.025 273)"
+        ]
+      },
+      "magenta": {
+        "role": "primary",
+        "displayName": "Magenta Chuto",
+        "canonical": "#f22e9a",
+        "oklch": "oklch(64.6% 0.242 353)",
+        "tonalRamp": [
+          "oklch(15% 0.054 353)",
+          "oklch(26% 0.139 353)",
+          "oklch(38% 0.170 353)",
+          "oklch(49% 0.200 353)",
+          "oklch(61% 0.231 353)",
+          "oklch(72% 0.221 353)",
+          "oklch(84% 0.191 353)",
+          "oklch(95% 0.080 353)"
+        ]
+      },
+      "magenta-hondo": {
+        "role": "primary",
+        "displayName": "Magenta Hondo",
+        "canonical": "#d01a80",
+        "oklch": "oklch(56.9% 0.222 354)",
+        "tonalRamp": [
+          "oklch(15% 0.059 354)",
+          "oklch(26% 0.147 354)",
+          "oklch(38% 0.175 354)",
+          "oklch(49% 0.203 354)",
+          "oklch(61% 0.213 354)",
+          "oklch(72% 0.185 354)",
+          "oklch(84% 0.156 354)",
+          "oklch(95% 0.064 354)"
+        ]
+      },
+      "verde": {
+        "role": "tertiary",
+        "displayName": "Verde Eléctrico",
+        "canonical": "#4df234",
+        "oklch": "oklch(84.3% 0.259 141)",
+        "tonalRamp": [
+          "oklch(15% 0.030 141)",
+          "oklch(26% 0.092 141)",
+          "oklch(38% 0.125 141)",
+          "oklch(49% 0.158 141)",
+          "oklch(61% 0.191 141)",
+          "oklch(72% 0.224 141)",
+          "oklch(84% 0.256 141)",
+          "oklch(95% 0.114 141)"
+        ]
+      },
+      "blanco": {
+        "role": "neutral",
+        "displayName": "Blanco",
+        "canonical": "#ffffff",
+        "oklch": "oklch(100.0% 0.000 90)",
+        "tonalRamp": [
+          "oklch(15% 0.000 90)",
+          "oklch(26% 0.000 90)",
+          "oklch(38% 0.000 90)",
+          "oklch(49% 0.000 90)",
+          "oklch(61% 0.000 90)",
+          "oklch(72% 0.000 90)",
+          "oklch(84% 0.000 90)",
+          "oklch(95% 0.000 90)"
+        ]
+      },
+      "amarillo": {
+        "role": "tertiary",
+        "displayName": "Amarillo Sol",
+        "canonical": "#f2b705",
+        "oklch": "oklch(81.1% 0.166 85)",
+        "tonalRamp": [
+          "oklch(15% 0.022 85)",
+          "oklch(26% 0.065 85)",
+          "oklch(38% 0.086 85)",
+          "oklch(49% 0.107 85)",
+          "oklch(61% 0.128 85)",
+          "oklch(72% 0.149 85)",
+          "oklch(84% 0.161 85)",
+          "oklch(95% 0.070 85)"
+        ]
+      },
+      "lavanda": {
+        "role": "tertiary",
+        "displayName": "Lavanda",
+        "canonical": "#9439f0",
+        "oklch": "oklch(56.9% 0.253 301)",
+        "tonalRamp": [
+          "oklch(15% 0.068 301)",
+          "oklch(26% 0.167 301)",
+          "oklch(38% 0.199 301)",
+          "oklch(49% 0.231 301)",
+          "oklch(61% 0.242 301)",
+          "oklch(72% 0.210 301)",
+          "oklch(84% 0.178 301)",
+          "oklch(95% 0.073 301)"
+        ]
+      },
+      "rojo": {
+        "role": "tertiary",
+        "displayName": "Rojo Achiote",
+        "canonical": "#ee270f",
+        "oklch": "oklch(60.9% 0.232 31)",
+        "tonalRamp": [
+          "oklch(15% 0.057 31)",
+          "oklch(26% 0.143 31)",
+          "oklch(38% 0.173 31)",
+          "oklch(49% 0.202 31)",
+          "oklch(61% 0.232 31)",
+          "oklch(72% 0.203 31)",
+          "oklch(84% 0.174 31)",
+          "oklch(95% 0.072 31)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Wordmark",
+        "purpose": "Reservado: el wordmark del hero ahora es la imagen oficial del logotipo, no texto."
+      },
+      "headline": {
+        "displayName": "Titular de sección",
+        "purpose": "Títulos de sección en mayúsculas, medida 10 a 12ch."
+      },
+      "title": {
+        "displayName": "Rótulo",
+        "purpose": "Cinta, horas, etiquetas de campo, lema y cifras."
+      },
+      "body-lead": {
+        "displayName": "Bajada",
+        "purpose": "Bajada del hero y textos de sección."
+      },
+      "body": {
+        "displayName": "Texto",
+        "purpose": "Texto corrido y notas."
+      },
+      "label": {
+        "displayName": "Etiqueta",
+        "purpose": "Navegación y rótulos de la cuenta regresiva, en mayúsculas."
+      },
+      "button": {
+        "displayName": "Botón",
+        "purpose": "Texto de botones en píldora."
+      }
+    },
+    "shadows": [
+      {
+        "name": "boton-reposo",
+        "value": "0 6px 14px -6px rgb(29 17 134 / 0.45)",
+        "purpose": "Botón primario sobre Marfil."
+      },
+      {
+        "name": "boton-hover",
+        "value": "0 10px 20px -8px rgb(29 17 134 / 0.5)",
+        "purpose": "Botón primario en hover, con translateY(-2px)."
+      },
+      {
+        "name": "cinta",
+        "value": "0 8px 20px -10px rgb(29 17 134 / 0.6)",
+        "purpose": "Cinta Índigo sobre Marfil."
+      },
+      {
+        "name": "header-scroll",
+        "value": "0 10px 24px -18px rgb(29 17 134 / 0.5)",
+        "purpose": "Header fijo pasados 24 px de scroll."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Curva única de transiciones y entradas."
+      },
+      {
+        "name": "tejer",
+        "value": "clip-path inset 100%→0, 1.4s steps(36, end), retraso 0.35s",
+        "purpose": "La banda bajo el hero se teje por columnas al cargar."
+      },
+      {
+        "name": "cinta-cae",
+        "value": "rotate(-16deg) translateY(-1.2em) scale(1.1) → reposo, 0.7s, retraso 0.45s",
+        "purpose": "Entrada de la cinta de fecha del hero."
+      },
+      {
+        "name": "contador",
+        "value": "1400ms, ease-out exponencial, una sola vez al 60 % visible",
+        "purpose": "Cifras de impacto."
+      },
+      {
+        "name": "menu-circular",
+        "value": "clip-path circle 0→150% desde la esquina, 0.6s",
+        "purpose": "Apertura del menú móvil."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "Todo lo anterior queda estático."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "filas",
+        "value": "640px"
+      },
+      {
+        "name": "nosotros",
+        "value": "760px"
+      },
+      {
+        "name": "manga",
+        "value": "900px"
+      },
+      {
+        "name": "menu",
+        "value": "960px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón primario",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "La acción (Inscríbete): Magenta en píldora, una por bloque.",
+      "html": "<a class=\"ds-btn ds-btn--p\" href=\"#\">Inscríbete</a>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 3.5rem; padding: 0.85rem 1.75rem; border-radius: 999px; border: 3px solid transparent; font-family: var(--texto, 'Cabin', system-ui, sans-serif); font-weight: 700; font-size: 1.25rem; line-height: 1; text-decoration: none; white-space: nowrap; cursor: pointer; transition: transform 0.25s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)), background-color 0.2s, box-shadow 0.25s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-btn:active { transform: translateY(1px) scale(0.98); } .ds-btn:focus-visible { outline: 3px solid var(--magenta, #f22e9a); outline-offset: 3px; } .ds-btn--p { background: var(--magenta, #f22e9a); color: #fff; box-shadow: 0 6px 14px -6px rgb(29 17 134 / 0.45); } .ds-btn--p:hover { background: var(--magenta-hondo, #d01a80); transform: translateY(-2px); box-shadow: 0 10px 20px -8px rgb(29 17 134 / 0.5); }"
+    },
+    {
+      "name": "Botón secundario",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Acción secundaria (Sé aliado) sobre Marfil: contorno Índigo.",
+      "html": "<a class=\"ds-btn ds-btn--s\" href=\"#\">Sé aliado</a>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 3.5rem; padding: 0.85rem 1.75rem; border-radius: 999px; border: 3px solid transparent; font-family: var(--texto, 'Cabin', system-ui, sans-serif); font-weight: 700; font-size: 1.25rem; line-height: 1; text-decoration: none; white-space: nowrap; cursor: pointer; transition: transform 0.25s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)), background-color 0.2s, box-shadow 0.25s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-btn:active { transform: translateY(1px) scale(0.98); } .ds-btn:focus-visible { outline: 3px solid var(--magenta, #f22e9a); outline-offset: 3px; } .ds-btn--s { background: transparent; border-color: var(--indigo, #2a1bb4); color: var(--indigo, #2a1bb4); } .ds-btn--s:hover { background: var(--indigo, #2a1bb4); color: var(--marfil, #f7f2e9); }"
+    },
+    {
+      "name": "Botón claro",
+      "kind": "button",
+      "refersTo": "button-claro",
+      "description": "Acción secundaria sobre bloques Índigo: contorno Marfil, sin sombra.",
+      "html": "<div class=\"ds-on-indigo\"><a class=\"ds-btn ds-btn--claro\" href=\"#\">Sé aliado</a></div>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 3.5rem; padding: 0.85rem 1.75rem; border-radius: 999px; border: 3px solid transparent; font-family: var(--texto, 'Cabin', system-ui, sans-serif); font-weight: 700; font-size: 1.25rem; line-height: 1; text-decoration: none; white-space: nowrap; cursor: pointer; transition: transform 0.25s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)), background-color 0.2s, box-shadow 0.25s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-btn:active { transform: translateY(1px) scale(0.98); } .ds-btn:focus-visible { outline: 3px solid var(--magenta, #f22e9a); outline-offset: 3px; } .ds-on-indigo { background: var(--indigo, #2a1bb4); padding: 1.5rem; } .ds-btn--claro { background: transparent; border-color: var(--marfil, #f7f2e9); color: var(--marfil, #f7f2e9); } .ds-btn--claro:hover { background: var(--marfil, #f7f2e9); color: var(--indigo, #2a1bb4); }"
+    },
+    {
+      "name": "Cinta del sombrero",
+      "kind": "chip",
+      "refersTo": "cinta",
+      "description": "Franja Índigo rotada −4° que rotula fechas y secciones; acento en Verde.",
+      "html": "<span class=\"ds-cinta\">6 MAR 2027 · <em>JAUJA</em></span>",
+      "css": ".ds-cinta { display: inline-block; background: var(--indigo, #2a1bb4); color: var(--marfil, #f7f2e9); font-family: var(--display, 'Luckiest Guy', 'Cabin', sans-serif); font-size: 2rem; line-height: 1; text-transform: uppercase; padding: 0.5em 0.75em 0.32em; border-radius: 0.3rem; transform: rotate(-4deg); box-shadow: 0 8px 20px -10px rgb(29 17 134 / 0.6); transition: transform 0.35s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-cinta:hover { transform: rotate(-2deg); } .ds-cinta em { font-style: normal; color: var(--verde, #4df234); }"
+    },
+    {
+      "name": "Banda tejida",
+      "kind": "custom",
+      "refersTo": "banda-tejida",
+      "description": "Vuelta de la manga del Chuto en retícula de 8 px: divisor entre secciones.",
+      "html": "<svg class=\"ds-knit\" width=\"160\" height=\"112\" viewBox=\"0 0 160 112\" shape-rendering=\"crispEdges\" aria-hidden=\"true\"><rect width=\"160\" height=\"112\" fill=\"#2a1bb4\"/><g fill=\"#f7f2e9\"><rect x=\"0\" y=\"0\" width=\"8\" height=\"8\"/><rect x=\"8\" y=\"104\" width=\"8\" height=\"8\"/><rect x=\"16\" y=\"0\" width=\"8\" height=\"8\"/><rect x=\"24\" y=\"104\" width=\"8\" height=\"8\"/><rect x=\"32\" y=\"0\" width=\"8\" height=\"8\"/><rect x=\"40\" y=\"104\" width=\"8\" height=\"8\"/><rect x=\"48\" y=\"0\" width=\"8\" height=\"8\"/><rect x=\"56\" y=\"104\" width=\"8\" height=\"8\"/><rect x=\"64\" y=\"0\" width=\"8\" height=\"8\"/><rect x=\"72\" y=\"104\" width=\"8\" height=\"8\"/><rect x=\"80\" y=\"0\" width=\"8\" height=\"8\"/><rect x=\"88\" y=\"104\" width=\"8\" height=\"8\"/><rect x=\"96\" y=\"0\" width=\"8\" height=\"8\"/><rect x=\"104\" y=\"104\" width=\"8\" height=\"8\"/><rect x=\"112\" y=\"0\" width=\"8\" height=\"8\"/><rect x=\"120\" y=\"104\" width=\"8\" height=\"8\"/><rect x=\"128\" y=\"0\" width=\"8\" height=\"8\"/><rect x=\"136\" y=\"104\" width=\"8\" height=\"8\"/><rect x=\"144\" y=\"0\" width=\"8\" height=\"8\"/><rect x=\"152\" y=\"104\" width=\"8\" height=\"8\"/></g><g fill=\"#f7f2e9\"><rect x=\"56\" y=\"16\" width=\"8\" height=\"8\"/><rect x=\"48\" y=\"24\" width=\"8\" height=\"8\"/><rect x=\"64\" y=\"24\" width=\"8\" height=\"8\"/><rect x=\"40\" y=\"32\" width=\"8\" height=\"8\"/><rect x=\"72\" y=\"32\" width=\"8\" height=\"8\"/><rect x=\"32\" y=\"40\" width=\"8\" height=\"8\"/><rect x=\"56\" y=\"40\" width=\"8\" height=\"8\"/><rect x=\"80\" y=\"40\" width=\"8\" height=\"8\"/><rect x=\"24\" y=\"48\" width=\"8\" height=\"8\"/><rect x=\"48\" y=\"48\" width=\"8\" height=\"8\"/><rect x=\"56\" y=\"48\" width=\"8\" height=\"8\"/><rect x=\"64\" y=\"48\" width=\"8\" height=\"8\"/><rect x=\"88\" y=\"48\" width=\"8\" height=\"8\"/><rect x=\"32\" y=\"56\" width=\"8\" height=\"8\"/><rect x=\"56\" y=\"56\" width=\"8\" height=\"8\"/><rect x=\"80\" y=\"56\" width=\"8\" height=\"8\"/><rect x=\"40\" y=\"64\" width=\"8\" height=\"8\"/><rect x=\"72\" y=\"64\" width=\"8\" height=\"8\"/><rect x=\"48\" y=\"72\" width=\"8\" height=\"8\"/><rect x=\"64\" y=\"72\" width=\"8\" height=\"8\"/><rect x=\"56\" y=\"80\" width=\"8\" height=\"8\"/></g><g fill=\"#4df234\"><rect x=\"136\" y=\"16\" width=\"8\" height=\"8\"/><rect x=\"128\" y=\"24\" width=\"8\" height=\"8\"/><rect x=\"144\" y=\"24\" width=\"8\" height=\"8\"/><rect x=\"120\" y=\"32\" width=\"8\" height=\"8\"/><rect x=\"152\" y=\"32\" width=\"8\" height=\"8\"/><rect x=\"112\" y=\"40\" width=\"8\" height=\"8\"/><rect x=\"136\" y=\"40\" width=\"8\" height=\"8\"/><rect x=\"160\" y=\"40\" width=\"8\" height=\"8\"/><rect x=\"104\" y=\"48\" width=\"8\" height=\"8\"/><rect x=\"128\" y=\"48\" width=\"8\" height=\"8\"/><rect x=\"136\" y=\"48\" width=\"8\" height=\"8\"/><rect x=\"144\" y=\"48\" width=\"8\" height=\"8\"/><rect x=\"168\" y=\"48\" width=\"8\" height=\"8\"/><rect x=\"112\" y=\"56\" width=\"8\" height=\"8\"/><rect x=\"136\" y=\"56\" width=\"8\" height=\"8\"/><rect x=\"160\" y=\"56\" width=\"8\" height=\"8\"/><rect x=\"120\" y=\"64\" width=\"8\" height=\"8\"/><rect x=\"152\" y=\"64\" width=\"8\" height=\"8\"/><rect x=\"128\" y=\"72\" width=\"8\" height=\"8\"/><rect x=\"144\" y=\"72\" width=\"8\" height=\"8\"/><rect x=\"136\" y=\"80\" width=\"8\" height=\"8\"/></g></svg>",
+      "css": ".ds-knit { display: block; width: 100%; max-width: 480px; height: auto; }"
+    },
+    {
+      "name": "Cuenta regresiva",
+      "kind": "card",
+      "refersTo": "cuenta-celda",
+      "description": "Celdas Índigo con dígitos Verde tabulares.",
+      "html": "<dl class=\"ds-cd\"><div><dt>días</dt><dd>114</dd></div><div><dt>horas</dt><dd>21</dd></div><div><dt>min</dt><dd>08</dd></div></dl>",
+      "css": ".ds-cd { display: flex; gap: 0.75rem; margin: 0; } .ds-cd div { display: flex; flex-direction: column-reverse; align-items: center; background: var(--indigo, #2a1bb4); color: var(--marfil, #f7f2e9); border-radius: 0.6rem; padding: 0.7rem 0.4rem 0.5rem; min-width: 5rem; } .ds-cd dd { margin: 0; font-family: var(--display, 'Luckiest Guy', 'Cabin', sans-serif); font-size: 2.5rem; line-height: 1; color: var(--verde, #4df234); font-variant-numeric: tabular-nums; } .ds-cd dt { font-family: var(--texto, 'Cabin', system-ui, sans-serif); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.3rem; }"
+    },
+    {
+      "name": "Etiqueta de campo",
+      "kind": "chip",
+      "refersTo": "campo-etiqueta",
+      "description": "Rótulos grandes inclinados, Índigo y Magenta alternados; se enderezan en hover.",
+      "html": "<ul class=\"ds-campos\"><li style=\"--c:#2a1bb4;--r:-3deg\">Tecnología</li><li style=\"--c:#f22e9a;--r:2deg\">Emprendimiento</li></ul>",
+      "css": ".ds-campos { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 1rem; } .ds-campos li { font-family: var(--display, 'Luckiest Guy', 'Cabin', sans-serif); font-size: 2rem; text-transform: uppercase; color: var(--marfil, #f7f2e9); background: var(--c); padding: 0.42em 0.6em 0.24em; border-radius: 0.3rem; transform: rotate(var(--r)); transition: transform 0.35s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-campos li:hover { transform: rotate(0deg) translateY(-4px); }"
+    },
+    {
+      "name": "Navegación",
+      "kind": "nav",
+      "refersTo": "",
+      "description": "Enlaces en etiqueta Índigo con subrayado Magenta que crece en hover.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\">Nosotros</a><a href=\"#\">Cronograma</a><a href=\"#\">Aliados</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 2rem; background: var(--marfil, #f7f2e9); padding: 1rem; } .ds-nav a { font-family: var(--texto, 'Cabin', system-ui, sans-serif); color: var(--indigo, #2a1bb4); font-weight: 700; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 0.5rem 0; background: linear-gradient(var(--magenta, #f22e9a), var(--magenta, #f22e9a)) no-repeat 0 100% / 0 3px; transition: background-size 0.3s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)); } .ds-nav a:hover, .ds-nav a:focus-visible { background-size: 100% 3px; outline: none; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "El Chuto en persona",
+    "overview": "La página no presenta al Chuto: lo lleva puesto. El wordmark HATUN JOVEN, con la O oficial del sombrero, es dueño del primer pantallazo a escala de cartel, y las vueltas de tejido de la manga del Chuto hacen de estructura: separan secciones, cierran bloques Índigo y marcan cada fila del cronograma. Todo lo demás es tipo grande sobre una superficie Marfil cálida, con el Índigo cargando estructura y el Magenta reservado para la acción.\n\nLa densidad es de cartel de feria, no de sitio de evento corporativo: titulares en Luckiest Guy a tamaño de grito, texto corrido en Cabin a tamaño cómodo para leer en el celular, pocas piezas por pantalla. El movimiento existe pero es contado: la banda bajo el hero se teje punto a punto al cargar, la cinta de fecha cae a su sitio y las cifras de impacto suben una sola vez. Con `prefers-reduced-motion` todo queda quieto.\n\nLo cultural se usa como personaje y textura, nunca como disfraz: los motivos (rombo, llama, venado, flor, greca) se dibujan punto a punto en una retícula de 8 px, como el tejido real, y no se reinterpretan como iconos ni ornamento vectorial suave. El sistema rechaza la landing de evento estándar: foto con velo, título centrado y fila de tarjetas.",
+    "keyCharacteristics": [
+      "Wordmark a escala de cartel: es el logotipo oficial tal cual (recorte de `hatun_joven_logo.png`), nunca recompuesto con tipografía.",
+      "Bandas tejidas Índigo de 112 px (14 filas de 8 px) como divisor entre secciones.",
+      "Marfil 60 %, Índigo 30 %, Magenta 10 %; Verde solo sobre Índigo.",
+      "Etiquetas y rótulos ligeramente rotados (la cinta del sombrero a −4°).",
+      "Botones en píldora; sombras suaves teñidas de Índigo, nunca negras."
+    ],
+    "rules": [
+      {
+        "name": "The 60/30/10 Rule",
+        "body": "Marfil cubre la superficie, Índigo la estructura y Magenta la acción. Si una pantalla tiene más Magenta que el resto de su acento, algo que no es acción se pintó de acción.",
+        "section": "colors"
+      },
+      {
+        "name": "The Verde-sobre-Índigo Rule",
+        "body": "El Verde (contraste 7.35:1 sobre Índigo, 1.34:1 sobre Marfil) solo aparece sobre fondos Índigo. Nunca como texto ni detalle sobre Marfil.",
+        "section": "colors"
+      },
+      {
+        "name": "The Secundarios-en-el-Tejido Rule",
+        "body": "Amarillo, Lavanda y Rojo viven solo dentro de motivos tejidos. Ningún botón, texto, borde ni fondo de interfaz los usa.",
+        "section": "colors"
+      },
+      {
+        "name": "The Magenta-Grande Rule",
+        "body": "Blanco o Marfil sobre Magenta da 3.3 a 3.7:1: el Magenta lleva texto solo a tamaño grande (24 px normal o 18.66 px bold en adelante), y como color de texto solo a escala de titular.",
+        "section": "colors"
+      },
+      {
+        "name": "The Grita-y-Habla Rule",
+        "body": "Luckiest Guy siempre en mayúsculas, peso 400 y solo para nombres, titulares, cifras y rótulos cortos. Nunca un párrafo en Luckiest Guy; nunca un titular en Cabin.",
+        "section": "typography"
+      },
+      {
+        "name": "The Cifras-Tabulares Rule",
+        "body": "Toda cifra que cambia (cuenta regresiva, contadores, horas) usa `font-variant-numeric: tabular-nums` para no bailar.",
+        "section": "typography"
+      },
+      {
+        "name": "The Banda-no-Hueco Rule",
+        "body": "Entre secciones hay una banda tejida, no un margen vacío. La banda que entra a un bloque Índigo se invierte (fondo Marfil, motivos Índigo y Magenta) para que su borde de puntos se lea contra el Índigo.",
+        "section": "layout"
+      },
+      {
+        "name": "The Sombra-Índigo Rule",
+        "body": "Ninguna sombra es negra ni gris: todas son Índigo Hondo con alfa. Sobre fondos Índigo las sombras se quitan.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Punto-de-8 Rule",
+        "body": "Todo motivo tejido se dibuja en la retícula de 8 px, con bordes nítidos. Nunca esquinas redondeadas, antialias, degradados ni curvas en un motivo.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Inclinación-Contada Rule",
+        "body": "Solo se inclinan rótulos y etiquetas (entre −4° y 3°). El texto corrido, los botones y las secciones van rectos.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "**Do** usar el logotipo oficial como imagen en cada aparición del wordmark sobre Marfil, sin cambiar escala de la O, interlineado ni colores. Sobre Índigo (pie) se usa la variante tipográfica con la O oficial hasta tener el logo en versión para fondo oscuro.",
+      "**Do** separar secciones con una banda tejida de 112 px, e invertirla cuando entra a un bloque Índigo.",
+      "**Do** dibujar todo motivo nuevo como matriz de 10 filas en la retícula de 8 px, con bordes nítidos.",
+      "**Do** reservar el Magenta para la acción: un botón primario por bloque, siempre Inscríbete o su equivalente.",
+      "**Do** teñir toda sombra con Índigo Hondo y quitarla sobre fondos Índigo.",
+      "**Do** dejar quieta toda animación con `prefers-reduced-motion` y no esconder nunca el wordmark (LCP) en su estado inicial."
+    ],
+    "donts": [
+      "**Don't** construir la landing de evento estándar: foto con velo, título centrado y fila de tarjetas.",
+      "**Don't** usar la guinda del brochure ni colores fuera de la paleta del branding.",
+      "**Don't** poner Verde sobre Marfil, ni como texto ni como detalle.",
+      "**Don't** usar Amarillo, Lavanda o Rojo fuera de los motivos tejidos.",
+      "**Don't** escribir párrafos en Luckiest Guy ni titulares en Cabin.",
+      "**Don't** redondear, suavizar o degradar los motivos tejidos, ni convertirlos en iconos de línea.",
+      "**Don't** recomponer el wordmark con Luckiest Guy, agrandar la O ni redibujar el Chuto."
+    ]
+  }
+}

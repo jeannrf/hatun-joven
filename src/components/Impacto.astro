@@ -1,0 +1,102 @@
+---
+import KnitBand from './KnitBand.astro';
+import Manga from './Manga.astro';
+import { impacto } from '../content/home';
+const fmt = (v: number, dec = 0) => v.toFixed(dec);
+---
+<section class="imp" aria-labelledby="imp-t">
+  <KnitBand dir="right" motifs={['greca', 'rombo']} fg="var(--indigo)" bg="var(--marfil)" accents={['var(--indigo)', 'var(--magenta)']} />
+  <div class="imp__body">
+    <div class="wrap imp__grid">
+      <div class="imp__in">
+        <header class="imp__hd">
+          <h2 class="imp__t" id="imp-t"><span class="cinta cinta--claro">{impacto.titulo}</span></h2>
+          <p class="imp__equipo">
+            {impacto.equipo.antes} <strong>{impacto.equipo.destacado}</strong>{impacto.equipo.despues}
+          </p>
+        </header>
+
+        <ul class="imp__cifras">
+          {impacto.cifras.map((c) => (
+            <li>
+              <span class="num d" data-to={c.valor} data-dec={c.decimales ?? 0} data-pre={c.prefijo} data-suf={c.sufijo}>{c.prefijo}{fmt(c.valor, c.decimales)}{c.sufijo}</span>
+              <span class="imp__label d">{c.label}</span>
+              <span class="imp__det">{c.detalle}</span>
+            </li>
+          ))}
+        </ul>
+
+        {impacto.nota && <p class="imp__nota">{impacto.nota}</p>}
+      </div>
+      <div class="imp__manga"><Manga /></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const nums = document.querySelectorAll<HTMLElement>('.num[data-to]');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && 'IntersectionObserver' in window) {
+    const run = (el: HTMLElement) => {
+      const to = +el.dataset.to!, dec = +el.dataset.dec!, pre = el.dataset.pre!, suf = el.dataset.suf!;
+      const t0 = performance.now(), dur = 1400;
+      const step = (t: number) => {
+        const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(2, -10 * p);
+        el.textContent = pre + (to * (p === 1 ? 1 : e)).toFixed(dec) + suf;
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+      if (en.isIntersecting) { run(en.target as HTMLElement); io.unobserve(en.target); }
+    }), { threshold: 0.6 });
+    nums.forEach((n) => io.observe(n));
+  }
+</script>
+
+<style>
+  .imp__body { background: var(--indigo); color: var(--marfil); padding-block: clamp(3.5rem, 7vw, 6rem); }
+  .imp__grid { display: grid; grid-template-columns: minmax(0, 1fr) clamp(12rem, 17vw, 16rem); gap: clamp(2rem, 5vw, 5rem); align-items: center; }
+  .imp__in { display: grid; gap: clamp(2.5rem, 5vw, 4rem); }
+
+  .imp__hd { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.5rem clamp(2rem, 4vw, 3.5rem); align-items: center; }
+  .imp__t { font-size: inherit; }
+  .cinta--claro { background: var(--magenta); color: #fff; box-shadow: none; font-size: clamp(1.5rem, 3vw, 2.5rem); }
+  .imp__equipo { font-size: clamp(1.5rem, 2.6vw, 2.5rem); line-height: 1.3; max-width: 22ch; text-wrap: balance; }
+  .imp__equipo strong { color: var(--verde); }
+
+  /* Tres cifras como vueltas de una misma manga, separadas por costuras de puntos. */
+  .imp__cifras { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .imp__cifras li { position: relative; display: grid; align-content: start; gap: 0.6rem; padding-inline: clamp(1.25rem, 2.5vw, 2.5rem); }
+  .imp__cifras li:first-child { padding-left: 0; }
+  .imp__cifras li + li::before {
+    content: ''; position: absolute; left: 0; top: 0.4rem; bottom: 0.4rem; width: 6px;
+    background: linear-gradient(180deg, transparent 3px, var(--magenta) 3px 9px, transparent 9px) 0 0 / 100% 12px no-repeat space;
+  }
+  .num { color: var(--verde); font-size: clamp(3.75rem, 7.5vw, 7.5rem); line-height: 0.85; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .imp__label { font-size: clamp(1.25rem, 1.9vw, 1.85rem); line-height: 1; color: var(--marfil); }
+  .imp__det { font-size: clamp(1rem, 1.2vw, 1.15rem); line-height: 1.45; max-width: 24ch; }
+  .imp__nota { font-size: 0.95rem; opacity: 0.85; }
+
+  .imp__manga { transform: rotate(2deg); }
+
+  @media (max-width: 1100px) {
+    .imp__hd { grid-template-columns: 1fr; justify-items: start; }
+  }
+  @media (max-width: 900px) {
+    .imp__grid { grid-template-columns: 1fr; }
+    .imp__manga { display: none; }
+  }
+  @media (max-width: 640px) {
+    .imp__cifras { grid-template-columns: 1fr; gap: 1.75rem; }
+    .imp__cifras li { padding: 1.75rem 0 0; }
+    .imp__cifras li:first-child { padding-top: 0; }
+    /* En móvil todo el bloque va centrado. */
+    .imp__hd { justify-items: center; text-align: center; }
+    .imp__equipo { margin-inline: auto; }
+    .imp__cifras li { justify-items: center; text-align: center; }
+    .imp__det { margin-inline: auto; }
+    .imp__cifras li + li::before { left: 0; right: 0; top: 0; bottom: auto; width: auto; height: 6px;
+      background: linear-gradient(90deg, transparent 3px, var(--magenta) 3px 9px, transparent 9px) 0 0 / 12px 100% space no-repeat; }
+  }
+</style>

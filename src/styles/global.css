@@ -1,0 +1,75 @@
+@import '@fontsource/luckiest-guy/latin-400.css';
+@import '@fontsource/cabin/latin-400.css';
+@import '@fontsource/cabin/latin-700.css';
+
+:root {
+  /* Paleta principal (60 / 30 / 10) */
+  --marfil: #f7f2e9;
+  --indigo: #2a1bb4;
+  --magenta: #f22e9a;
+  --verde: #4df234;
+  /* Secundaria: solo dentro de motivos */
+  --amarillo: #f2b705;
+  --lavanda: #9439f0;
+  --rojo: #ee270f;
+
+  --indigo-hondo: #1d1186; /* sombras y hover del índigo */
+  --magenta-hondo: #d01a80;
+  --marfil-hondo: #ece4d4;
+  --error: #a3105f; /* magenta hondo: legible en texto pequeño sobre claro */
+
+  --display: 'Luckiest Guy', 'Cabin', sans-serif;
+  --texto: 'Cabin', system-ui, sans-serif;
+
+  --gutter: clamp(1rem, 4vw, 3.5rem);
+  --ancho: 90rem;
+  --sec: clamp(4.5rem, 10vw, 9rem);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--marfil);
+  color: var(--indigo);
+  font: 400 1.125rem/1.55 var(--texto);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { max-width: 100%; }
+[hidden] { display: none !important; }
+a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 2px; }
+::selection { background: var(--magenta); color: #fff; }
+:focus-visible { outline: 3px solid var(--magenta); outline-offset: 3px; border-radius: 4px; }
+html { scrollbar-color: var(--indigo) var(--marfil-hondo); }
+
+.d { font-family: var(--display); font-weight: 400; line-height: 0.9; letter-spacing: 0.01em; text-transform: uppercase; text-wrap: balance; }
+.wrap { width: min(100% - 2 * var(--gutter), var(--ancho)); margin-inline: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Botones en píldora: Magenta = acción; contorno Índigo = secundaria. */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5em;
+  min-height: 3.5rem; padding: 0.85rem 1.75rem;
+  border-radius: 999px; border: 3px solid transparent;
+  font: 700 1.25rem/1 var(--texto); text-decoration: none; white-space: nowrap;
+  transition: transform 0.25s var(--ease), background-color 0.2s, box-shadow 0.25s var(--ease);
+}
+.btn:active { transform: translateY(1px) scale(0.98); }
+.btn--p { background: var(--magenta); color: #fff; box-shadow: 0 6px 14px -6px rgb(29 17 134 / 0.45); }
+.btn--p:hover { background: var(--magenta-hondo); transform: translateY(-2px); box-shadow: 0 10px 20px -8px rgb(29 17 134 / 0.5); }
+.btn--s { border-color: var(--indigo); color: var(--indigo); }
+.btn--s:hover { background: var(--indigo); color: var(--marfil); }
+.btn--claro { border-color: var(--marfil); color: var(--marfil); }
+.btn--claro:hover { background: var(--marfil); color: var(--indigo); }
+
+/* Cinta del sombrero: franja Índigo rotada que rotula fechas y secciones. */
+.cinta {
+  display: inline-block; white-space: nowrap; background: var(--indigo); color: var(--marfil);
+  font: 400 clamp(1.25rem, 2.4vw, 2.25rem)/1 var(--display); text-transform: uppercase;
+  padding: 0.5em 0.75em 0.32em; border-radius: 0.3rem; transform: rotate(-4deg);
+  box-shadow: 0 8px 20px -10px rgb(29 17 134 / 0.6);
+}
+.cinta em { font-style: normal; color: var(--verde); }

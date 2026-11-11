@@ -1,0 +1,66 @@
+---
+import { nosotros } from '../content/home';
+import Redes from './Redes.astro';
+const colores = ['var(--indigo)', 'var(--magenta)', 'var(--indigo)', 'var(--magenta)', 'var(--indigo)'];
+---
+<section class="nos" id="nosotros" aria-labelledby="nos-t">
+  <div class="wrap nos__in">
+    <h2 class="nos__t d" id="nos-t">{nosotros.titulo.split(/(?<=\.)\s+/).map((f) => <span>{f}</span>)}</h2>
+    <div class="nos__txt">
+      <p>{nosotros.texto}</p>
+      <div class="nos__redes">
+        <p class="nos__sig">Sigue el movimiento</p>
+        <Redes etiquetas />
+      </div>
+    </div>
+
+    <div class="puente">
+      <p class="puente__intro">{nosotros.puenteIntro}</p>
+      <ul class="puente__campos">
+        {nosotros.campos.map((c, i) => (
+          <li class="d" style={`--c:${colores[i]}; --r:${[-2, 1.5, -1, 2, -1.5][i]}deg`}>{c}</li>
+        ))}
+      </ul>
+    </div>
+
+    <p class="lema d" aria-label={nosotros.lema.join(', ')}>
+      {nosotros.lema.map((w, i) => (
+        <>
+          <span>{w}</span>{i < nosotros.lema.length - 1 && <i aria-hidden="true"></i>}
+        </>
+      ))}
+    </p>
+  </div>
+</section>
+
+<style>
+  .nos { padding-block: clamp(5rem, 10vw, 10rem); }
+  .nos__in { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: clamp(1rem, 2vw, 2rem); row-gap: clamp(3rem, 6vw, 5.5rem); }
+  .nos__t { grid-column: 1 / span 7; font-size: clamp(2.5rem, 5.2vw, 5rem); }
+  .nos__t span { display: block; }
+  .nos__redes { margin-top: 1.5rem; display: grid; gap: 0.75rem; font-size: 1rem; }
+  .nos__sig { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .nos__txt { grid-column: 8 / -1; align-self: end; font-size: clamp(1.25rem, 1.9vw, 1.75rem); line-height: 1.4; text-wrap: pretty; }
+
+  /* El puente: los cinco campos como tablones de una sola fila, de borde a borde. */
+  .puente { grid-column: 1 / -1; display: grid; gap: clamp(1.25rem, 2vw, 1.75rem); }
+  .puente__intro { font-size: clamp(1.25rem, 1.8vw, 1.5rem); line-height: 1.4; }
+  .puente__campos { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: clamp(0.5rem, 0.9vw, 0.85rem); }
+  .puente__campos li {
+    flex: 1 1 auto; text-align: center;
+    font-size: clamp(1.5rem, 2.7vw, 2.6rem); color: var(--marfil); background: var(--c);
+    padding: 0.5em 0.55em 0.32em; border-radius: 0.3rem; transform: rotate(var(--r));
+    transition: transform 0.35s var(--ease);
+  }
+  .puente__campos li:hover { transform: rotate(0deg) translateY(-4px); }
+
+  .lema { grid-column: 1 / -1; font-size: clamp(1.5rem, 4.6vw, 4.25rem); color: var(--indigo); display: flex; align-items: center; gap: 0 0.35em; white-space: nowrap; }
+  /* Puntadas que unen las palabras del lema: una fila de puntos de 8 px. */
+  .lema i { flex: 1 1 0; min-width: 0.6rem; height: 8px; margin-top: -0.12em; background: linear-gradient(90deg, transparent 4px, var(--magenta) 4px 12px, transparent 12px) 0 0 / 16px 100% space no-repeat; }
+
+  @media (max-width: 760px) {
+    .nos__t, .nos__txt { grid-column: 1 / -1; }
+    .puente__campos { gap: 0.8rem 0.6rem; }
+    .lema i { height: 6px; background: linear-gradient(90deg, transparent 3px, var(--magenta) 3px 9px, transparent 9px) 0 0 / 12px 100% space no-repeat; }
+  }
+</style>

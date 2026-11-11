@@ -1,0 +1,107 @@
+---
+import KnitBand from './KnitBand.astro';
+import { evento, hero } from '../content/home';
+import { cells } from './motifs';
+
+// Fondo tejido del hero: rombos y flores en Índigo muy tenue, en la retícula de 8 px.
+const g = (m: 'rombo' | 'flor', dx: number, dy: number) =>
+  `<g transform='translate(${dx} ${dy})'>${cells(m).map(([x, y]) => `<rect x='${x * 8}' y='${y * 8}' width='8' height='8'/>`).join('')}</g>`;
+const tejido = `url("data:image/svg+xml,${encodeURIComponent(
+  `<svg xmlns='http://www.w3.org/2000/svg' width='224' height='224' shape-rendering='crispEdges'><g fill='#2A1BB4' fill-opacity='0.075'>${g('rombo', 0, 0)}${g('flor', 112, 112)}</g></svg>`
+)}")`;
+---
+<section class="hero" id="inicio" aria-labelledby="hero-t" style={`--tejido:${tejido}`}>
+  <div class="hero__in wrap">
+    <h1 class="hero__word" id="hero-t">
+      <img src="/img/hatun-joven-wordmark.webp" width="835" height="417" alt="Hatun Joven" fetchpriority="high" decoding="async" />
+    </h1>
+
+    <div class="hero__side">
+      <p class="hero__cinta"><span class="cinta">{evento.fechaCorta} · <em>{evento.ciudad.toUpperCase()}</em></span></p>
+      <p class="hero__bajada">{hero.bajada}</p>
+      <div class="cd" data-cd={evento.fechaISO} aria-live="off">
+        <p class="cd__label">Faltan</p>
+        <dl class="cd__grid">
+          <div><dt>días</dt><dd data-u="d">–</dd></div>
+          <div><dt>horas</dt><dd data-u="h">–</dd></div>
+          <div><dt>min</dt><dd data-u="m">–</dd></div>
+        </dl>
+        <p class="cd__hoy d" hidden>¡Hoy es Hatun Joven!</p>
+      </div>
+      <p class="hero__lugar">{evento.lugar}, {evento.ciudad}</p>
+      <div class="hero__ctas">
+        <a class="btn btn--p" href={hero.ctaPrimario.href} data-modal={hero.ctaPrimario.modal}>{hero.ctaPrimario.label}</a>
+        <a class="btn btn--s" href={hero.ctaSecundario.href} data-modal={hero.ctaSecundario.modal}>{hero.ctaSecundario.label}</a>
+      </div>
+    </div>
+  </div>
+  <KnitBand weave motifs={['rombo', 'llama', 'flor', 'venado']} accents={['var(--marfil)', 'var(--amarillo)', 'var(--verde)', 'var(--marfil)']} />
+</section>
+
+<script>
+  const el = document.querySelector<HTMLElement>('[data-cd]');
+  if (el) {
+    const target = new Date(el.dataset.cd!).getTime();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const tick = () => {
+      const ms = target - Date.now();
+      if (ms <= 0) {
+        el.querySelector('.cd__grid')!.setAttribute('hidden', '');
+        el.querySelector('.cd__label')!.setAttribute('hidden', '');
+        el.querySelector('.cd__hoy')!.removeAttribute('hidden');
+        return;
+      }
+      const m = Math.floor(ms / 60000);
+      el.querySelector('[data-u=d]')!.textContent = String(Math.floor(m / 1440));
+      el.querySelector('[data-u=h]')!.textContent = pad(Math.floor((m % 1440) / 60));
+      el.querySelector('[data-u=m]')!.textContent = pad(m % 60);
+      setTimeout(tick, 60000 - (Date.now() % 60000));
+    };
+    tick();
+  }
+</script>
+
+<style>
+  .hero { position: relative; padding-top: clamp(3rem, 7vw, 7.5rem); isolation: isolate; }
+  /* Tejido de fondo: se desvanece hacia el logo y el texto para no competir con ellos. */
+  .hero::before {
+    content: ''; position: absolute; inset: 0 0 var(--knit-h, 112px); z-index: -1;
+    background: var(--tejido) 24px 16px / 224px 224px repeat;
+    -webkit-mask-image: radial-gradient(ellipse 70% 75% at 42% 50%, transparent 25%, #000 80%);
+            mask-image: radial-gradient(ellipse 70% 75% at 42% 50%, transparent 25%, #000 80%);
+  }
+  .hero__in {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(20rem, 30rem);
+    grid-template-areas: "word side";
+    column-gap: clamp(2rem, 4vw, 4rem); align-items: start;
+    padding-bottom: clamp(2rem, 3.5vw, 3.5rem); position: relative;
+  }
+  .hero__word { grid-area: word; margin-left: -1.4%; }
+  .hero__word img { display: block; width: 100%; max-width: 62rem; height: auto; }
+  .hero__cinta { margin-bottom: 0.5rem; }
+  .hero__side { grid-area: side; align-self: center; display: grid; gap: clamp(1.25rem, 2vw, 1.75rem); }
+  .hero__bajada { font-size: clamp(1.25rem, 1.75vw, 1.75rem); line-height: 1.38; max-width: 28ch; text-wrap: balance; }
+  .hero__cinta .cinta { font-size: clamp(1.5rem, 2.6vw, 2.5rem); }
+  .hero__lugar { font-weight: 700; font-size: clamp(1.1rem, 1.3vw, 1.3rem); }
+  .hero__ctas .btn { font-size: clamp(1.25rem, 1.5vw, 1.45rem); min-height: clamp(3.5rem, 4.2vw, 4.25rem); padding-inline: clamp(1.75rem, 2.2vw, 2.25rem); }
+  .hero__ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+  .cd { display: grid; gap: 0.4rem; }
+  .cd__label { font-weight: 700; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .cd__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; max-width: 26rem; }
+  .cd__grid div { display: flex; flex-direction: column-reverse; align-items: center; background: var(--indigo); color: var(--marfil); border-radius: 0.6rem; padding: 0.9rem 0.4rem 0.65rem; }
+  .cd__grid dd { font: 400 clamp(2.5rem, 3.4vw, 3.5rem)/1 var(--display); color: var(--verde); font-variant-numeric: tabular-nums; }
+  .cd__grid dt { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.3rem; }
+  .cd__hoy { font-size: 2rem; color: var(--magenta); }
+
+  /* La cinta cae sobre la columna; el wordmark (LCP) nunca arranca oculto. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__cinta .cinta { animation: cinta 0.7s var(--ease) 0.45s both; }
+    @keyframes cinta { from { transform: rotate(-16deg) translateY(-1.2em) scale(1.1); opacity: 0.001; } }
+  }
+
+  @media (max-width: 960px) {
+    .hero__in { grid-template-columns: 1fr; grid-template-areas: "word" "side"; row-gap: 1.75rem; }
+    .hero__bajada { max-width: 34ch; }
+  }
+</style>

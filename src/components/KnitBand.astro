@@ -1,0 +1,92 @@
+---
+// Banda tejida: una vuelta de la manga del Chuto. Se repite en todo el ancho
+// con un <pattern> SVG, así pesa lo mismo a 360 px que a 1440 px.
+import { cells, width, type Motif } from './motifs';
+
+interface Props {
+  motifs?: Motif[];
+  fg?: string;
+  bg?: string;
+  accents?: string[];
+  cell?: number;
+  weave?: boolean;
+  /** Sentido del carrusel: 'left' (por defecto) o 'right'. */
+  dir?: 'left' | 'right';
+  /** Segundos por módulo del patrón. */
+  speed?: number;
+  class?: string;
+}
+const {
+  motifs = ['rombo', 'llama', 'rombo', 'venado'],
+  fg = 'var(--marfil)',
+  bg = 'var(--indigo)',
+  accents = [],
+  cell = 8,
+  weave = false,
+  dir = 'left',
+  speed,
+  class: className = '',
+} = Astro.props;
+
+const gap = 3;
+const pad = 2;
+const rows = 10 + pad * 2;
+let x = gap;
+const placed = motifs.map((m, i) => {
+  const at = x;
+  x += width(m) + gap;
+  return { m, at, color: accents.length ? accents[i % accents.length] : fg };
+});
+const tileW = x;
+const tilePx = tileW * cell;
+const dur = speed ?? tilePx / 40; // ~40 px/s
+const id = `knit-${Math.random().toString(36).slice(2, 8)}`;
+---
+<div class:list={['knit', { 'knit--weave': weave, 'knit--right': dir === 'right' }, className]} aria-hidden="true" style={`--knit-h:${rows * cell}px; --tile:${tilePx}px; --dur:${dur}s`}>
+  <div class="knit__track">
+  <svg width="100%" height={rows * cell} xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+    <defs>
+      <pattern id={id} width={tileW * cell} height={rows * cell} patternUnits="userSpaceOnUse">
+        <rect width={tileW * cell} height={rows * cell} fill={bg} />
+        {Array.from({ length: Math.ceil(tileW / 2) }, (_, i) => (
+          <>
+            <rect x={i * 2 * cell} y="0" width={cell} height={cell} fill={fg} />
+            <rect x={(i * 2 + 1) * cell} y={(rows - 1) * cell} width={cell} height={cell} fill={fg} />
+          </>
+        ))}
+        {placed.map(({ m, at, color }) => (
+          <g fill={color}>
+            {cells(m).map(([cx, cy]) => (
+              <rect x={(at + cx) * cell} y={(pad + cy) * cell} width={cell} height={cell} />
+            ))}
+          </g>
+        ))}
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill={`url(#${id})`} />
+  </svg>
+  </div>
+</div>
+
+<style>
+  .knit { display: block; width: 100%; height: var(--knit-h); line-height: 0; overflow: hidden; }
+  /* La pista es un módulo más ancha que la banda; al correr un módulo, el patrón coincide y el bucle no se nota. */
+  .knit__track { width: calc(100% + var(--tile)); height: 100%; }
+  .knit svg { display: block; }
+  @media (prefers-reduced-motion: no-preference) {
+    .knit__track { animation: correr var(--dur) linear infinite; will-change: transform; }
+    .knit--right .knit__track { animation-direction: reverse; }
+  }
+  @keyframes correr {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(calc(-1 * var(--tile)), 0, 0); }
+  }
+  /* Se teje al entrar: barrido por columnas, en pasos de punto. */
+  @media (prefers-reduced-motion: no-preference) {
+    .knit--weave .knit__track > svg { animation: tejer 1.4s steps(36, end) 0.35s both; }
+  }
+  @keyframes tejer {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+</style>

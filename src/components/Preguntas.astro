@@ -1,0 +1,67 @@
+---
+// RF-14 (#preguntas): acordeón nativo, una respuesta abierta a la vez (atributo name).
+// Contacto (RF-11/RF-13): solo se muestra lo que el equipo haya completado en home.ts.
+import { preguntas, contacto } from '../content/home';
+const hayContacto = contacto.correo || contacto.whatsapp || contacto.redes.length > 0;
+---
+<section class="faq" id="preguntas" aria-labelledby="faq-t">
+  <div class="wrap faq__in">
+    <h2 class="faq__t d" id="faq-t">{preguntas.titulo}</h2>
+    <div class="faq__lista">
+      {preguntas.items.map((it, i) => (
+        <details name="faq" open={i === 0}>
+          <summary>
+            <span class="d">{it.p}</span>
+            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+          </summary>
+          <p>{it.r}</p>
+        </details>
+      ))}
+
+      {hayContacto && (
+        <div class="faq__contacto">
+          <p class="d">¿Otra pregunta? Escríbenos</p>
+          <ul>
+            {contacto.whatsapp && <li><a href={`https://wa.me/${contacto.whatsapp}`} target="_blank" rel="noopener">WhatsApp</a></li>}
+            {contacto.correo && <li><a href={`mailto:${contacto.correo}`}>{contacto.correo}</a></li>}
+            {contacto.redes.map((r) => <li><a href={r.url} target="_blank" rel="noopener">{r.nombre}</a></li>)}
+          </ul>
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+{contacto.whatsapp && (
+  <a class="wsp" href={`https://wa.me/${contacto.whatsapp}`} target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+    <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.2.1.7-.1 1.3Z"/></svg>
+  </a>
+)}
+
+<style>
+  .faq { padding-block: clamp(5rem, 10vw, 9rem); }
+  .faq__in { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  .faq__t { font-size: clamp(2.75rem, 5.5vw, 5rem); position: sticky; top: 7rem; }
+  .faq__lista { border-top: 4px solid var(--indigo); }
+
+  details { border-bottom: 2px dashed rgb(42 27 180 / 0.35); }
+  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; padding: 1.4rem 0.25rem; }
+  summary::-webkit-details-marker { display: none; }
+  summary .d { font-size: clamp(1.3rem, 2vw, 1.85rem); line-height: 1.05; }
+  summary svg { flex: none; color: var(--magenta); transition: transform 0.3s var(--ease); }
+  details[open] summary svg { transform: rotate(45deg); }
+  summary:hover .d { color: var(--magenta-hondo); }
+  details p { font-size: clamp(1.1rem, 1.4vw, 1.25rem); line-height: 1.55; max-width: 60ch; padding: 0 0.25rem 1.5rem; }
+
+  .faq__contacto { margin-top: 2rem; display: grid; gap: 0.75rem; }
+  .faq__contacto .d { font-size: 1.5rem; }
+  .faq__contacto ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-weight: 700; }
+
+  .wsp { position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 40; width: 3.75rem; height: 3.75rem; border-radius: 50%; display: grid; place-items: center; background: var(--verde); color: var(--indigo); box-shadow: 0 10px 24px -10px rgb(10 5 60 / 0.6); transition: transform 0.3s var(--ease); }
+  .wsp:hover { transform: scale(1.08); }
+
+  @media (max-width: 860px) {
+    .faq__in { grid-template-columns: 1fr; }
+    .faq__t { position: static; }
+  }
+</style>

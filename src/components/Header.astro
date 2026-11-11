@@ -1,0 +1,74 @@
+---
+import { nav, hero } from '../content/home';
+---
+<header class="hd">
+  <div class="hd__in wrap">
+    <a href="#inicio" class="hd__logo d" aria-label="Hatun Joven, inicio">
+      <img src="/img/hatun-joven-wordmark-sm.webp" width="278" height="139" alt="" />
+    </a>
+    <nav aria-label="Principal" class="hd__nav" id="menu">
+      <ul>
+        {nav.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+      <a class="btn btn--p hd__cta-m" href={hero.ctaPrimario.href} data-modal={hero.ctaPrimario.modal}>{hero.ctaPrimario.label}</a>
+    </nav>
+    <a class="btn btn--p hd__cta" href={hero.ctaPrimario.href} data-modal={hero.ctaPrimario.modal}>{hero.ctaPrimario.label}</a>
+    <button class="hd__burger" aria-expanded="false" aria-controls="menu">
+      <span class="sr-only">Abrir menú</span>
+      <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.hd__burger')!;
+  const hd = document.querySelector('.hd')!;
+  const toggle = (open: boolean) => {
+    hd.classList.toggle('is-open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.querySelector('.sr-only')!.textContent = open ? 'Cerrar menú' : 'Abrir menú';
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  btn.addEventListener('click', () => toggle(!hd.classList.contains('is-open')));
+  hd.querySelectorAll('.hd__nav a').forEach((a) => a.addEventListener('click', () => toggle(false)));
+  addEventListener('keydown', (e) => e.key === 'Escape' && toggle(false));
+  // El logo siempre vuelve al tope exacto de la página.
+  hd.querySelector<HTMLAnchorElement>('.hd__logo')!.addEventListener('click', (e) => {
+    e.preventDefault();
+    toggle(false);
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    history.replaceState(null, '', location.pathname + location.search);
+  });
+  const onScroll = () => hd.classList.toggle('is-scrolled', scrollY > 24);
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+</script>
+
+<style>
+  .hd { position: sticky; top: 0; z-index: 50; background: var(--marfil); transition: box-shadow 0.3s var(--ease); }
+  .hd.is-scrolled { box-shadow: 0 10px 24px -18px rgb(29 17 134 / 0.5); }
+  .hd__in { display: flex; align-items: center; gap: 1.5rem; min-height: 4.75rem; }
+  .hd__logo { margin-right: auto; display: block; }
+  .hd__logo img { display: block; height: 3.25rem; width: auto; }
+  .hd__nav ul { display: flex; gap: clamp(1rem, 2vw, 2rem); list-style: none; padding: 0; }
+  .hd__nav a:not(.btn) { font-weight: 700; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 0.5rem 0; background: linear-gradient(var(--magenta), var(--magenta)) no-repeat 0 100% / 0 3px; transition: background-size 0.3s var(--ease); }
+  .hd__nav a:not(.btn):hover { background-size: 100% 3px; }
+  .hd__cta { min-height: 3rem; padding: 0.6rem 1.35rem; font-size: 1.2rem; }
+  .hd__cta-m, .hd__burger { display: none; }
+
+  @media (max-width: 960px) {
+    .hd__cta { display: none; }
+    .hd__burger { display: grid; place-items: center; width: 3rem; height: 3rem; border: 0; border-radius: 50%; background: var(--indigo); color: var(--marfil); cursor: pointer; position: relative; z-index: 2; }
+    .hd__nav {
+      position: fixed; inset: 0; z-index: 1; background: var(--indigo); color: var(--marfil);
+      display: flex; flex-direction: column; justify-content: center; gap: 2.5rem; padding: 6rem var(--gutter) 3rem;
+      clip-path: circle(0 at calc(100% - 2.5rem) 2.4rem); visibility: hidden;
+      transition: clip-path 0.5s var(--ease), visibility 0s 0.5s;
+    }
+    .is-open .hd__nav { clip-path: circle(150% at calc(100% - 2.5rem) 2.4rem); visibility: visible; transition: clip-path 0.6s var(--ease); }
+    .is-open .hd__burger { background: var(--magenta); }
+    .hd__nav ul { flex-direction: column; gap: 0.5rem; }
+    .hd__nav a:not(.btn) { font: 400 clamp(2.5rem, 11vw, 3.5rem)/1.1 var(--display); letter-spacing: 0.01em; text-transform: none; }
+    .hd__cta-m { display: inline-flex; align-self: flex-start; }
+  }
+</style>

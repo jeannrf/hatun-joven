@@ -1,0 +1,23 @@
+---
+// La O del Chuto: archivo oficial hj_letra_o_logo.png (recortado y en WebP).
+interface Props { class?: string; eager?: boolean }
+const { class: className = '', eager = false } = Astro.props;
+---
+<img
+  class:list={['letra-o', className]}
+  src="/img/hj-letra-o.webp"
+  width="640" height="637"
+  alt="O"
+  loading={eager ? 'eager' : 'lazy'}
+  fetchpriority={eager ? 'high' : 'auto'}
+  decoding="async"
+/>
+<style>
+  .letra-o {
+    display: inline-block;
+    height: 1.22em; width: auto;
+    vertical-align: -0.06em;
+    margin: -0.34em -0.17em 0 -0.15em;
+    position: relative; z-index: 1;
+  }
+</style>
