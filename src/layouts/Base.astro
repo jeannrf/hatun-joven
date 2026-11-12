@@ -57,7 +57,7 @@ const eventoLD = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={og} />
 
-    <link rel="preload" href="/img/hatun-joven-wordmark.webp" as="image" type="image/webp" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/webp" fetchpriority="high" href="/img/hatun-joven-wordmark.webp" imagesrcset="/img/hatun-joven-wordmark-480.webp 480w, /img/hatun-joven-wordmark.webp 835w" imagesizes="(max-width: 960px) calc(100vw - 2rem), min(62rem, 60vw)" />
     <script type="application/ld+json" set:html={JSON.stringify(eventoLD)} />
   </head>
   <body>

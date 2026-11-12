@@ -31,7 +31,7 @@ Región: **`southamerica-west1` (Santiago)**.
 
 | Colección | Campos |
 | --- | --- |
-| `inscripciones` | `nombres`, `apellidoPaterno`, `apellidoMaterno`, `edad` (14–35), `colegio`, `celular`, `consentimiento`, `creado` |
+| `inscripciones` | `nombres`, `apellidoPaterno`, `apellidoMaterno`, `edad` (entero 1–120), `colegio`, `celular`, `consentimiento`, `creado` |
 | `aliados` | `tipo` (`sponsor` \| `comunidad`), `organizacion`, `contacto`, `cargo`?, `correo`, `celular`, `mensaje`?, `consentimiento`, `creado` |
 
 `creado` lo pone el servidor (`serverTimestamp`).
@@ -40,7 +40,7 @@ Región: **`southamerica-west1` (Santiago)**.
 
 | Quién | Puede |
 | --- | --- |
-| Cualquier visitante | **Crear** registros, solo con los campos permitidos, largos válidos, edad 14–35 y consentimiento |
+| Cualquier visitante | **Crear** registros, solo con los campos permitidos, largos válidos, edad válida (1–120) y consentimiento |
 | Cuenta del panel (`admin@hatun-joven.web.app`) | **Leer y borrar** registros |
 | Nadie | Editar registros, ni leer o escribir otras colecciones |
 

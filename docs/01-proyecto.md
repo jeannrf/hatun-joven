@@ -30,7 +30,7 @@ Se abren en ventanas (modales), no están en la página:
 | Postula como sponsor | Botones «Sé aliado» y tarjeta Sponsor | Firestore → `aliados` (`tipo: sponsor`) |
 | ¿Quieres ser comunidad aliada? | Enlace del cierre y tarjeta Comunidad | Firestore → `aliados` (`tipo: comunidad`) |
 
-La inscripción pide nombres, apellido paterno, apellido materno, edad (desde 14 años), colegio, celular y la aceptación de tratamiento de datos (Ley N.º 29733).
+La inscripción pide nombres, apellido paterno, apellido materno, edad (se acepta cualquiera; el público objetivo es de 14 a 20 años), colegio, celular y la aceptación de tratamiento de datos (Ley N.º 29733).
 
 ## Estado actual
 
@@ -41,7 +41,7 @@ Publicado y funcionando: todas las secciones de arriba, los tres formularios gua
 - **Identidad:** fondo Marfil, logo oficial tal cual (nunca recompuesto con tipografía), Luckiest Guy + Cabin, bandas tejidas con motivos de las mangas del Chuto.
 - **No se nombran organizaciones aliadas ni entidades del gobierno** en la web (entrarán sponsors nuevos).
 - **No se promete stand** a quienes postulan como aliados.
-- **Edad mínima de inscripción: 14 años** (desde esa edad la persona consiente por sí misma).
+- **Público objetivo: 14 a 20 años.** El formulario acepta cualquier edad y el equipo filtra en `/admin`.
 - **El evento es gratuito.**
 - **Sin captcha** por decisión del equipo.
 - Los **paquetes para sponsors** se presentan en un PPT aparte, no en la web.

@@ -35,7 +35,7 @@
 
 | Perfil | Qué busca en la página | Acción esperada |
 | --- | --- | --- |
-| Jóvenes de 15 a 20 años de Jauja (34 distritos, 89 comunidades campesinas) | Qué es el evento, cronograma, cómo llegar | Inscribirse |
+| Jóvenes de 14 a 20 años de Jauja (34 distritos, 89 comunidades campesinas) | Qué es el evento, cronograma, cómo llegar | Inscribirse |
 | Padres, colegios y docentes | Confianza: quién organiza, trayectoria | Compartir / autorizar |
 | Organizaciones, universidades y empresas | Alcance, métricas, paquetes de alianza | Postular como aliado |
 | Comunidades estudiantiles (Lima y Junín) | Cómo co-organizar o tener stand | Contactar |
@@ -99,7 +99,7 @@ La landing tiene 12 bloques (header, 10 secciones y footer) en una sola página,
 | 1 | Hero (#inicio) | "HATUN JOVEN" + "Un movimiento de Liderazgo e Impacto Social Juvenil en la Primera Capital Histórica del Perú"; fecha 6 de marzo de 2027 · Jauja; cuenta regresiva; foto del valle o de Jauja con tratamiento Índigo | "Inscríbete" y "Sé aliado" |
 | 2 | Quiénes somos (#nosotros) | Texto "Somos un movimiento de jóvenes migrantes jaujinos…"; objetivo: puente entre juventud rural y oportunidades en tecnología, emprendimiento, activismo, ciencia y sociedad | — |
 | 3 | Nuestro impacto | Contadores animados: +25 eventos (hackathons, congresos, ponencias), 4.8k asistentes, +30 organizaciones (BCRP, Municipalidad de Lima). Tracción: 20 miembros en Lima y 7 en Jauja | — |
-| 4 | Buscamos impactar en | +350 jóvenes de 15 a 20 años, 89 comunidades campesinas y centros poblados, 34 distritos (toda la provincia de Jauja) | — |
+| 4 | Buscamos impactar en | +350 jóvenes de 14 a 20 años, 89 comunidades campesinas y centros poblados, 34 distritos (toda la provincia de Jauja) | — |
 | 5 | El evento (#evento) | Lugar: Auditorio IEP Pitágoras, Jauja; fecha; mapa embebido; espacios: Zona 1 Auditorio (4.º piso, 400 personas, keynotes, paneles, pitching) y Zona 2 Feria de agrupaciones (15+ stands) | "Cómo llegar" |
 | 6 | Cronograma (#cronograma) | 8 bloques de 8:30 a 17:00 (ver tabla abajo) | "Inscríbete" |
 | 7 | Coorganizadores | Mantaro Valley, Rebirth, UNICODE, LEAD UPC: logo + una línea cada uno | Enlace a la web/red de cada uno |

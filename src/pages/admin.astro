@@ -42,6 +42,7 @@ import '../styles/global.css';
           <li><span class="resumen__n d" data-n="sponsor">–</span><span>Sponsors</span></li>
           <li><span class="resumen__n d" data-n="comunidad">–</span><span>Comunidades</span></li>
           <li><span class="resumen__n d" data-n="semana">–</span><span>Registros en los últimos 7 días</span></li>
+          <li><span class="resumen__n d" data-n="fuera">–</span><span>Inscritos fuera de 14 a 20 años</span></li>
         </ul>
 
         <div class="controles">
@@ -51,6 +52,14 @@ import '../styles/global.css';
             <button role="tab" aria-selected="false" data-vista="comunidad">Comunidades</button>
           </div>
           <div class="acciones">
+            <label class="filtro-edad" id="filtro-edad-wrap">
+              <span class="sr-only">Filtrar por edad</span>
+              <select id="filtro-edad">
+                <option value="todas">Todas las edades</option>
+                <option value="rango">De 14 a 20 años</option>
+                <option value="fuera">Fuera de 14 a 20</option>
+              </select>
+            </label>
             <label class="buscar">
               <span class="sr-only">Buscar</span>
               <input type="search" id="buscar" placeholder="Buscar por nombre, colegio, organización…" />
@@ -108,6 +117,17 @@ import '../styles/global.css';
       };
       columnas.comunidad = columnas.sponsor;
 
+      // Público objetivo: 14 a 20 años. Se aceptan todas las edades y el equipo filtra aquí.
+      const enRango = (r: Registro) => Number(r.edad) >= 14 && Number(r.edad) <= 20;
+      function visibles(): Registro[] {
+        const q = ($('#buscar') as HTMLInputElement).value.trim().toLowerCase();
+        const f = ($('#filtro-edad') as HTMLSelectElement).value;
+        const cols = columnas[vista];
+        return filas()
+          .filter((r) => vista !== 'inscripciones' || f === 'todas' || (f === 'rango' ? enRango(r) : !enRango(r)))
+          .filter((r) => !q || cols.some((c) => c.v(r).toLowerCase().includes(q)));
+      }
+
       const filas = (): Registro[] =>
         vista === 'inscripciones' ? datos.inscripciones : datos.aliados.filter((a) => a.tipo === vista);
 
@@ -115,7 +135,8 @@ import '../styles/global.css';
       function pintar() {
         const q = ($('#buscar') as HTMLInputElement).value.trim().toLowerCase();
         const cols = columnas[vista];
-        const lista = filas().filter((r) => !q || cols.some((c) => c.v(r).toLowerCase().includes(q)));
+        const lista = visibles();
+        ($('#filtro-edad-wrap') as HTMLElement).hidden = vista !== 'inscripciones';
 
         const thead = $('#tabla thead'), tbody = $('#tabla tbody');
         thead.replaceChildren(); tbody.replaceChildren();
@@ -125,6 +146,7 @@ import '../styles/global.css';
 
         for (const r of lista) {
           const tr = document.createElement('tr');
+          if (vista === 'inscripciones' && !enRango(r)) { tr.className = 'fuera-rango'; tr.title = 'Fuera del rango de 14 a 20 años'; }
           for (const c of cols) {
             const td = document.createElement('td');
             const val = c.v(r);
@@ -145,7 +167,8 @@ import '../styles/global.css';
           tbody.append(tr);
         }
         $('#vacio').hidden = lista.length > 0;
-        estado.textContent = q ? `${lista.length} resultado(s) para «${q}».` : '';
+        const filtrando = q || (vista === 'inscripciones' && ($('#filtro-edad') as HTMLSelectElement).value !== 'todas');
+        estado.textContent = filtrando ? `Mostrando ${lista.length} de ${filas().length}.` : '';
       }
 
       function resumen() {
@@ -156,6 +179,7 @@ import '../styles/global.css';
         n('sponsor', datos.aliados.filter((a) => a.tipo === 'sponsor').length);
         n('comunidad', datos.aliados.filter((a) => a.tipo === 'comunidad').length);
         n('semana', todos.filter((r) => r.creado && r.creado.getTime() >= semana).length);
+        n('fuera', datos.inscripciones.filter((r) => !enRango(r)).length);
       }
 
       async function cargar() {
@@ -185,7 +209,7 @@ import '../styles/global.css';
       function exportar() {
         const cols = columnas[vista];
         const esc = (s: string) => `"${s.replace(/"/g, '""')}"`;
-        const lineas = [cols.map((c) => esc(c.t)).join(';'), ...filas().map((r) => cols.map((c) => esc(c.v(r))).join(';'))];
+        const lineas = [cols.map((c) => esc(c.t)).join(';'), ...visibles().map((r) => cols.map((c) => esc(c.v(r))).join(';'))];
         const blob = new Blob(['﻿' + lineas.join('\r\n')], { type: 'text/csv;charset=utf-8' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
@@ -201,6 +225,7 @@ import '../styles/global.css';
           pintar();
         }));
       $('#buscar').addEventListener('input', pintar);
+      $('#filtro-edad').addEventListener('change', pintar);
       $('#recargar').addEventListener('click', cargar);
       $('#exportar').addEventListener('click', exportar);
       $('#salir').addEventListener('click', () => salir());
@@ -245,7 +270,7 @@ import '../styles/global.css';
       .barra__salir { font: 700 0.95rem var(--texto); color: var(--indigo); background: var(--marfil); border: 0; border-radius: 999px; padding: 0.5rem 1rem; cursor: pointer; }
 
       .contenido { width: min(100% - 2rem, 90rem); margin: 2rem auto 4rem; display: grid; gap: 1.5rem; }
-      .resumen { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+      .resumen { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1rem; }
       .resumen li { display: grid; gap: 0.25rem; padding: 1.1rem 1.25rem; background: #fffdf8; border: 2px solid rgb(42 27 180 / 0.25); border-radius: 0.8rem; font-weight: 700; font-size: 0.95rem; }
       .resumen__n { font-size: 2.5rem; line-height: 1; color: var(--magenta); font-variant-numeric: tabular-nums; }
 
@@ -254,6 +279,9 @@ import '../styles/global.css';
       .tabs button { font: 700 0.95rem var(--texto); color: var(--indigo); background: none; border: 0; border-radius: 999px; padding: 0.55rem 1.1rem; cursor: pointer; }
       .tabs button[aria-selected='true'] { background: var(--indigo); color: var(--marfil); }
       .acciones { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+      .filtro-edad select { font: 700 0.95rem var(--texto); color: var(--indigo); padding: 0.55rem 0.9rem; border: 2px solid rgb(42 27 180 / 0.35); border-radius: 999px; background: #fffdf8; }
+      .tabla tr.fuera-rango td:nth-child(3) { color: var(--error); font-weight: 700; }
+      .tabla tr.fuera-rango td:nth-child(3)::after { content: ' · fuera de rango'; font-weight: 400; font-size: 0.85em; }
       .buscar input { font: 0.98rem var(--texto); color: var(--indigo); width: min(80vw, 22rem); padding: 0.6rem 0.9rem; border: 2px solid rgb(42 27 180 / 0.35); border-radius: 999px; background: #fffdf8; }
       .btn-mini { font: 700 0.95rem var(--texto); color: var(--indigo); background: #fffdf8; border: 2px solid var(--indigo); border-radius: 999px; padding: 0.55rem 1rem; cursor: pointer; }
       .btn-mini--p { background: var(--magenta); border-color: var(--magenta); color: #fff; }
