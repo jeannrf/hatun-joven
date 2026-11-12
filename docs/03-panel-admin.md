@@ -9,7 +9,7 @@
 - **Pestañas:** Inscripciones, Sponsors y Comunidades.
 - **Buscar** por nombre, colegio, organización, celular o correo.
 - **Contactar:** el celular abre WhatsApp y el correo abre un mensaje nuevo.
-- **Exportar a Excel:** descarga la pestaña actual en `.csv` (separado por `;`, se abre bien en Excel en español).
+- **Exportar a Excel:** descarga lo que se ve en pantalla (pestaña, filtro y búsqueda) en `.csv` (separado por `;`, se abre bien en Excel en español).
 - **Borrar** un registro (pide confirmación y no se puede deshacer).
 - **Actualizar** para traer los registros más nuevos, y **Salir** para cerrar la sesión.
 
@@ -24,3 +24,12 @@ Ese correo es solo un identificador interno: no es un buzón real y nadie lo esc
 ## Datos personales
 
 Los registros incluyen datos de menores de edad. Solo deben verlos las personas del equipo que los necesiten, y los archivos exportados no deben compartirse fuera del equipo.
+
+## Edades
+
+El formulario acepta **cualquier edad**; el público objetivo es de **14 a 20 años**. En la pestaña Inscripciones:
+
+- El filtro **«De 14 a 20 años» / «Fuera de 14 a 20»** muestra solo esas filas.
+- Las edades fuera del rango aparecen en rojo con la nota «fuera de rango».
+- El resumen cuenta cuántos inscritos están fuera del rango.
+- **Exportar a Excel** descarga exactamente lo que se ve (con filtro y búsqueda aplicados).

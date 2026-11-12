@@ -12,7 +12,7 @@ service cloud.firestore {
       return request.auth != null && request.auth.token.email == 'admin@hatun-joven.web.app';
     }
 
-    // RF-04: inscripción de participantes (desde 14 años: consentimiento propio, Ley 29733).
+    // RF-04: inscripción de participantes. Se acepta cualquier edad; el equipo filtra en /admin (rango objetivo: 14 a 20).
     match /inscripciones/{id} {
       allow create: if request.resource.data.keys().hasOnly([
             'nombres', 'apellidoPaterno', 'apellidoMaterno', 'edad', 'colegio', 'celular', 'consentimiento', 'creado'])
@@ -20,7 +20,7 @@ service cloud.firestore {
         && texto(request.resource.data.apellidoPaterno, 60)
         && texto(request.resource.data.apellidoMaterno, 60)
         && request.resource.data.edad is int
-        && request.resource.data.edad >= 14 && request.resource.data.edad <= 35
+        && request.resource.data.edad >= 1 && request.resource.data.edad <= 120
         && texto(request.resource.data.colegio, 120)
         && texto(request.resource.data.celular, 20)
         && request.resource.data.consentimiento == true

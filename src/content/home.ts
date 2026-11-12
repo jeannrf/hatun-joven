@@ -110,7 +110,7 @@ export const aliados = {
   titulo: 'Llega a la juventud de Jauja',
   bajada: 'Hatun Joven reúne en un solo día a jóvenes de toda la provincia. Esta es nuestra meta para el 6 de marzo:',
   metas: [
-    { valor: '+350', texto: 'jóvenes de 15 a 20 años' },
+    { valor: '+350', texto: 'jóvenes de 14 a 20 años' },
     { valor: '89', texto: 'comunidades campesinas y centros poblados' },
     { valor: '34', texto: 'distritos: toda la provincia de Jauja' },
   ],
@@ -125,7 +125,7 @@ export const aliados = {
 export const preguntas = {
   titulo: 'Preguntas frecuentes',
   items: [
-    { p: '¿Quién puede ir?', r: 'Cualquier joven desde los 14 años, de cualquiera de los 34 distritos de la provincia de Jauja. No importa si eres de la ciudad o de una comunidad.' },
+    { p: '¿Quién puede ir?', r: 'Jóvenes de 14 a 20 años, de cualquiera de los 34 distritos de la provincia de Jauja. No importa si eres de la ciudad o de una comunidad.' },
     { p: '¿Cuánto cuesta?', r: 'Nada, es gratis. Solo tienes que inscribirte.' },
     { p: '¿Necesito saber de tecnología o emprendimiento?', r: 'No. Vienes a conocer: vas a escuchar a jóvenes que salieron de Jauja a estudiar y trabajar, y a descubrir oportunidades en tecnología, emprendimiento, activismo, ciencia y sociedad.' },
     { p: '¿Qué voy a hacer ese día?', r: 'Escucharás charlas y paneles en el auditorio y recorrerás todos los stands de la feria de agrupaciones juveniles. El detalle por hora está en el cronograma.' },

@@ -34,7 +34,7 @@ const cerrar = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="tru
       </div>
       <div class="campo">
         <label for="i-edad">Edad</label>
-        <input id="i-edad" name="edad" type="number" inputmode="numeric" min="14" max="35" required />
+        <input id="i-edad" name="edad" type="number" inputmode="numeric" min="1" max="120" required />
         <p class="campo__error" id="i-edad-e" aria-live="polite"></p>
       </div>
       <div class="campo">
@@ -160,7 +160,7 @@ const cerrar = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="tru
     edad: (v) => {
       if (!v) return 'Escribe tu edad.';
       const n = Number(v);
-      return Number.isInteger(n) && n >= 14 && n <= 35 ? '' : 'La inscripción es desde los 14 años.';
+      return Number.isInteger(n) && n >= 1 && n <= 120 ? '' : 'Escribe tu edad en números.';
     },
     colegio: (v) => (v.trim().length < 2 ? 'Escribe tu colegio o institución.' : ''),
     celular: (v) => (celularOk(v) ? '' : 'Escribe un celular de 9 dígitos que empiece con 9.'),

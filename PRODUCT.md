@@ -12,7 +12,7 @@ Astro (sitio estático), desplegado en Vercel o Netlify con dominio propio. Cont
 
 ## Users
 
-- **Primario:** jóvenes de 15 a 20 años de la provincia de Jauja (34 distritos, 89 comunidades campesinas), que entran desde el celular con datos móviles limitados. Quieren saber qué es el evento, cuándo es, qué pasa ese día y cómo inscribirse.
+- **Primario:** jóvenes de 14 a 20 años de la provincia de Jauja (34 distritos, 89 comunidades campesinas), que entran desde el celular con datos móviles limitados. Quieren saber qué es el evento, cuándo es, qué pasa ese día y cómo inscribirse.
 - **Secundarios:** padres, colegios y docentes (buscan confianza: quién organiza y su trayectoria); organizaciones, universidades y empresas (alcance, métricas, paquetes de alianza); comunidades estudiantiles de Lima y Junín (co-organizar o tener stand).
 
 ## Product Purpose
