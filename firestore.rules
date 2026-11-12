@@ -1,12 +1,16 @@
 rules_version = '2';
 
-// La web solo puede CREAR registros válidos. Nadie lee, edita ni borra desde el navegador:
-// el equipo revisa las respuestas en la consola de Firebase.
+// La web solo puede CREAR registros válidos. Solo la cuenta del panel /admin puede leerlos
+// y borrarlos; nadie puede editarlos.
 service cloud.firestore {
   match /databases/{database}/documents {
 
     function texto(v, max) { return v is string && v.size() > 0 && v.size() <= max; }
     function textoOpcional(v, max) { return v == null || (v is string && v.size() <= max); }
+    // Panel /admin: solo la cuenta del equipo puede leer y borrar registros.
+    function esAdmin() {
+      return request.auth != null && request.auth.token.email == 'admin@hatun-joven.web.app';
+    }
 
     // RF-04: inscripción de participantes (desde 14 años: consentimiento propio, Ley 29733).
     match /inscripciones/{id} {
@@ -21,7 +25,8 @@ service cloud.firestore {
         && texto(request.resource.data.celular, 20)
         && request.resource.data.consentimiento == true
         && request.resource.data.creado == request.time;
-      allow read, update, delete: if false;
+      allow read, delete: if esAdmin();
+      allow update: if false;
     }
 
     // RF-06: postulación de aliados (sponsors o comunidades).
@@ -38,7 +43,8 @@ service cloud.firestore {
         && textoOpcional(request.resource.data.get('mensaje', null), 2000)
         && request.resource.data.consentimiento == true
         && request.resource.data.creado == request.time;
-      allow read, update, delete: if false;
+      allow read, delete: if esAdmin();
+      allow update: if false;
     }
 
     // Todo lo demás, cerrado.

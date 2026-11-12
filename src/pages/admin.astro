@@ -1,0 +1,276 @@
+---
+// Panel del equipo: ver, buscar, exportar y borrar inscripciones y postulaciones.
+// Acceso con contraseña validada por Firebase Auth; lectura protegida por firestore.rules.
+import '../styles/global.css';
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Panel · Hatun Joven</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+  </head>
+  <body class="adm">
+    <!-- Acceso -->
+    <main class="login" id="login" hidden>
+      <form class="login__card" id="login-form" novalidate>
+        <img src="/img/hatun-joven-wordmark-sm.webp" width="278" height="139" alt="Hatun Joven" class="login__logo" />
+        <h1 class="login__t d">Panel del equipo</h1>
+        <label for="clave">Contraseña</label>
+        <input id="clave" name="clave" type="password" autocomplete="current-password" required />
+        <p class="login__error" id="login-error" role="alert"></p>
+        <button class="btn btn--p" type="submit">Entrar</button>
+      </form>
+    </main>
+
+    <!-- Panel -->
+    <div class="panel" id="panel" hidden>
+      <header class="barra">
+        <div class="barra__in">
+          <img src="/img/hatun-joven-wordmark-sm.webp" width="278" height="139" alt="Hatun Joven" class="barra__logo" />
+          <span class="barra__t">Panel del equipo</span>
+          <a class="barra__link" href="/" target="_blank" rel="noopener">Ver sitio</a>
+          <button class="barra__salir" type="button" id="salir">Salir</button>
+        </div>
+      </header>
+
+      <main class="contenido">
+        <ul class="resumen" aria-label="Resumen">
+          <li><span class="resumen__n d" data-n="inscripciones">–</span><span>Inscritos</span></li>
+          <li><span class="resumen__n d" data-n="sponsor">–</span><span>Sponsors</span></li>
+          <li><span class="resumen__n d" data-n="comunidad">–</span><span>Comunidades</span></li>
+          <li><span class="resumen__n d" data-n="semana">–</span><span>Registros en los últimos 7 días</span></li>
+        </ul>
+
+        <div class="controles">
+          <div class="tabs" role="tablist" aria-label="Tipo de registro">
+            <button role="tab" aria-selected="true" data-vista="inscripciones">Inscripciones</button>
+            <button role="tab" aria-selected="false" data-vista="sponsor">Sponsors</button>
+            <button role="tab" aria-selected="false" data-vista="comunidad">Comunidades</button>
+          </div>
+          <div class="acciones">
+            <label class="buscar">
+              <span class="sr-only">Buscar</span>
+              <input type="search" id="buscar" placeholder="Buscar por nombre, colegio, organización…" />
+            </label>
+            <button class="btn-mini" type="button" id="recargar">Actualizar</button>
+            <button class="btn-mini btn-mini--p" type="button" id="exportar">Exportar a Excel</button>
+          </div>
+        </div>
+
+        <p class="estado" id="estado" role="status"></p>
+        <div class="tabla-wrap">
+          <table class="tabla" id="tabla">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="vacio" id="vacio" hidden>No hay registros todavía.</p>
+      </main>
+    </div>
+
+    <script>
+      import { entrar, salir, alCambiarSesion, listar, borrar, type Registro } from '../lib/admin';
+
+      type Vista = 'inscripciones' | 'sponsor' | 'comunidad';
+      const $ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s)!;
+      const login = $('#login'), panel = $('#panel'), estado = $('#estado');
+      let datos: { inscripciones: Registro[]; aliados: Registro[] } = { inscripciones: [], aliados: [] };
+      let vista: Vista = 'inscripciones';
+
+      // ---------- Columnas por vista ----------
+      const fecha = (d: Date | null) => d ? d.toLocaleString('es-PE', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+      const txt = (v: unknown) => (v == null || v === '' ? '—' : String(v));
+      const nombreCompleto = (r: Registro) =>
+        [r.nombres, r.apellidoPaterno, r.apellidoMaterno].filter(Boolean).join(' ') || txt(r.nombre);
+
+      type Col = { t: string; v: (r: Registro) => string; tipo?: 'wsp' | 'mail' | 'largo' };
+      const columnas: Record<Vista, Col[]> = {
+        inscripciones: [
+          { t: 'Fecha', v: (r) => fecha(r.creado) },
+          { t: 'Nombre completo', v: nombreCompleto },
+          { t: 'Edad', v: (r) => txt(r.edad) },
+          { t: 'Colegio o institución', v: (r) => txt(r.colegio) },
+          { t: 'Celular', v: (r) => txt(r.celular), tipo: 'wsp' },
+        ],
+        sponsor: [
+          { t: 'Fecha', v: (r) => fecha(r.creado) },
+          { t: 'Organización', v: (r) => txt(r.organizacion) },
+          { t: 'Contacto', v: (r) => txt(r.contacto) },
+          { t: 'Cargo', v: (r) => txt(r.cargo) },
+          { t: 'Correo', v: (r) => txt(r.correo), tipo: 'mail' },
+          { t: 'Celular', v: (r) => txt(r.celular), tipo: 'wsp' },
+          { t: 'Mensaje', v: (r) => txt(r.mensaje), tipo: 'largo' },
+        ],
+        comunidad: [],
+      };
+      columnas.comunidad = columnas.sponsor;
+
+      const filas = (): Registro[] =>
+        vista === 'inscripciones' ? datos.inscripciones : datos.aliados.filter((a) => a.tipo === vista);
+
+      // ---------- Pintar (siempre con textContent: los datos vienen de formularios públicos) ----------
+      function pintar() {
+        const q = ($('#buscar') as HTMLInputElement).value.trim().toLowerCase();
+        const cols = columnas[vista];
+        const lista = filas().filter((r) => !q || cols.some((c) => c.v(r).toLowerCase().includes(q)));
+
+        const thead = $('#tabla thead'), tbody = $('#tabla tbody');
+        thead.replaceChildren(); tbody.replaceChildren();
+        const trh = document.createElement('tr');
+        [...cols.map((c) => c.t), ''].forEach((t) => { const th = document.createElement('th'); th.textContent = t; th.scope = 'col'; trh.append(th); });
+        thead.append(trh);
+
+        for (const r of lista) {
+          const tr = document.createElement('tr');
+          for (const c of cols) {
+            const td = document.createElement('td');
+            const val = c.v(r);
+            if (c.tipo === 'wsp' && val !== '—') {
+              const a = document.createElement('a'); a.href = `https://wa.me/51${val.replace(/\D/g, '').replace(/^51/, '')}`; a.target = '_blank'; a.rel = 'noopener'; a.textContent = val; td.append(a);
+            } else if (c.tipo === 'mail' && val !== '—') {
+              const a = document.createElement('a'); a.href = `mailto:${val}`; a.textContent = val; td.append(a);
+            } else {
+              td.textContent = val;
+              if (c.tipo === 'largo') { td.className = 'largo'; td.title = val; }
+            }
+            tr.append(td);
+          }
+          const tdB = document.createElement('td');
+          const b = document.createElement('button'); b.type = 'button'; b.className = 'borrar'; b.textContent = 'Borrar';
+          b.addEventListener('click', () => quitar(r));
+          tdB.append(b); tr.append(tdB);
+          tbody.append(tr);
+        }
+        $('#vacio').hidden = lista.length > 0;
+        estado.textContent = q ? `${lista.length} resultado(s) para «${q}».` : '';
+      }
+
+      function resumen() {
+        const semana = Date.now() - 7 * 864e5;
+        const todos = [...datos.inscripciones, ...datos.aliados];
+        const n = (k: string, v: number) => (document.querySelector(`[data-n="${k}"]`)!.textContent = String(v));
+        n('inscripciones', datos.inscripciones.length);
+        n('sponsor', datos.aliados.filter((a) => a.tipo === 'sponsor').length);
+        n('comunidad', datos.aliados.filter((a) => a.tipo === 'comunidad').length);
+        n('semana', todos.filter((r) => r.creado && r.creado.getTime() >= semana).length);
+      }
+
+      async function cargar() {
+        estado.textContent = 'Cargando…';
+        try {
+          const [inscripciones, aliados] = await Promise.all([listar('inscripciones'), listar('aliados')]);
+          datos = { inscripciones, aliados };
+          resumen(); pintar();
+        } catch (e) {
+          console.error(e);
+          estado.textContent = 'No se pudieron cargar los registros. Revisa tu conexión o vuelve a entrar.';
+        }
+      }
+
+      async function quitar(r: Registro) {
+        const quien = vista === 'inscripciones' ? nombreCompleto(r) : txt(r.organizacion);
+        if (!confirm(`¿Borrar el registro de «${quien}»? No se puede deshacer.`)) return;
+        try {
+          await borrar(vista === 'inscripciones' ? 'inscripciones' : 'aliados', r.id);
+          if (vista === 'inscripciones') datos.inscripciones = datos.inscripciones.filter((x) => x.id !== r.id);
+          else datos.aliados = datos.aliados.filter((x) => x.id !== r.id);
+          resumen(); pintar();
+        } catch (e) { console.error(e); alert('No se pudo borrar el registro.'); }
+      }
+
+      // ---------- Exportar a Excel (CSV con ; y BOM para que Excel en español lo abra bien) ----------
+      function exportar() {
+        const cols = columnas[vista];
+        const esc = (s: string) => `"${s.replace(/"/g, '""')}"`;
+        const lineas = [cols.map((c) => esc(c.t)).join(';'), ...filas().map((r) => cols.map((c) => esc(c.v(r))).join(';'))];
+        const blob = new Blob(['﻿' + lineas.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `hatun-joven-${vista}-${new Date().toISOString().slice(0, 10)}.csv`;
+        a.click(); URL.revokeObjectURL(a.href);
+      }
+
+      // ---------- Eventos ----------
+      document.querySelectorAll<HTMLButtonElement>('.tabs [role=tab]').forEach((t) =>
+        t.addEventListener('click', () => {
+          vista = t.dataset.vista as Vista;
+          document.querySelectorAll('.tabs [role=tab]').forEach((x) => x.setAttribute('aria-selected', String(x === t)));
+          pintar();
+        }));
+      $('#buscar').addEventListener('input', pintar);
+      $('#recargar').addEventListener('click', cargar);
+      $('#exportar').addEventListener('click', exportar);
+      $('#salir').addEventListener('click', () => salir());
+
+      $('#login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const clave = ($('#clave') as HTMLInputElement).value;
+        const err = $('#login-error'); err.textContent = '';
+        const btn = $('#login-form button') as HTMLButtonElement; btn.disabled = true; btn.textContent = 'Entrando…';
+        try { await entrar(clave); }
+        catch (e: any) {
+          err.textContent = e?.code === 'auth/too-many-requests'
+            ? 'Demasiados intentos. Espera unos minutos.'
+            : 'Contraseña incorrecta.';
+        } finally { btn.disabled = false; btn.textContent = 'Entrar'; }
+      });
+
+      alCambiarSesion((u) => {
+        login.hidden = !!u; panel.hidden = !u;
+        if (u) cargar(); else ($('#clave') as HTMLInputElement).focus();
+      });
+    </script>
+
+    <!-- Global: la tabla se construye con JavaScript y los estilos con ámbito no le llegarían. -->
+    <style is:global>
+      .adm { background: var(--marfil); min-height: 100vh; }
+      .login { min-height: 100vh; display: grid; place-items: center; padding: 1.5rem; }
+      .login__card { width: min(100%, 24rem); display: grid; gap: 0.75rem; padding: 2rem; background: #fffdf8; border: 3px solid var(--indigo); border-radius: 1rem; }
+      .login__logo { width: 8rem; height: auto; justify-self: center; margin-bottom: 0.5rem; }
+      .login__t { font-size: 2rem; text-align: center; margin-bottom: 0.75rem; }
+      .login label { font-weight: 700; }
+      .login input { font: 1.05rem var(--texto); color: var(--indigo); padding: 0.8rem 0.9rem; border: 2px solid rgb(42 27 180 / 0.45); border-radius: 0.6rem; background: var(--marfil); }
+      .login input:focus-visible { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgb(242 46 154 / 0.45); }
+      .login__error { color: var(--error); font-weight: 700; }
+      .login__error:empty { display: none; }
+
+      .barra { background: var(--indigo); color: var(--marfil); }
+      .barra__in { width: min(100% - 2rem, 90rem); margin-inline: auto; display: flex; align-items: center; gap: 1rem; min-height: 4rem; }
+      .barra__logo { height: 2.5rem; width: auto; background: var(--marfil); border-radius: 0.4rem; padding: 0.2rem 0.4rem; }
+      .barra__t { font-weight: 700; margin-right: auto; }
+      .barra__link { color: var(--marfil); font-weight: 700; }
+      .barra__salir { font: 700 0.95rem var(--texto); color: var(--indigo); background: var(--marfil); border: 0; border-radius: 999px; padding: 0.5rem 1rem; cursor: pointer; }
+
+      .contenido { width: min(100% - 2rem, 90rem); margin: 2rem auto 4rem; display: grid; gap: 1.5rem; }
+      .resumen { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+      .resumen li { display: grid; gap: 0.25rem; padding: 1.1rem 1.25rem; background: #fffdf8; border: 2px solid rgb(42 27 180 / 0.25); border-radius: 0.8rem; font-weight: 700; font-size: 0.95rem; }
+      .resumen__n { font-size: 2.5rem; line-height: 1; color: var(--magenta); font-variant-numeric: tabular-nums; }
+
+      .controles { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+      .tabs { display: flex; gap: 0.4rem; background: #fffdf8; padding: 0.3rem; border-radius: 999px; border: 2px solid rgb(42 27 180 / 0.25); }
+      .tabs button { font: 700 0.95rem var(--texto); color: var(--indigo); background: none; border: 0; border-radius: 999px; padding: 0.55rem 1.1rem; cursor: pointer; }
+      .tabs button[aria-selected='true'] { background: var(--indigo); color: var(--marfil); }
+      .acciones { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+      .buscar input { font: 0.98rem var(--texto); color: var(--indigo); width: min(80vw, 22rem); padding: 0.6rem 0.9rem; border: 2px solid rgb(42 27 180 / 0.35); border-radius: 999px; background: #fffdf8; }
+      .btn-mini { font: 700 0.95rem var(--texto); color: var(--indigo); background: #fffdf8; border: 2px solid var(--indigo); border-radius: 999px; padding: 0.55rem 1rem; cursor: pointer; }
+      .btn-mini--p { background: var(--magenta); border-color: var(--magenta); color: #fff; }
+
+      .estado { font-weight: 700; min-height: 1.2em; }
+      .tabla-wrap { overflow-x: auto; background: #fffdf8; border: 2px solid rgb(42 27 180 / 0.25); border-radius: 0.8rem; }
+      .tabla { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+      .tabla th { text-align: left; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.8rem 1rem; border-bottom: 2px solid var(--indigo); white-space: nowrap; position: sticky; top: 0; background: #fffdf8; }
+      .tabla td { padding: 0.75rem 1rem; border-bottom: 1px solid rgb(42 27 180 / 0.15); vertical-align: top; }
+      .tabla tbody tr:hover { background: var(--marfil); }
+      .tabla td a { font-weight: 700; }
+      .tabla td.largo { max-width: 22rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .borrar { font: 700 0.85rem var(--texto); color: var(--error); background: none; border: 1.5px solid currentColor; border-radius: 999px; padding: 0.3rem 0.75rem; cursor: pointer; }
+      .borrar:hover { background: var(--error); color: #fff; }
+      .vacio { text-align: center; padding: 2rem; font-weight: 700; }
+
+      @media (max-width: 760px) { .resumen { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    </style>
+  </body>
+</html>
