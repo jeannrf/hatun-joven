@@ -11,8 +11,9 @@ Describe el sitio **tal como está construido hoy**, para que cualquier persona 
 | [Firebase](05-firebase.md) | Programadores | Hosting, base de datos, reglas de seguridad, cuenta del panel y despliegue |
 | [Cómo extender](06-extender.md) | Programadores | Recetas para agregar secciones, campos, formularios y páginas; reglas a respetar y limitaciones actuales |
 
-Documentos de referencia en la raíz del proyecto:
+Documentos de referencia:
 
-- [`SRS_Landing_Hatun_Joven.md`](../SRS_Landing_Hatun_Joven.md): requisitos originales del sitio.
+- [`SRS_Landing_Hatun_Joven.md`](SRS_Landing_Hatun_Joven.md): requisitos originales del sitio.
+- [`assets/marca/`](../assets/marca/): archivos oficiales de la marca (logo, letra O, piezas gráficas). No se publican; de aquí salen las imágenes de `public/img/`.
 - [`PRODUCT.md`](../PRODUCT.md): público, propósito, voz y reglas de marca.
 - [`DESIGN.md`](../DESIGN.md): sistema visual (colores, tipografía, bandas tejidas, componentes).

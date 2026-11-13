@@ -43,7 +43,7 @@ export const contacto = {
 
 ## Imágenes
 
-Están en [`public/img/`](../public/img/). Salen de los archivos oficiales de la raíz y no se redibujan:
+Están en [`public/img/`](../public/img/). Salen de los archivos oficiales de [`assets/marca/`](../assets/marca/) y no se redibujan:
 
 | Archivo | Origen | Dónde se usa |
 | --- | --- | --- |

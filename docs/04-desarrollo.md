@@ -53,9 +53,12 @@ src/
     firebase.ts        # conexión y guardado (se carga solo al enviar un formulario)
     admin.ts           # sesión y lectura/borrado para el panel
   components/          # una sección por archivo (ver tabla)
-public/                # imágenes, og.png, favicon, robots.txt
+public/                # imágenes, og.png, favicon, robots.txt (lo que se publica)
+assets/marca/          # archivos originales de la marca (no se publican)
+docs/                  # documentación y SRS
 firebase.json          # Hosting y cabeceras de caché
 firestore.rules        # reglas de seguridad
+PRODUCT.md, DESIGN.md  # marca y sistema visual (en la raíz porque las herramientas de diseño los buscan ahí)
 ```
 
 ## Componentes
