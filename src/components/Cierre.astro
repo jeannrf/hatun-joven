@@ -53,6 +53,7 @@ const diasRestantes = Math.max(0, Math.floor((new Date(evento.fechaISO).getTime(
           <svg viewBox="0 0 10 10" width="32" height="32" shape-rendering="crispEdges" fill="var(--amarillo)">{llama.map(([x, y]) => <rect x={x} y={y} width="1" height="1" />)}</svg>
         </div>
         <p class="cie__lema">{nosotros.lema.join(' · ')} <strong>{cierre.hashtag}</strong></p>
+        <p class="cie__legal"><a class="cie__priv" href="/privacidad">Política de privacidad</a><a class="cie__priv" href="/condiciones">Condiciones de participación</a></p>
         <Redes tono="claro" />
       </div>
     </div>
@@ -118,6 +119,9 @@ const diasRestantes = Math.max(0, Math.floor((new Date(evento.fechaISO).getTime(
     @keyframes paso { 50% { translate: 0 -2px; } }
   }
   .cie__lema strong { color: var(--verde); margin-left: 0.5em; }
+  .cie__legal { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.5rem; }
+  .cie__priv { font-size: 0.95rem; opacity: 0.85; text-underline-offset: 0.2em; }
+  .cie__priv:hover { opacity: 1; color: var(--verde); }
 
   @media (max-width: 760px) {
     .cie__main { grid-template-columns: 1fr; justify-content: stretch; }

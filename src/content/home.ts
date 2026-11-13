@@ -69,7 +69,6 @@ export const cierre = {
 export const modales = {
   inscripcion: {
     titulo: 'Inscríbete al encuentro',
-    bajada: 'Sábado 6 de marzo de 2027 · Jauja.',
     exitoTitulo: '¡Nos vemos en Jauja!',
     exito: 'Ya estás inscrito. El equipo de Hatun Joven se comunicará contigo con los detalles.',
   },
@@ -87,8 +86,14 @@ export const modales = {
     exito: 'Recibimos tu postulación. El equipo de Hatun Joven se comunicará contigo muy pronto.',
     cruce: '¿Representas a una organización? Postula como sponsor',
   },
+  // Va seguido del enlace a la Política de privacidad.
   consentimiento:
-    'Acepto el tratamiento de mis datos personales para gestionar mi participación en Hatun Joven, conforme a la Ley N.º 29733.',
+    'Acepto el tratamiento de mis datos personales para gestionar mi participación en Hatun Joven, conforme a la Ley N.º 29733 y a la',
+  // Casilla opcional (Ley 29733: compartir con terceros es una finalidad aparte y necesita su propio consentimiento).
+  compartirAliados: 'Acepto que Hatun Joven comparta mis datos con sus aliados para invitarme a oportunidades. (Opcional)',
+  // Obligatoria solo si la edad es menor de 14.
+  autorizacionAdulto:
+    'Mi madre, padre o un adulto responsable sabe que voy a asistir al encuentro y está de acuerdo.',
 };
 
 
@@ -136,7 +141,7 @@ export const preguntas = {
 // RF-11 / RF-13: completar cuando el equipo confirme los canales; lo vacío no se muestra.
 export const contacto = {
   whatsapp: '', // solo dígitos con código de país, p. ej. '51987654321'
-  correo: '',
+  correo: 'hatunjoven@gmail.com',
   redes: [
     { id: 'instagram', nombre: 'Instagram', url: 'https://www.instagram.com/hatunjoven/' },
     { id: 'facebook', nombre: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61595895055797' },

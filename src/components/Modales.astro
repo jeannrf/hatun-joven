@@ -12,7 +12,6 @@ const cerrar = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="tru
   <div class="modal__in">
     <header class="modal__hd">
       <h2 class="modal__t d" id="mi-t">{modales.inscripcion.titulo}</h2>
-      <p class="modal__bajada">{modales.inscripcion.bajada}</p>
       <button class="modal__x" type="button" data-cerrar aria-label="Cerrar" set:html={cerrar} />
     </header>
 
@@ -50,8 +49,18 @@ const cerrar = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="tru
 
       <div class="check campo--full">
         <input id="i-consentimiento" name="consentimiento" type="checkbox" required />
-        <label for="i-consentimiento">{modales.consentimiento}</label>
+        <label for="i-consentimiento">{modales.consentimiento} <a href="/privacidad" target="_blank" rel="noopener">Política de privacidad</a>, y acepto las <a href="/condiciones" target="_blank" rel="noopener">Condiciones de participación</a>.</label>
         <p class="campo__error" id="i-consentimiento-e" aria-live="polite"></p>
+      </div>
+      <!-- Solo se muestra si la edad es menor de 14. -->
+      <div class="check campo--full" id="i-adulto-wrap" hidden>
+        <input id="i-adulto" name="autorizacionAdulto" type="checkbox" required />
+        <label for="i-adulto">{modales.autorizacionAdulto}</label>
+        <p class="campo__error" id="i-adulto-e" aria-live="polite"></p>
+      </div>
+      <div class="check campo--full">
+        <input id="i-compartir" name="compartirAliados" type="checkbox" />
+        <label for="i-compartir">{modales.compartirAliados}</label>
       </div>
       <div class="trampa" aria-hidden="true"><label>No llenar <input name="web" tabindex="-1" autocomplete="off" /></label></div>
       <div class="form__pie campo--full">
@@ -170,6 +179,7 @@ const cerrar = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="tru
   };
   const checks: Record<string, (f: HTMLFormElement) => string> = {
     consentimiento: () => 'Necesitamos tu autorización para guardar tus datos.',
+    autorizacionAdulto: () => 'Confirma que un adulto responsable sabe que vienes.',
   };
 
   type Campo = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
@@ -184,6 +194,16 @@ const cerrar = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="tru
   }
   const camposDe = (f: HTMLFormElement) =>
     [...f.querySelectorAll<Campo>('input:not([name=web]), select, textarea')].filter((c) => !c.closest('[hidden]'));
+
+  // Menores de 14: aparece la casilla de conocimiento de un adulto responsable.
+  const edadInput = document.getElementById('i-edad') as HTMLInputElement | null;
+  const adultoWrap = document.getElementById('i-adulto-wrap');
+  const revisarEdad = () => {
+    const n = Number(edadInput!.value);
+    adultoWrap!.hidden = !(edadInput!.value && Number.isInteger(n) && n >= 1 && n < 14);
+  };
+  edadInput?.addEventListener('input', revisarEdad);
+  edadInput?.closest('form')?.addEventListener('reset', () => setTimeout(revisarEdad));
 
   // ---------- Envío a Firestore (RF-08) ----------
   document.querySelectorAll<HTMLFormElement>('.modal .form').forEach((f) => {
@@ -207,7 +227,8 @@ const cerrar = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="tru
       const coleccion = f.dataset.form as 'inscripciones' | 'aliados';
       let datos: Record<string, unknown>;
       if (coleccion === 'inscripciones') {
-        datos = { nombres: v('nombres'), apellidoPaterno: v('apellidoPaterno'), apellidoMaterno: v('apellidoMaterno'), edad: Number(v('edad')), colegio: v('colegio'), celular: limpiarCel(v('celular')), consentimiento: true };
+        datos = { nombres: v('nombres'), apellidoPaterno: v('apellidoPaterno'), apellidoMaterno: v('apellidoMaterno'), edad: Number(v('edad')), colegio: v('colegio'), celular: limpiarCel(v('celular')), consentimiento: true, compartirAliados: (f.elements.namedItem('compartirAliados') as HTMLInputElement).checked };
+        if (Number(v('edad')) < 14) datos.autorizacionAdulto = true;
       } else {
         datos = { tipo: f.dataset.tipo, organizacion: v('organizacion'), contacto: v('contacto'), correo: v('correo'), celular: limpiarCel(v('celular')), consentimiento: true };
         if (v('cargo')) datos.cargo = v('cargo');
@@ -282,6 +303,7 @@ const cerrar = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="tru
   .modal .check { display: grid; grid-template-columns: auto 1fr; gap: 0.25rem 0.75rem; align-items: start; }
   .modal .check input { width: 1.35rem; height: 1.35rem; margin-top: 0.15rem; accent-color: var(--magenta); }
   .modal .check label { font-weight: 400; font-size: 0.98rem; line-height: 1.45; }
+  .modal .check label a { font-weight: 700; text-decoration-color: var(--magenta); text-underline-offset: 0.2em; }
   .modal .check .campo__error { grid-column: 2; }
 
   .modal fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }

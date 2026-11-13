@@ -31,7 +31,7 @@ Región: **`southamerica-west1` (Santiago)**.
 
 | Colección | Campos |
 | --- | --- |
-| `inscripciones` | `nombres`, `apellidoPaterno`, `apellidoMaterno`, `edad` (entero 1–120), `colegio`, `celular`, `consentimiento`, `creado` |
+| `inscripciones` | `nombres`, `apellidoPaterno`, `apellidoMaterno`, `edad` (entero 1–120), `colegio`, `celular`, `consentimiento`, `compartirAliados` (opcional, sí/no), `autorizacionAdulto` (solo menores de 14), `creado` |
 | `aliados` | `tipo` (`sponsor` \| `comunidad`), `organizacion`, `contacto`, `cargo`?, `correo`, `celular`, `mensaje`?, `consentimiento`, `creado` |
 
 `creado` lo pone el servidor (`serverTimestamp`).

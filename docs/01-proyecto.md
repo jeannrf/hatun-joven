@@ -30,7 +30,7 @@ Se abren en ventanas (modales), no están en la página:
 | Postula como sponsor | Botones «Sé aliado» y tarjeta Sponsor | Firestore → `aliados` (`tipo: sponsor`) |
 | ¿Quieres ser comunidad aliada? | Enlace del cierre y tarjeta Comunidad | Firestore → `aliados` (`tipo: comunidad`) |
 
-La inscripción pide nombres, apellido paterno, apellido materno, edad (se acepta cualquiera; el público objetivo es de 14 a 20 años), colegio, celular y la aceptación de tratamiento de datos (Ley N.º 29733).
+La inscripción pide nombres, apellido paterno, apellido materno, edad (se acepta cualquiera; el público objetivo es de 14 a 20 años; si es menor de 14, debe confirmar que un adulto responsable lo sabe), colegio, celular y la aceptación de tratamiento de datos (Ley N.º 29733).
 
 ## Estado actual
 

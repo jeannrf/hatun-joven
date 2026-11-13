@@ -8,8 +8,8 @@ const hayContacto = contacto.correo || contacto.whatsapp || contacto.redes.lengt
   <div class="wrap faq__in">
     <h2 class="faq__t d" id="faq-t">{preguntas.titulo}</h2>
     <div class="faq__lista">
-      {preguntas.items.map((it, i) => (
-        <details name="faq" open={i === 0}>
+      {preguntas.items.map((it) => (
+        <details name="faq">
           <summary>
             <span class="d">{it.p}</span>
             <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>

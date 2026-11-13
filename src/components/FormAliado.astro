@@ -39,7 +39,7 @@ const orgLabel = tipo === 'sponsor' ? 'Organización' : 'Nombre de la comunidad'
   </div>
   <div class="check campo--full">
     <input id={`${p}-consentimiento`} name="consentimiento" type="checkbox" required />
-    <label for={`${p}-consentimiento`}>{modales.consentimiento}</label>
+    <label for={`${p}-consentimiento`}>{modales.consentimiento} <a href="/privacidad" target="_blank" rel="noopener">Política de privacidad</a>.</label>
     <p class="campo__error" id={`${p}-consentimiento-e`} aria-live="polite"></p>
   </div>
   <div class="trampa" aria-hidden="true"><label>No llenar <input name="web" tabindex="-1" autocomplete="off" /></label></div>

@@ -27,7 +27,7 @@ Los registros incluyen datos de menores de edad. Solo deben verlos las personas 
 
 ## Edades
 
-El formulario acepta **cualquier edad**; el público objetivo es de **14 a 20 años**. En la pestaña Inscripciones:
+El formulario acepta **cualquier edad**, para que nadie ponga una edad falsa; el público objetivo es de **14 a 20 años**. Los menores de 14 deben marcar que un adulto responsable sabe que asisten (columna «Adulto responsable»). En la pestaña Inscripciones:
 
 - El filtro **«De 14 a 20 años» / «Fuera de 14 a 20»** muestra solo esas filas.
 - Las edades fuera del rango aparecen en rojo con la nota «fuera de rango».
