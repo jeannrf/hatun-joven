@@ -1,0 +1,82 @@
+---
+// Condiciones de participación: enlazadas desde el consentimiento de inscripción y desde el pie.
+import Legal from '../layouts/Legal.astro';
+import { condiciones, canalLegal as canal } from '../content/legal';
+---
+<Legal
+  title="Condiciones de participación · Hatun Joven"
+  description="Las reglas para participar en el encuentro Hatun Joven: fotos y videos, convivencia, cambios en el programa y cuidado personal."
+  titulo={condiciones.titulo}
+  actualizada={condiciones.actualizada}
+>
+  <p class="lg__intro">
+    Hatun Joven es un espacio para conocer, conectar y crear. Para que todos lo disfrutemos, al inscribirte
+    aceptas estas condiciones.
+  </p>
+
+  <section>
+    <h2 class="d">1. Inscripción</h2>
+    <ul>
+      <li>La participación es gratuita y requiere inscripción previa en esta web.</li>
+      <li>Los datos que registras deben ser verdaderos. Cada persona se inscribe una sola vez.</li>
+      <li>Si tienes menos de 14 años, tu madre, padre o un adulto responsable debe saber que asistes y estar de acuerdo.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="d">2. Fotos y videos</h2>
+    <p>
+      Durante el encuentro tomaremos fotos y grabaremos videos. Los publicaremos en las redes y materiales de
+      Hatun Joven para mostrar lo que vivimos y promover las próximas ediciones. Podrías aparecer en ellos.
+    </p>
+    <p>
+      <strong>Si no quieres aparecer,</strong> avísale al equipo en el check-in y evitaremos publicar imágenes
+      en las que se te reconozca. Si encuentras una foto o video tuyo publicado que quieres que retiremos,
+      escríbenos a <a href={canal.href} target="_blank" rel="noopener">{canal.texto}</a> y lo quitaremos.
+    </p>
+  </section>
+
+  <section>
+    <h2 class="d">3. Convivencia</h2>
+    <ul>
+      <li>Trata con respeto a participantes, ponentes, aliados y equipo organizador.</li>
+      <li>No se tolera ningún tipo de discriminación, acoso o violencia.</li>
+      <li>No está permitido ingresar ni consumir alcohol, drogas u objetos peligrosos.</li>
+      <li>Cuida los espacios y materiales del evento.</li>
+    </ul>
+    <p>El equipo organizador puede pedir que se retire quien no respete estas reglas.</p>
+  </section>
+
+  <section>
+    <h2 class="d">4. Cambios en el programa</h2>
+    <p>
+      El cronograma publicado es referencial: horarios, actividades o ponentes pueden ajustarse. Si el
+      encuentro se posterga o cancela, te avisaremos al celular que registraste y en nuestras redes.
+    </p>
+  </section>
+
+  <section>
+    <h2 class="d">5. Cuidado personal</h2>
+    <ul>
+      <li>Cada participante es responsable de sus pertenencias. No respondemos por objetos perdidos o dañados.</li>
+      <li>El traslado de ida y vuelta al encuentro corre por cuenta de cada participante. En el caso de menores de edad, es responsabilidad de su madre, padre o adulto responsable.</li>
+      <li>Si tienes alguna condición de salud que debamos conocer para cuidarte, avísanos en el check-in.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="d">6. Tus datos</h2>
+    <p>
+      Cómo usamos los datos de tu inscripción está explicado en nuestra
+      <a href="/privacidad">Política de privacidad</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2 class="d">7. Consultas</h2>
+    <p>
+      Si tienes dudas sobre estas condiciones, escríbenos a
+      <a href={canal.href} target="_blank" rel="noopener">{canal.texto}</a>.
+    </p>
+  </section>
+</Legal>

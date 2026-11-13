@@ -103,6 +103,8 @@ import '../styles/global.css';
           { t: 'Edad', v: (r) => txt(r.edad) },
           { t: 'Colegio o institución', v: (r) => txt(r.colegio) },
           { t: 'Celular', v: (r) => txt(r.celular), tipo: 'wsp' },
+          { t: 'Comparte con aliados', v: (r) => (r.compartirAliados ? 'Sí' : 'No') },
+          { t: 'Adulto responsable', v: (r) => (Number(r.edad) < 14 ? (r.autorizacionAdulto ? 'Sí' : 'No') : '—') },
         ],
         sponsor: [
           { t: 'Fecha', v: (r) => fecha(r.creado) },

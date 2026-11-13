@@ -15,7 +15,8 @@ service cloud.firestore {
     // RF-04: inscripción de participantes. Se acepta cualquier edad; el equipo filtra en /admin (rango objetivo: 14 a 20).
     match /inscripciones/{id} {
       allow create: if request.resource.data.keys().hasOnly([
-            'nombres', 'apellidoPaterno', 'apellidoMaterno', 'edad', 'colegio', 'celular', 'consentimiento', 'creado'])
+            'nombres', 'apellidoPaterno', 'apellidoMaterno', 'edad', 'colegio', 'celular', 'consentimiento',
+            'compartirAliados', 'autorizacionAdulto', 'creado'])
         && texto(request.resource.data.nombres, 80)
         && texto(request.resource.data.apellidoPaterno, 60)
         && texto(request.resource.data.apellidoMaterno, 60)
@@ -24,6 +25,10 @@ service cloud.firestore {
         && texto(request.resource.data.colegio, 120)
         && texto(request.resource.data.celular, 20)
         && request.resource.data.consentimiento == true
+        // Autorización opcional para compartir con aliados (ver /privacidad).
+        && request.resource.data.get('compartirAliados', false) is bool
+        // Menores de 14: un adulto responsable sabe que asiste (lo marca el formulario).
+        && request.resource.data.get('autorizacionAdulto', false) is bool
         && request.resource.data.creado == request.time;
       allow read, delete: if esAdmin();
       allow update: if false;

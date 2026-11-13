@@ -35,6 +35,14 @@ export const contacto = {
 - Al completar `correo` aparece el enlace de correo en preguntas frecuentes.
 - Lo que esté vacío no se muestra.
 
+## Política de privacidad
+
+El texto está en `src/pages/privacidad.astro`; las fechas, en `src/content/legal.ts`. El canal para ejercer derechos es `contacto.correo` (si está vacío, se muestra Instagram). Si cambia qué datos se piden, con quién se comparten o cuánto tiempo se guardan, hay que actualizar la política y su fecha `actualizada`. Los datos se borran después de `conservacionHasta`: el equipo debe hacerlo desde el panel.
+
+## Condiciones de participación
+
+El texto está en `src/pages/condiciones.astro`; la fecha, en `src/content/legal.ts`. Se aceptan junto con el consentimiento de la inscripción. Incluyen el aviso de fotos y videos: quien no quiera aparecer avisa en el check-in, y el equipo debe evitar publicar imágenes donde se le reconozca.
+
 ## Reglas de redacción
 
 - Tutear, frases cortas, verbos de acción, nada corporativo.

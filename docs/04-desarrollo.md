@@ -46,8 +46,11 @@ src/
   pages/
     index.astro        # la landing
     admin.astro        # panel del equipo
+    privacidad.astro   # política de privacidad (Ley 29733)
+    condiciones.astro  # condiciones de participación (fotos, convivencia, cambios)
   layouts/Base.astro   # <head>: SEO, vista previa al compartir, datos estructurados del evento
   content/home.ts      # TODOS los textos y datos
+  content/legal.ts     # fechas de las páginas legales (privacidad y condiciones)
   styles/global.css    # colores, tipografía, botones, cinta
   lib/
     firebase.ts        # conexión y guardado (se carga solo al enviar un formulario)

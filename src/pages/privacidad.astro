@@ -1,0 +1,109 @@
+---
+// Política de privacidad: enlazada desde el consentimiento de los formularios y desde el pie.
+import Legal from '../layouts/Legal.astro';
+import { privacidad, canalLegal as canal } from '../content/legal';
+---
+<Legal
+  title="Política de privacidad · Hatun Joven"
+  description="Cómo Hatun Joven usa y protege los datos que dejas al inscribirte o postular como aliado."
+  titulo={privacidad.titulo}
+  actualizada={privacidad.actualizada}
+>
+    <p class="lg__intro">
+      Cuando te inscribes al encuentro o postulas como aliado, nos confías tus datos. Aquí te contamos,
+      sin letra pequeña, qué hacemos con ellos, conforme a la Ley N.º 29733, Ley de Protección de Datos
+      Personales, y su reglamento.
+    </p>
+
+    <section>
+      <h2 class="d">1. Quién cuida tus datos</h2>
+      <p>
+        El responsable es <strong>Hatun Joven</strong>, movimiento de liderazgo e impacto social juvenil de
+        la provincia de Jauja, Junín, Perú. Para cualquier consulta sobre tus datos, escríbenos a
+        <a href={canal.href} target="_blank" rel="noopener">{canal.texto}</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="d">2. Qué datos pedimos</h2>
+      <ul>
+        <li><strong>Si te inscribes:</strong> nombres, apellidos, edad, colegio o institución y celular; si tienes menos de 14 años, también la confirmación de que un adulto responsable sabe que asistes.</li>
+        <li><strong>Si asistes al encuentro:</strong> las fotos y videos en los que aparezcas (ver <a href="/condiciones">Condiciones de participación</a>).</li>
+        <li><strong>Si postulas como sponsor o comunidad aliada:</strong> nombre de la organización, persona de contacto, cargo, correo, celular y el mensaje que nos dejes.</li>
+      </ul>
+      <p>No pedimos datos sensibles (salud, religión, origen, etc.) ni usamos cookies de seguimiento.</p>
+    </section>
+
+    <section>
+      <h2 class="d">3. Para qué los usamos</h2>
+      <ul>
+        <li>Registrar tu inscripción y organizar el encuentro (aforo, materiales, check-in).</li>
+        <li>Escribirte al celular que registraste con información del evento.</li>
+        <li>Revisar las postulaciones de aliados y responderles.</li>
+        <li>Medir el alcance del encuentro con cifras generales (por ejemplo, cuántos jóvenes y de qué edades), sin mostrar nombres.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="d">4. Con quién los compartimos</h2>
+      <p>
+        <strong>Con los aliados del encuentro, solo si tú lo autorizas.</strong> Al inscribirte verás una casilla
+        opcional para que compartamos tus datos con los sponsors y comunidades aliadas, para que puedan
+        invitarte a programas, becas y oportunidades. Si no la marcas, tus datos no salen del equipo de
+        Hatun Joven y tu inscripción vale igual.
+      </p>
+      <p>
+        Guardamos la información en Firebase, un servicio de Google cuyos servidores pueden estar fuera del
+        Perú. Google actúa solo como proveedor de almacenamiento y no usa tus datos para fines propios.
+      </p>
+      <p>Nunca vendemos tus datos.</p>
+    </section>
+
+    <section>
+      <h2 class="d">5. Cuánto tiempo los guardamos</h2>
+      <p>
+        Hasta un año después del encuentro, es decir, hasta el <strong>{privacidad.conservacionHasta}</strong>.
+        Después los borramos. Puedes pedirnos que los borremos antes en cualquier momento.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="d">6. Si eres menor de edad</h2>
+      <p>
+        Puedes inscribirte tú mismo. Si tienes menos de 14 años, al inscribirte te pediremos confirmar que tu
+        madre, padre o un adulto responsable sabe que vas a asistir al encuentro y está de acuerdo. Podemos
+        contactarlo para confirmarlo.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="d">7. Tus derechos</h2>
+      <p>En cualquier momento puedes pedirnos:</p>
+      <ul>
+        <li><strong>Ver</strong> qué datos tuyos tenemos (acceso).</li>
+        <li><strong>Corregirlos</strong> si están mal (rectificación).</li>
+        <li><strong>Borrarlos</strong> (cancelación).</li>
+        <li><strong>Que dejemos de usarlos</strong> para algún fin, o retirar tu autorización para compartirlos con aliados (oposición y revocación).</li>
+      </ul>
+      <p>
+        Escríbenos a <a href={canal.href} target="_blank" rel="noopener">{canal.texto}</a> con tu nombre y
+        el celular con el que te inscribiste. Te responderemos dentro de los plazos de ley. Si no quedas
+        conforme, puedes presentar un reclamo ante la Autoridad Nacional de Protección de Datos Personales
+        del Ministerio de Justicia y Derechos Humanos.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="d">8. Cómo los protegemos</h2>
+      <p>
+        Solo el equipo organizador puede ver los registros, desde un panel con acceso protegido. La página
+        web solo puede enviar datos nuevos: nadie puede leerlos ni modificarlos desde fuera.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="d">9. Cambios a esta política</h2>
+      <p>Si la cambiamos, publicaremos la nueva versión en esta página con su fecha de actualización.</p>
+    </section>
+
+</Legal>
