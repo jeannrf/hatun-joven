@@ -135,7 +135,7 @@ La densidad es de cartel de feria, no de sitio de evento corporativo: titulares 
 Lo cultural se usa como personaje y textura, nunca como disfraz: los motivos (rombo, llama, venado, flor, greca) se dibujan punto a punto en una retícula de 8 px, como el tejido real, y no se reinterpretan como iconos ni ornamento vectorial suave. El sistema rechaza la landing de evento estándar: foto con velo, título centrado y fila de tarjetas.
 
 **Key Characteristics:**
-- Wordmark a escala de cartel: es el logotipo oficial tal cual (recorte de `hatun_joven_logo.png`), nunca recompuesto con tipografía.
+- Wordmark a escala de cartel: es el logotipo oficial tal cual (recorte de `assets/marca/hatun_joven_logo.png`), nunca recompuesto con tipografía.
 - Bandas tejidas Índigo de 112 px (14 filas de 8 px) como divisor entre secciones.
 - Marfil 60 %, Índigo 30 %, Magenta 10 %; Verde solo sobre Índigo.
 - Etiquetas y rótulos ligeramente rotados (la cinta del sombrero a −4°).
