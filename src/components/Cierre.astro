@@ -38,7 +38,7 @@ const diasRestantes = Math.max(0, Math.floor((new Date(evento.fechaISO).getTime(
             <dl class="pas__datos">
               <div><dt>Fecha</dt><dd>{evento.fechaLarga}</dd></div>
               <div><dt>Horario</dt><dd>{horario}</dd></div>
-              <div><dt>Lugar</dt><dd>{evento.lugar}, {evento.ciudad}</dd></div>
+              <div><dt>Ciudad</dt><dd>{evento.ciudad}</dd></div>
             </dl>
             <p class="pas__falta"><span class="d" data-cd-dias={evento.fechaISO}>{diasRestantes}</span> días para vernos</p>
           </div>
@@ -121,6 +121,9 @@ const diasRestantes = Math.max(0, Math.floor((new Date(evento.fechaISO).getTime(
 
   @media (max-width: 760px) {
     .cie__main { grid-template-columns: 1fr; justify-content: stretch; }
+    .cie__copy { justify-items: center; text-align: center; }
+    .cie__ctas { justify-content: center; flex-direction: row-reverse; }
+    .cie__pie { flex-direction: column; justify-content: center; text-align: center; }
       .pas { width: 100%; max-width: 24rem; justify-self: center; transform: rotate(1.5deg); margin-top: 1rem; }
   }
 </style>

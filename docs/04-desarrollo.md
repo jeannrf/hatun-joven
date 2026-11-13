@@ -65,7 +65,7 @@ firestore.rules        # reglas de seguridad
 | `Header` | Barra fija, menú (hamburguesa en móvil), logo que vuelve arriba |
 | `Hero` | Logo oficial, cinta de fecha, cuenta regresiva, botones |
 | `Nosotros` | Quiénes somos, redes, puente de campos, lema con puntadas |
-| `Evento` | Datos del evento, mapa de Google embebido, zonas |
+| `Evento` | Fecha, horario y zonas del evento |
 | `Cronograma` | Filas del día con marcas tejidas |
 | `Impacto` | Cifras con contador animado y la `Manga` tejida |
 | `Aliados` | Metas de alcance y tarjetas Sponsor / Comunidad |

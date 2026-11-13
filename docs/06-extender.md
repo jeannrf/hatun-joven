@@ -62,6 +62,6 @@ El sitio es estático: no hay servidor propio. Para lógica que no puede vivir e
 | Los registros no se editan, solo se borran | Reglas: `update: if false` | Habilitar `update` solo para `esAdmin()` y campos concretos (p. ej. `estado`) |
 | Sin protección anti-spam | Decisión del equipo (sin captcha) | App Check con reCAPTCHA Enterprise |
 | Sin medición de visitas | Usa cookies: necesita la Política de Privacidad primero | Firebase Analytics o una alternativa sin cookies |
-| `og.png` se genera a mano | Imagen fija | Regenerarla si cambian fecha, lugar o logo |
+| `og.png` se genera a mano | Imagen fija | Regenerarla si cambian fecha, ciudad o logo |
 | El dominio es `hatun-joven.web.app` | Sin dominio propio aún | Dominio personalizado en Hosting; actualizar `site` y `robots.txt` |
 | Logo en raster (PNG/WebP) | No hay archivo vectorial | Reemplazar por SVG cuando exista |
