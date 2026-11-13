@@ -13,7 +13,7 @@ Landing de una sola página, en español, para el movimiento Hatun Joven. Tiene 
 | Header | — | Logo (vuelve arriba), menú y botón «Inscríbete» |
 | Hero | `#inicio` | Logo oficial, fecha, bajada, cuenta regresiva y botones |
 | Nosotros | `#nosotros` | Quiénes somos, redes, los cinco campos y el lema |
-| El encuentro | `#evento` | Fecha, horario, lugar, mapa de Google y las dos zonas |
+| El encuentro | `#evento` | Fecha, horario y las dos zonas |
 | Cronograma | `#cronograma` | Los 8 bloques del día |
 | Ya lo hicimos antes | — | Cifras de eventos anteriores y manga tejida |
 | Aliados | `#aliados` | Metas de alcance y los caminos Sponsor / Comunidad aliada |

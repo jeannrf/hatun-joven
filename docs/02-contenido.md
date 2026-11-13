@@ -8,7 +8,7 @@ Después de editar: `npm run dev` para revisarlo en local y `npm run deploy` par
 
 | Bloque | Qué controla |
 | --- | --- |
-| `evento` | Fecha y hora (`fechaISO`, usada por la cuenta regresiva), fecha corta y larga, ciudad, lugar y `mapaConsulta` (lo que busca el mapa de Google) |
+| `evento` | Fecha y hora (`fechaISO`, usada por la cuenta regresiva), fecha corta y larga y ciudad |
 | `nav` | Enlaces del menú |
 | `hero` | Bajada del hero y textos de los botones «Inscríbete» / «Sé aliado» |
 | `nosotros` | Título, texto, frase del puente, los cinco campos y el lema |
@@ -53,4 +53,4 @@ Están en [`public/img/`](../public/img/). Salen de los archivos oficiales de la
 | `hj-letra-o.webp` | `hj_letra_o_logo.png` | O del logo en el pie |
 | `../og.png` | Composición del logo, fecha y banda | Vista previa al compartir el link (1200×630) |
 
-Si cambian la fecha o el lugar, hay que regenerar `og.png`.
+Si cambian la fecha o la ciudad, hay que regenerar `og.png`.
