@@ -3,7 +3,7 @@
 // - Formulario en panel lateral (#cajon-ponentes) para crear o editar.
 // - Actualiza los indicadores [data-prog] (también el del Dashboard).
 // Todo se pinta con textContent; las fotos son enlaces de Google Drive.
-import { listarPonentes, guardarPonente, borrarPonente, CAMPOS_PONENTE, type PonenteDatos, type Ponente } from '../admin';
+import { listarPonentes, guardarPonente, borrarPonente, cambiosPonente, CAMPOS_PONENTE, type PonenteDatos, type Ponente } from '../admin';
 import { confirmar, toast } from './ui';
 
 const vacio = (): PonenteDatos => Object.fromEntries(CAMPOS_PONENTE.map((k) => [k, k === 'publicar' ? false : ''])) as PonenteDatos;
@@ -133,10 +133,11 @@ function montarGaleria(sec: HTMLElement, estado: { lista: Ponente[] }, recargar:
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const d = leer(); if (!d) return;
+    if (editando && !cambiosPonente(editando, d).length) { dlg.close(); toast('No había cambios que guardar.', 'info'); return; }
     const btn = form.querySelector<HTMLButtonElement>('[type=submit]')!;
     btn.disabled = true; btn.textContent = 'Guardando…';
     try {
-      await guardarPonente(editando?.id ?? null, d);
+      await guardarPonente(editando, d);
       dlg.close();
       toast(editando ? 'Ponente actualizado.' : 'Ponente agregado.');
       await recargar();
@@ -149,7 +150,7 @@ function montarGaleria(sec: HTMLElement, estado: { lista: Ponente[] }, recargar:
   async function quitar(p: Ponente) {
     const si = await confirmar({ titulo: '¿Borrar este ponente?', texto: `Se borrará la ficha de «${nombre(p)}». No se puede deshacer.`, accion: 'Borrar' });
     if (!si) return;
-    try { await borrarPonente(p.id); toast('Ponente borrado.'); await recargar(); }
+    try { await borrarPonente(p); toast('Ponente borrado.'); await recargar(); }
     catch (err) { console.error(err); toast('No se pudo borrar.', 'error'); }
   }
 

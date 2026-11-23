@@ -205,10 +205,23 @@ const cerrar = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="tru
   edadInput?.addEventListener('input', revisarEdad);
   edadInput?.closest('form')?.addEventListener('reset', () => setTimeout(revisarEdad));
 
+  // Validar al salir de un campo muestra u oculta su mensaje y mueve lo que está debajo.
+  // Si eso pasa entre que se presiona y se suelta el mouse, el clic cae en otro sitio y se pierde
+  // (p. ej. el botón «Inscribirme» o una casilla). Por eso se espera a que termine el clic.
+  let punteroAbajo = false;
+  const pendientes: (() => void)[] = [];
+  const soltar = () => setTimeout(() => { punteroAbajo = false; pendientes.splice(0).forEach((fn) => fn()); });
+  addEventListener('pointerdown', () => { punteroAbajo = true; }, true);
+  addEventListener('pointerup', soltar, true);
+  addEventListener('pointercancel', soltar, true);
+  const trasElClic = (fn: () => void) => (punteroAbajo ? pendientes.push(fn) : fn());
+
   // ---------- Envío a Firestore (RF-08) ----------
   document.querySelectorAll<HTMLFormElement>('.modal .form').forEach((f) => {
     camposDe(f).forEach((c) => {
-      c.addEventListener('blur', () => { if (c.value || c.hasAttribute('aria-invalid')) validar(c, f); });
+      c.addEventListener('blur', () => trasElClic(() => { if (c.value || c.hasAttribute('aria-invalid')) validar(c, f); }));
+      // Mientras corrige, el error se quita al momento (sin esperar a que salga del campo).
+      c.addEventListener('input', () => { if (c.getAttribute('aria-invalid') === 'true') validar(c, f); });
       c.addEventListener('change', () => { if (c.getAttribute('aria-invalid') === 'true') validar(c, f); });
     });
 

@@ -1,0 +1,26 @@
+---
+// Página no encontrada: Firebase Hosting la sirve para cualquier ruta que no exista
+// (p. ej. un enlace mal copiado en una publicación). Lleva de vuelta a la landing y a inscribirse.
+import Base from '../layouts/Base.astro';
+---
+<Base title="Página no encontrada · Hatun Joven" description="Esta página no existe. Vuelve al inicio de Hatun Joven para inscribirte al encuentro." ld={false}>
+  <main class="wrap nf">
+    <a href="/" class="nf__logo" aria-label="Hatun Joven, volver al inicio">
+      <img src="/img/hatun-joven-wordmark-sm.webp" width="278" height="139" alt="" />
+    </a>
+    <h1 class="nf__t d">Esta página no existe</h1>
+    <p>Puede que el enlace esté mal copiado. Todo lo del encuentro está en la página principal.</p>
+    <p class="nf__acc">
+      <a href="/#inscribete" class="btn btn--p">Inscríbete</a>
+      <a href="/" class="btn btn--s">Ir al inicio</a>
+    </p>
+  </main>
+</Base>
+
+<style>
+  .nf { min-height: 100dvh; display: grid; place-content: center; justify-items: center; gap: 1.5rem; text-align: center; padding-block: 3rem; }
+  .nf__logo img { display: block; height: 5rem; width: auto; }
+  .nf__t { font-size: clamp(2.25rem, 7vw, 4rem); }
+  .nf p { font-size: 1.15rem; line-height: 1.5; max-width: 36ch; }
+  .nf__acc { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
+</style>

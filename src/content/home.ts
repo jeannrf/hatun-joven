@@ -33,7 +33,7 @@ export const nosotros = {
   lema: ['Conoce', 'Conecta', 'Crea'],
 };
 
-// Métricas por confirmar (SRS pregunta 7).
+// Métricas confirmadas por el equipo (2026-11-22).
 export const impacto = {
   titulo: 'Ya lo hicimos antes',
   cifras: [
@@ -81,7 +81,7 @@ export const modales = {
   },
   comunidad: {
     titulo: '¿Quieres ser comunidad aliada?',
-    bajada: 'Para agrupaciones estudiantiles o juveniles que quieren sumarse al movimiento y co-organizar el encuentro.',
+    bajada: 'Para agrupaciones estudiantiles o juveniles que quieren sumarse al movimiento y ser parte del encuentro.',
     exitoTitulo: '¡Gracias por sumarte!',
     exito: 'Recibimos tu postulación. El equipo de Hatun Joven se comunicará contigo muy pronto.',
     cruce: '¿Representas a una organización? Postula como sponsor',
@@ -119,7 +119,7 @@ export const aliados = {
   ],
   caminos: [
     { modal: 'sponsor', titulo: 'Sponsor', texto: 'Para organizaciones que quieren apoyar el encuentro y llegar a la juventud de Jauja.', cta: 'Postula como sponsor' },
-    { modal: 'comunidad', titulo: 'Comunidad aliada', texto: 'Para agrupaciones estudiantiles o juveniles que quieren sumarse al movimiento y co-organizar el encuentro.', cta: 'Postula como comunidad' },
+    { modal: 'comunidad', titulo: 'Comunidad aliada', texto: 'Para agrupaciones estudiantiles o juveniles que quieren sumarse al movimiento y ser parte del encuentro.', cta: 'Postula como comunidad' },
   ],
 };
 

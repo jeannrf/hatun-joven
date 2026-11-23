@@ -92,7 +92,7 @@ Todas las colecciones nuevas llevan los mismos campos de control:
 | `sponsors` | `organizacionId`, `postulacionId` (opcional, de `aliados`), `contacto`, `correo`, `telefono`, `estado` (`conversacion` \| `confirmado` \| `pagado` \| `descartado`), `aporte`, `comprometido`, `especie[]` (`descripcion`, `valorEstimado`), `propuesta` (Drive), `notas` | → organización; ← ingresos |
 | `ingresos` | `concepto`, `categoria`, `sponsorId`, `monto`, `fecha`, `estado` (`comprometido` \| `recibido` \| `anulado`), `medio`, `comprobante` (Drive), `notas` | → sponsor |
 | `gastos` | `concepto`, `categoria`, `proveedor`, `presupuestado`, `pagado`, `fecha`, `estado` (`presupuestado` \| `pendiente` \| `pagado` \| `anulado`), `comprobante` (Drive), `notas` | — |
-| `*/{id}/historial` | `cuando`, `quien`, `accion`, `antes`, `despues` | una por cambio |
+| `historial` **(ya existe)** | `accion` (`crear` \| `editar` \| `borrar` \| `entrar`), `seccion` (`ponentes` \| `inscripciones` \| `aliados` \| `hub`), `registroId`, `registro` (texto para reconocerlo), `cambios[]` (`campo`, `antes`, `despues`), `uid`, `correo`, `nombre`, `ruta`, `dispositivo`, `cuando` | una entrada por movimiento, en una sola colección para verlo todo en `/admin/historial` |
 
 ### Reglas financieras
 
@@ -111,7 +111,15 @@ Todas las colecciones nuevas llevan los mismos campos de control:
 
 - Cada regla lee el rol con `get(/databases/$(database)/documents/miembros/$(request.auth.uid)).data.rol`, sin servidor ni *custom claims*.
 - **Solo un Super admin escribe en `miembros`**, así nadie puede subirse de rol por su cuenta.
-- **Trazabilidad:** toda escritura en una colección del Hub debe crear en el mismo *batch* su entrada de `historial` (lo exige `existsAfter()`).
+- **Trazabilidad (ya aplicada en ponentes, inscripciones y postulaciones):** toda escritura desde el Hub crea en el mismo *batch* su entrada de `historial`, y `firestore.rules` rechaza el cambio si falta.
+  - Altas y ediciones: el registro guarda `cambio` (id de su entrada) y la regla exige `!exists()` + `existsAfter()` de esa entrada, así no se puede reutilizar una vieja.
+  - Borrados: la entrada tiene id fijo `borrar_<coleccion>_<id>` y la regla del borrado exige que se cree en el mismo batch.
+  - La entrada no se puede inventar: un `editar` exige que el registro apunte a ella, y un `borrar`, que el registro desaparezca en ese batch.
+  - `uid`, `correo` y `cuando` los valida Firebase (`request.auth`, `request.time`): nadie firma por otro ni cambia la hora.
+  - Nadie edita ni borra el historial, tampoco un Super admin.
+  - Del borrado de una inscripción solo queda «Inscripción · edad · colegio», nunca el nombre del joven.
+  - Mientras se use la cuenta compartida, «quién» es siempre esa cuenta. Con Google Sign-In aparecerá el nombre de cada persona sin cambiar nada más.
+  - Cada colección nueva (sponsors, finanzas…) debe seguir el mismo patrón y sumar su `seccion` a la regla de `historial`.
 - **Los formularios públicos no cambian:** los bloques `create` de `inscripciones` y `aliados` se mantienen tal cual.
 
 ## Rendimiento

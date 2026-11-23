@@ -371,7 +371,7 @@ export const equipo: Modulo = {
 /** Qué puede hacer cada rol (se aplicará en firestore.rules, no solo en la interfaz). */
 export const rolesInfo: { rol: string; quien: string; puede: string[]; proximamente?: boolean }[] = [
   { rol: 'Super admin', quien: 'Dos personas', puede: ['Todo lo del Administrador', 'Agregar o quitar miembros', 'Dar o quitar el rol de Administrador'] },
-  { rol: 'Administrador', quien: 'El equipo organizador', puede: ['Dashboard, Ponentes, Participantes, Postulaciones, Organizaciones, Sponsors y Finanzas', 'Crear y editar registros', 'Exportar a Excel'] },
+  { rol: 'Administrador', quien: 'El equipo organizador', puede: ['Dashboard, Ponentes, Participantes, Postulaciones, Organizaciones, Sponsors y Finanzas', 'Crear y editar registros', 'Exportar a Excel', 'Ver el historial de cambios'] },
   { rol: 'Staff', quien: 'Voluntarios del día', puede: ['Solo el check-in de participantes', 'Sin acceso a finanzas ni a datos de contacto'], proximamente: true },
 ];
 
@@ -381,5 +381,5 @@ export const navegacion: { grupo: string; items: { slug: string; label: string; 
   { grupo: 'Evento', items: [{ slug: 'ponentes', label: 'Ponentes' }, { slug: 'participantes', label: 'Participantes', vivo: true }] },
   { grupo: 'Alianzas y dinero', items: [{ slug: 'postulaciones', label: 'Postulaciones', vivo: true }, { slug: 'organizaciones', label: 'Organizaciones' }, { slug: 'sponsors', label: 'Sponsors' }, { slug: 'finanzas', label: 'Finanzas' }] },
   { grupo: 'Web', items: [{ slug: 'contenido', label: 'Contenido', pronto: true }] },
-  { grupo: 'Sistema', items: [{ slug: 'equipo', label: 'Equipo y roles' }] },
+  { grupo: 'Sistema', items: [{ slug: 'equipo', label: 'Equipo y roles' }, { slug: 'historial', label: 'Historial' }] },
 ];

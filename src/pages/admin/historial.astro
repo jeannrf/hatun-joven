@@ -1,0 +1,61 @@
+---
+// Historial: quién creó, editó o borró algo en el Hub, dónde y cuándo (colección `historial`).
+// Las entradas las escribe el propio Hub junto con cada cambio; firestore.rules impide editarlas o borrarlas.
+import Hub from '../../layouts/Hub.astro';
+
+const acciones = ['Creó', 'Editó', 'Borró', 'Inició sesión'];
+const secciones = ['Ponentes', 'Participantes', 'Postulaciones', 'Acceso al Hub'];
+---
+<Hub titulo="Historial" activo="historial" migas={['Sistema', 'Historial']}>
+  <header class="hb-cab">
+    <div>
+      <h1 class="d">Historial</h1>
+      <p>Cada cambio hecho en el Hub: quién lo hizo, en qué sección, sobre qué registro y cuándo. Nadie puede editar ni borrar estas entradas.</p>
+    </div>
+  </header>
+
+  <section class="hb-datos" aria-label="Movimientos">
+    <section class="hb-tabla" id="tabla-historial">
+      <div class="hb-barra">
+        <label class="hb-buscar">
+          <span class="sr-only">Buscar</span>
+          <input type="search" data-buscar placeholder="Buscar por persona, registro o campo…" />
+        </label>
+        <label class="hb-filtro">
+          <span class="sr-only">Acción</span>
+          <select data-filtro="accion"><option value="">Acción: todas</option>{acciones.map((o) => <option>{o}</option>)}</select>
+        </label>
+        <label class="hb-filtro">
+          <span class="sr-only">Sección</span>
+          <select data-filtro="seccion"><option value="">Sección: todas</option>{secciones.map((o) => <option>{o}</option>)}</select>
+        </label>
+        <label class="hb-filtro">
+          <span class="sr-only">Persona</span>
+          <select data-filtro="quien"><option value="">Persona: todas</option></select>
+        </label>
+        <span class="hb-barra__sep"></span>
+        <button class="hb-btn hb-btn--s hb-btn--sm" type="button" data-recargar>Actualizar</button>
+        <button class="hb-btn hb-btn--s hb-btn--sm" type="button" data-exportar>Exportar a Excel</button>
+      </div>
+      <p class="hb-tabla__estado" data-estado role="status">Cargando…</p>
+      <div class="hb-tabla__wrap">
+        <table class="hb-t hb-t--historial">
+          <thead>
+            <tr>
+              <th scope="col">Fecha y hora</th><th scope="col">Quién</th><th scope="col">Acción</th>
+              <th scope="col">Sección</th><th scope="col">Registro</th><th scope="col">Qué cambió</th><th scope="col">Desde</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+</Hub>
+
+<script>
+  import { enSesion } from '../../lib/hub/sesion';
+  import { montarHistorial } from '../../lib/hub/historial';
+  let montado = false;
+  enSesion(() => { if (!montado) { montado = true; montarHistorial(); } });
+</script>
