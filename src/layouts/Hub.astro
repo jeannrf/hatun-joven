@@ -1,0 +1,152 @@
+---
+// Event Management Hub: estructura común de /admin (acceso, sidebar, header, breadcrumbs, avisos).
+// La sesión la valida Firebase Auth; la lectura de datos la protegen las reglas de firestore.rules.
+import '../styles/global.css';
+import '../styles/hub.css';
+import { navegacion, hubEvento } from '../content/hub';
+
+interface Props { titulo: string; activo: string; migas?: string[] }
+const { titulo, activo, migas = [] } = Astro.props;
+const href = (slug: string) => (slug ? `/admin/${slug}` : '/admin');
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{titulo} · Hub Hatun Joven</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <!-- Antes de pintar: si este navegador ya tenía sesión, abre el panel directo (sin parpadeo del login).
+         Es solo una pista visual; los datos siguen protegidos por Firebase Auth y firestore.rules. -->
+    <script is:inline>
+      try { if (localStorage.getItem('hb-sesion') === '1') document.documentElement.dataset.sesion = 'si'; } catch {}
+    </script>
+  </head>
+  <body class="hb">
+    <!-- Acceso -->
+    <main class="hb-login" id="hb-login">
+      <form class="hb-login__card" id="hb-login-form" novalidate>
+        <img src="/img/hatun-joven-wordmark-sm.webp" width="278" height="139" alt="Hatun Joven" class="hb-login__logo" />
+        <h1 class="hb-login__t d">Event Hub</h1>
+        <p class="hb-login__sub">Gestión interna de {hubEvento.nombre}</p>
+        <label for="hb-clave">Contraseña del equipo</label>
+        <input id="hb-clave" name="clave" type="password" autocomplete="current-password" required />
+        <p class="hb-login__error" id="hb-login-error" role="alert"></p>
+        <button class="hb-btn hb-btn--p" type="submit">Entrar</button>
+      </form>
+    </main>
+
+    <div class="hb-app" id="hb-app">
+      <aside class="hb-side" id="hb-side" aria-label="Módulos">
+        <a class="hb-side__marca" href="/admin">
+          <img src="/img/hatun-joven-wordmark-sm.webp" width="278" height="139" alt="Hatun Joven" />
+          <span class="hb-side__hub d">Event Hub</span>
+        </a>
+        <p class="hb-side__evento">{hubEvento.fecha} · <em>{hubEvento.ciudad}</em></p>
+        <nav>
+          {navegacion.map((g) => (
+            <div class="hb-side__grupo">
+              {g.grupo && <p class="hb-side__g">{g.grupo}</p>}
+              <ul>
+                {g.items.map((it) => (
+                  <li>
+                    <a href={href(it.slug)} aria-current={it.slug === activo ? 'page' : undefined}>
+                      {it.label}
+                      {it.vivo && <span class="hb-side__vivo" title="Con datos reales de la web">en vivo</span>}
+                      {it.pronto && <span class="hb-side__pronto">pronto</span>}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
+        <a class="hb-side__sitio" href="/" target="_blank" rel="noopener">Ver sitio público ↗</a>
+      </aside>
+      <div class="hb-velo" id="hb-velo" hidden></div>
+
+      <div class="hb-main">
+        <header class="hb-top">
+          <button class="hb-menu" type="button" id="hb-menu" aria-controls="hb-side" aria-expanded="false">
+            <span class="sr-only">Abrir menú</span><span aria-hidden="true"></span>
+          </button>
+          <nav class="hb-migas" aria-label="Ruta">
+            <ol>
+              <li><a href="/admin">Hub</a></li>
+              {migas.map((m, i) => <li aria-current={i === migas.length - 1 ? 'page' : undefined}>{m}</li>)}
+            </ol>
+          </nav>
+          <div class="hb-usuario">
+            <span class="hb-usuario__n" id="hb-usuario">Cuenta del equipo</span>
+            <button class="hb-btn hb-btn--s hb-btn--sm" type="button" id="hb-salir">Salir</button>
+          </div>
+        </header>
+
+        <main class="hb-contenido" id="contenido">
+          <slot />
+        </main>
+      </div>
+    </div>
+
+    <div class="hb-toasts" id="hb-toasts" aria-live="polite"></div>
+
+    <dialog class="hb-confirmar" id="hb-confirmar" aria-labelledby="hb-confirmar-t">
+      <form method="dialog">
+        <h2 id="hb-confirmar-t" data-t></h2>
+        <p data-x></p>
+        <div class="hb-confirmar__acc">
+          <button class="hb-btn hb-btn--s hb-btn--sm" value="no">Cancelar</button>
+          <button class="hb-btn hb-btn--peligro hb-btn--sm" value="si">Confirmar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script>
+      import { entrar, salir, alCambiarSesion } from '../lib/admin';
+      import { toast } from '../lib/hub/ui';
+
+      const $ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s)!;
+
+      // La vista la decide html[data-sesion] (ver hub.css); aquí se confirma con Firebase.
+      alCambiarSesion((u) => {
+        document.documentElement.dataset.sesion = u ? 'si' : 'no';
+        try { u ? localStorage.setItem('hb-sesion', '1') : localStorage.removeItem('hb-sesion'); } catch {}
+        if (!u) $<HTMLInputElement>('#hb-clave').focus();
+      });
+
+      $('#hb-login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const err = $('#hb-login-error'); err.textContent = '';
+        const btn = $<HTMLButtonElement>('#hb-login-form button'); btn.disabled = true; btn.textContent = 'Entrando…';
+        try { await entrar($<HTMLInputElement>('#hb-clave').value); }
+        catch (e: any) {
+          err.textContent = e?.code === 'auth/too-many-requests' ? 'Demasiados intentos. Espera unos minutos.' : 'Contraseña incorrecta.';
+        } finally { btn.disabled = false; btn.textContent = 'Entrar'; }
+      });
+      $('#hb-salir').addEventListener('click', () => salir());
+
+      // Menú lateral en móvil
+      const side = $('#hb-side'), velo = $('#hb-velo'), menu = $<HTMLButtonElement>('#hb-menu');
+      const abrirMenu = (si: boolean) => {
+        side.classList.toggle('abierto', si); velo.hidden = !si; menu.setAttribute('aria-expanded', String(si));
+      };
+      menu.addEventListener('click', () => abrirMenu(!side.classList.contains('abierto')));
+      velo.addEventListener('click', () => abrirMenu(false));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') abrirMenu(false); });
+
+      // Paneles laterales (formularios): [data-abrir="id"] abre el <dialog id>.
+      document.querySelectorAll<HTMLElement>('[data-abrir]').forEach((b) =>
+        b.addEventListener('click', () => (document.getElementById(b.dataset.abrir!) as HTMLDialogElement | null)?.showModal()));
+      document.querySelectorAll<HTMLDialogElement>('dialog.hb-cajon').forEach((d) => {
+        d.addEventListener('click', (e) => { if (e.target === d) d.close(); }); // clic fuera
+        d.querySelectorAll('[data-cerrar]').forEach((b) => b.addEventListener('click', () => d.close()));
+        if (d.dataset.conectado) return; // ese formulario guarda de verdad (su script lo maneja)
+        d.querySelector('form')?.addEventListener('submit', (e) => {
+          e.preventDefault();
+          toast('Vista previa: guardar se habilita cuando este módulo se conecte.', 'info');
+        });
+      });
+    </script>
+  </body>
+</html>

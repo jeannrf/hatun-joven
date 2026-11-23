@@ -1,0 +1,182 @@
+---
+// Pinta un módulo del Hub desde su configuración (src/content/hub.ts):
+// cabecera, indicadores, bloques de insight, tablas con su barra de herramientas y formularios.
+// Lo marcado `vivo` se llena con datos reales; lo demás queda en vista previa con «—».
+import type { Modulo, Campo } from '../../content/hub';
+import Panel from './Panel.astro';
+
+interface Props { modulo: Modulo }
+const { modulo: m } = Astro.props;
+
+const piezas = [...m.kpis, ...m.tablas, ...m.paneles.filter((p) => p.tipo !== 'lista')];
+const vivas = piezas.filter((x) => ('vivo' in x && x.vivo) || ('prog' in x && x.prog) || ('valor' in x && x.valor) || ('conectado' in x && x.conectado)).length;
+const estado = vivas === 0 ? 'previa' : vivas === piezas.length ? 'vivo' : 'parcial';
+// Solo se rotula lo que aún no está completo; los módulos 100 % en vivo no llevan etiqueta.
+const etiqueta = estado === 'parcial' ? 'Parcialmente en vivo' : 'Vista previa · sin datos todavía';
+
+const tipoInput: Record<string, 'text' | 'email' | 'tel' | 'url' | 'date' | 'time' | 'number'> = {
+  texto: 'text', correo: 'email', tel: 'tel', url: 'url', enlace: 'url', fecha: 'date', hora: 'time', numero: 'number', moneda: 'number',
+};
+const idCampo = (t: string, c: Campo) => `f-${t}-${c.id}`;
+---
+<header class="hb-cab">
+  <div>
+    <h1 class="d">{m.titulo}</h1>
+    <p>{m.descripcion}</p>
+  </div>
+  {estado !== 'vivo' && <p class:list={['hb-estado-mod', `hb-estado-mod--${estado}`]}>{etiqueta}</p>}
+</header>
+
+<slot />
+
+{m.kpis.length > 0 && (
+<dl class="hb-kpis" aria-label="Indicadores" style={`--cols:${m.kpis.length <= 5 ? m.kpis.length : Math.ceil(m.kpis.length / 2)}`}>
+  {m.kpis.map((k) => (
+    <div class:list={['hb-kpi', { 'hb-kpi--vivo': k.vivo || k.valor || k.prog }]}>
+      <dt>{k.label}</dt>
+      <dd class="hb-kpi__v" data-kpi={k.vivo} data-prog={k.prog} title={k.vivo || k.valor || k.prog ? undefined : 'Se calculará cuando el módulo esté conectado'}>{k.valor ?? '—'}</dd>
+      {k.detalle && <dd class="hb-kpi__d">{k.detalle}</dd>}
+    </div>
+  ))}
+</dl>
+)}
+
+{m.paneles.length > 0 && (
+  <div class="hb-paneles">
+    {m.paneles.map((p) => <Panel panel={p} />)}
+  </div>
+)}
+
+{m.tablas.length > 0 && (
+  <section class="hb-datos" aria-label="Registros">
+    {m.tablas.length > 1 && (
+      <div class="hb-tabs" role="tablist" aria-label="Vistas">
+        {m.tablas.map((t, i) => (
+          <button role="tab" type="button" id={`tab-${t.id}`} aria-controls={`tabla-${t.id}`} aria-selected={i === 0 ? 'true' : 'false'}>
+            {t.titulo}{t.vivo && <span class="hb-tabs__vivo">en vivo</span>}
+          </button>
+        ))}
+      </div>
+    )}
+
+    {m.tablas.map((t, i) => (
+      <section class="hb-tabla" id={`tabla-${t.id}`} role={m.tablas.length > 1 ? 'tabpanel' : undefined}
+        aria-labelledby={m.tablas.length > 1 ? `tab-${t.id}` : undefined} hidden={i > 0}
+        data-vivo={t.vivo} data-vacio={t.vacio} data-conectado={t.conectado}>
+        <div class="hb-barra">
+          <label class="hb-buscar">
+            <span class="sr-only">Buscar</span>
+            <input type="search" data-buscar placeholder={t.buscar} disabled={!t.vivo && !t.conectado} />
+          </label>
+          {t.filtros?.map((f) => (
+            <label class="hb-filtro">
+              <span class="sr-only">{f.label}</span>
+              <select data-filtro={f.label} disabled={!t.vivo && !t.conectado}>
+                <option value="">{f.label}: todos</option>
+                {f.opciones.map((o) => <option>{o}</option>)}
+              </select>
+            </label>
+          ))}
+          <span class="hb-barra__sep"></span>
+          {t.vivo && <button class="hb-btn hb-btn--s hb-btn--sm" type="button" data-recargar>Actualizar</button>}
+          <button class="hb-btn hb-btn--s hb-btn--sm" type="button" data-exportar disabled={!t.vivo && !t.conectado}>Exportar a Excel</button>
+          {t.accion && <button class="hb-btn hb-btn--p hb-btn--sm" type="button" data-abrir={`cajon-${t.id}`}>+ {t.accion}</button>}
+        </div>
+        <p class="hb-tabla__estado" data-estado role="status">{t.vivo || t.conectado ? '' : t.nota ?? 'Sin registros: este módulo se conecta en la siguiente etapa.'}</p>
+        {t.conectado ? (
+          <ul class="hb-galeria" data-galeria aria-live="polite"><li class="hb-vacio hb-vacio--bloque">Cargando…</li></ul>
+        ) : (
+          <div class="hb-tabla__wrap">
+            <table class="hb-t">
+              <thead>
+                {t.columnas && (
+                  <tr>{t.columnas.map((c) => <th scope="col">{c}</th>)}<th scope="col"><span class="sr-only">Acciones</span></th></tr>
+                )}
+              </thead>
+              <tbody>
+                {t.columnas && <tr><td class="hb-vacio" colspan={t.columnas.length + 1}>{t.vacio}</td></tr>}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+    ))}
+  </section>
+)}
+
+{m.tablas.filter((t) => t.form).map((t) => (
+  <dialog class="hb-cajon" id={`cajon-${t.id}`} aria-labelledby={`cajon-${t.id}-t`} data-conectado={t.conectado}>
+    <form class="hb-form" novalidate>
+      <header class="hb-cajon__h">
+        <h2 id={`cajon-${t.id}-t`}>{t.accion}</h2>
+        <button class="hb-cerrar" type="button" data-cerrar aria-label="Cerrar">×</button>
+      </header>
+      <div class="hb-cajon__cuerpo">
+        {!t.conectado && <p class="hb-aviso">Vista previa del formulario: muestra los campos que tendrá cada registro. Todavía no guarda.</p>}
+        <p class="hb-form__error" data-form-error role="alert"></p>
+        {t.form!.map((s) => (
+          <fieldset>
+            <legend>{s.titulo}</legend>
+            <div class="hb-campos">
+              {s.campos.map((c) => (
+                <div class:list={['hb-campo', { 'hb-campo--completo': c.completo || c.tipo === 'area' }]}>
+                  <label for={idCampo(t.id, c)}>{c.label}{c.requerido && <span class="hb-req" aria-hidden="true"> *</span>}</label>
+                  {c.tipo === 'area' ? (
+                    <textarea id={idCampo(t.id, c)} rows="3" required={c.requerido}></textarea>
+                  ) : c.tipo === 'select' ? (
+                    <select id={idCampo(t.id, c)} required={c.requerido}>
+                      <option value="">{c.opciones?.length ? 'Elige…' : 'Se elegirá de la lista'}</option>
+                      {c.opciones?.map((o) => <option>{o}</option>)}
+                    </select>
+                  ) : c.tipo === 'casilla' ? (
+                    <input id={idCampo(t.id, c)} type="checkbox" />
+                  ) : c.tipo === 'moneda' ? (
+                    <span class="hb-moneda"><span aria-hidden="true">S/</span><input id={idCampo(t.id, c)} type="number" min="0" step="0.01" inputmode="decimal" required={c.requerido} /></span>
+                  ) : (
+                    <input id={idCampo(t.id, c)} type={tipoInput[c.tipo]} required={c.requerido}
+                      placeholder={c.tipo === 'enlace' ? 'https://drive.google.com/…' : undefined} />
+                  )}
+                  {c.ayuda && <p class="hb-ayuda">{c.ayuda}</p>}
+                </div>
+              ))}
+            </div>
+          </fieldset>
+        ))}
+      </div>
+      <footer class="hb-cajon__pie">
+        <button class="hb-btn hb-btn--s hb-btn--sm" type="button" data-cerrar>Cancelar</button>
+        <button class="hb-btn hb-btn--p hb-btn--sm" type="submit">Guardar</button>
+      </footer>
+    </form>
+  </dialog>
+))}
+
+<script>
+  import { enSesion } from '../../lib/hub/sesion';
+  import { pintarTodo } from '../../lib/hub/vivo';
+  import { montarTabla } from '../../lib/hub/registros';
+  import { toast } from '../../lib/hub/ui';
+  import { montarPonentes } from '../../lib/hub/ponentes';
+
+  // Pestañas entre tablas de un mismo módulo
+  document.querySelectorAll<HTMLElement>('.hb-tabs').forEach((tabs) => {
+    const botones = [...tabs.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+    botones.forEach((b) => b.addEventListener('click', () => {
+      botones.forEach((x) => {
+        x.setAttribute('aria-selected', String(x === b));
+        document.getElementById(x.getAttribute('aria-controls')!)!.hidden = x !== b;
+      });
+    }));
+  });
+
+  let montado = false;
+  enSesion(() => {
+    if (montado) return;
+    montado = true;
+    if (document.querySelector('[data-kpi], [data-vivo]')) {
+      pintarTodo().catch((e) => { console.error(e); toast('No se pudieron cargar los datos de la web.', 'error'); });
+    }
+    document.querySelectorAll<HTMLElement>('.hb-tabla[data-vivo]').forEach(montarTabla);
+    if (document.querySelector('[data-prog], [data-conectado="ponentes"]')) montarPonentes();
+  });
+</script>

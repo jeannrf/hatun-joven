@@ -52,6 +52,25 @@ service cloud.firestore {
       allow update: if false;
     }
 
+    // Event Hub · Ponentes y dinámicas (data room). Solo la cuenta del panel lee y escribe.
+    function opcional(k, max) { return textoOpcional(request.resource.data.get(k, null), max); }
+    match /ponentes/{id} {
+      allow read, delete: if esAdmin();
+      allow create, update: if esAdmin()
+        && request.resource.data.keys().hasOnly([
+            'eventoId', 'nombres', 'apellidos', 'cargo', 'organizacion', 'foto', 'linkedin', 'bio',
+            'participa', 'tema', 'publicar', 'correo', 'telefono', 'notas', 'actualizado'])
+        && request.resource.data.eventoId == 'hj-2027'
+        && texto(request.resource.data.nombres, 80)
+        && texto(request.resource.data.apellidos, 80)
+        && request.resource.data.participa in ['Charla', 'Dinámica', 'Charla y dinámica', 'Panel']
+        && request.resource.data.publicar is bool
+        && opcional('cargo', 120) && opcional('organizacion', 120) && opcional('foto', 500)
+        && opcional('linkedin', 300) && opcional('bio', 2000) && opcional('tema', 200)
+        && opcional('correo', 120) && opcional('telefono', 20) && opcional('notas', 2000)
+        && request.resource.data.actualizado == request.time;
+    }
+
     // Todo lo demás, cerrado.
     match /{document=**} {
       allow read, write: if false;

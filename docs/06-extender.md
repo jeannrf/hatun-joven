@@ -20,7 +20,7 @@ Un campo nuevo toca **cuatro lugares**; si falta uno, Firestore rechaza el enví
 2. **Validación:** su regla en `reglas` (o `checks` si es casilla) dentro del `<script>` de `Modales.astro`.
 3. **Datos:** agrégalo al objeto `datos` del envío en el mismo script.
 4. **Reglas de seguridad:** súmalo a `keys().hasOnly([...])` y valida tipo y largo en `firestore.rules`, luego `firebase deploy --only firestore:rules`.
-5. **Panel:** si el equipo debe verlo, agrega su columna en `columnas` de `src/pages/admin.astro`.
+5. **Panel:** si el equipo debe verlo, agrega su columna en `columnas` de `src/lib/hub/registros.ts`.
 
 ### Agregar un formulario nuevo (otra colección)
 
@@ -28,7 +28,7 @@ Un campo nuevo toca **cuatro lugares**; si falta uno, Firestore rechaza el enví
 2. Cualquier botón lo abre con `data-modal="<nombre>"`.
 3. Amplía el tipo de `guardar()` en `src/lib/firebase.ts` y arma su objeto `datos`.
 4. Crea el bloque `match /<coleccion>/{id}` en `firestore.rules` (crear con validación; leer/borrar solo `esAdmin()`; editar nunca).
-5. Agrega su pestaña y columnas en el panel (`admin.astro` y `listar()` en `src/lib/admin.ts`).
+5. Muéstrala en el Hub: amplía `listar()` en `src/lib/admin.ts`, sus columnas en `src/lib/hub/registros.ts` y una tabla `vivo` en `src/content/hub.ts`.
 
 ### Agregar una página nueva
 
@@ -58,7 +58,8 @@ El sitio es estático: no hay servidor propio. Para lógica que no puede vivir e
 | Limitación | Por qué | Cómo resolverla |
 | --- | --- | --- |
 | No hay avisos por correo de nuevos registros | Requiere servidor (plan Blaze) | Cloud Function o extensión *Trigger Email* |
-| Panel con una sola cuenta y sin roles | Diseño mínimo pedido por el equipo | Más cuentas en Authentication y una lista de correos en `esAdmin()` |
+| Panel con una sola cuenta y sin roles | Fase 1 del Event Hub | Google Sign-In + `miembros/{uid}` con rol (Super admin, Administrador, Staff) ([Event Hub](07-event-hub.md#siguiente-fase)) |
+| Módulos del Hub en vista previa (no guardan) | Fase 1: solo estructura | Conectarlos según [Event Hub → Siguiente fase](07-event-hub.md#siguiente-fase) |
 | Los registros no se editan, solo se borran | Reglas: `update: if false` | Habilitar `update` solo para `esAdmin()` y campos concretos (p. ej. `estado`) |
 | Sin protección anti-spam | Decisión del equipo (sin captcha) | App Check con reCAPTCHA Enterprise |
 | Sin medición de visitas | Usa cookies: necesita la Política de Privacidad primero | Firebase Analytics o una alternativa sin cookies |

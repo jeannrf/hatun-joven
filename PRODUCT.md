@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Astro (sitio estático), desplegado en Vercel o Netlify con dominio propio. Contenido editable desde un solo archivo de datos (RNF-11).
+Astro (sitio estático), desplegado en Firebase Hosting (hatun-joven.web.app) con Firestore y Authentication. Contenido editable desde un solo archivo de datos (RNF-11).
 
 ## Users
 
@@ -31,7 +31,7 @@ Lo organizan jóvenes migrantes jaujinos que salieron a estudiar y trabajar y vu
 
 ## Capabilities and Constraints
 
-- Fuera de alcance: pago en línea, panel de administración, área de usuarios.
+- Fuera de alcance: pago en línea y área de usuarios. El equipo tiene un panel interno, el Event Management Hub (`/admin`, ver docs/07-event-hub.md), aparte del CMS público.
 - Formularios de inscripción (con autorización de apoderado para menores de 18) y de aliados; guardan en un destino revisable y avisan por correo.
 - Rendimiento: Lighthouse móvil ≥ 90, LCP ≤ 2.5 s, carga inicial ≤ 1.5 MB.
 - Solo español.

@@ -1,0 +1,52 @@
+---
+// Bloque de insight de un módulo. Sin `vivo`, muestra su estructura con valores «—» (sin datos).
+import type { Panel } from '../../content/hub';
+interface Props { panel: Panel }
+const { panel: p } = Astro.props;
+---
+<section class:list={['hb-panel', { 'hb-panel--2': p.ancho === 2, 'hb-panel--3': p.ancho === 3 }]}>
+  <header class="hb-panel__h">
+    <h3>{p.titulo}</h3>
+    {p.nota && <p>{p.nota}</p>}
+  </header>
+
+  {p.tipo === 'barras' && (
+    <ul class="hb-barras" data-vivo={p.vivo}>
+      {p.items.map((it) => (
+        <li>
+          <span class="hb-barras__l" title={it}>{it}</span>
+          <span class="hb-barras__t"><span class="hb-barras__f" style="--v:0"></span></span>
+          <span class="hb-barras__n">—</span>
+        </li>
+      ))}
+      {!p.items.length && <li class:list={['hb-vacio', { 'hb-vacio--bloque': !p.vivo }]}>{p.vivo ? 'Cargando…' : p.vacio}</li>}
+    </ul>
+  )}
+
+  {p.tipo === 'comparacion' && (
+    <>
+      <p class="hb-leyenda"><span class="hb-leyenda__a">{p.series[0]}</span><span class="hb-leyenda__b">{p.series[1]}</span></p>
+      <ul class="hb-barras hb-barras--doble">
+        {p.items.map((it) => (
+          <li>
+            <span class="hb-barras__l" title={it}>{it}</span>
+            <span class="hb-barras__par">
+              <span class="hb-barras__t hb-barras__t--a"><span class="hb-barras__f" style="--v:0"></span></span>
+              <span class="hb-barras__t"><span class="hb-barras__f" style="--v:0"></span></span>
+            </span>
+            <span class="hb-barras__n">—</span>
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+
+  {p.tipo === 'lista' && <p class="hb-vacio hb-vacio--bloque">{p.vacio}</p>}
+
+  {p.tipo === 'serie' && (
+    <div class="hb-serie" data-vivo={p.vivo} data-vacio={p.vacio}>
+      <p class="hb-vacio hb-vacio--bloque">Cargando…</p>
+    </div>
+  )}
+
+</section>

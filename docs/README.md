@@ -9,6 +9,7 @@ Describe el sitio **tal como está construido hoy**, para que cualquier persona 
 | [Panel /admin](03-panel-admin.md) | Quien revise inscripciones | Cómo entrar, buscar, exportar y borrar registros |
 | [Desarrollo](04-desarrollo.md) | Programadores | Instalación, comandos, estructura del código y componentes |
 | [Firebase](05-firebase.md) | Programadores | Hosting, base de datos, reglas de seguridad, cuenta del panel y despliegue |
+| [Event Hub](07-event-hub.md) | Equipo y programadores | Módulos del panel interno, decisiones, modelo de datos, permisos y siguiente fase |
 | [Cómo extender](06-extender.md) | Programadores | Recetas para agregar secciones, campos, formularios y páginas; reglas a respetar y limitaciones actuales |
 
 Documentos de referencia:
