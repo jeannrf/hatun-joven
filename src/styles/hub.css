@@ -197,6 +197,13 @@ html[data-sesion='si'] .hb-login { display: none; }
 [aria-sort='descending'] .hb-orden::after { content: '↓'; opacity: 1; }
 .hb-t tr.fuera-rango td:nth-child(3) { color: var(--error); font-weight: 700; }
 .hb-t tr.fuera-rango td:nth-child(3)::after { content: ' · fuera de rango'; font-weight: 400; font-size: 0.85em; }
+/* Historial */
+.hb-t td.hb-t__nowrap { white-space: nowrap; }
+.hb-t td.hb-t__cambios { min-width: 16rem; max-width: 30rem; font-size: 0.85rem; overflow-wrap: anywhere; }
+.hb-t__cambios ul { margin: 0; padding-left: 1rem; display: grid; gap: 0.2rem; }
+.hb-accion { white-space: nowrap; }
+.hb-accion--crear { background: var(--indigo); color: var(--marfil); }
+.hb-accion--borrar { background: var(--error); color: #fff; }
 .hb-acc { text-align: right; width: 1%; }
 .hb-borrar { font: 700 0.8rem var(--texto); color: var(--error); background: none; border: 1.5px solid currentColor; border-radius: 999px; padding: 0.25rem 0.7rem; cursor: pointer; }
 .hb-borrar:hover { background: var(--error); color: #fff; }

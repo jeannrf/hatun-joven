@@ -123,7 +123,11 @@ export function montarTabla(sec: HTMLElement) {
     const si = await confirmar({ titulo: '¿Borrar este registro?', texto: `Se borrará el registro de «${quien}». No se puede deshacer.`, accion: 'Borrar' });
     if (!si || !datos) return;
     try {
-      await borrar(vivo === 'inscripciones' ? 'inscripciones' : 'aliados', r.id);
+      // En el historial no queda el nombre del joven: solo lo necesario para reconocer el registro.
+      const etiqueta = vivo === 'inscripciones'
+        ? `Inscripción · ${txt(r.edad)} años · ${txt(r.colegio)}`
+        : `${vivo === 'sponsor' ? 'Sponsor' : 'Comunidad'} · ${txt(r.organizacion)}`;
+      await borrar(vivo === 'inscripciones' ? 'inscripciones' : 'aliados', r.id, etiqueta);
       if (vivo === 'inscripciones') datos.inscripciones = datos.inscripciones.filter((x) => x.id !== r.id);
       else datos.aliados = datos.aliados.filter((x) => x.id !== r.id);
       pintar();

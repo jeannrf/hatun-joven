@@ -2,6 +2,8 @@ rules_version = '2';
 
 // La web solo puede CREAR registros válidos. Solo la cuenta del panel /admin puede leerlos
 // y borrarlos; nadie puede editarlos.
+// Trazabilidad: todo cambio hecho desde /admin debe crear, en el mismo batch, su entrada en
+// `historial`. Sin esa entrada el cambio se rechaza, y el historial no se edita ni se borra.
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -10,6 +12,12 @@ service cloud.firestore {
     // Panel /admin: solo la cuenta del equipo puede leer y borrar registros.
     function esAdmin() {
       return request.auth != null && request.auth.token.email == 'admin@hatun-joven.web.app';
+    }
+    function ruta(col, id) { return /databases/$(database)/documents/$(col)/$(id); }
+    // Un borrado solo pasa si en el mismo batch se crea historial/borrar_<col>_<id>.
+    function borradoConHistorial(col, id) {
+      let h = ruta('historial', 'borrar_' + col + '_' + id);
+      return !exists(h) && existsAfter(h);
     }
 
     // RF-04: inscripción de participantes. Se acepta cualquier edad; el equipo filtra en /admin (rango objetivo: 14 a 20).
@@ -30,7 +38,8 @@ service cloud.firestore {
         // Menores de 14: un adulto responsable sabe que asiste (lo marca el formulario).
         && request.resource.data.get('autorizacionAdulto', false) is bool
         && request.resource.data.creado == request.time;
-      allow read, delete: if esAdmin();
+      allow read: if esAdmin();
+      allow delete: if esAdmin() && borradoConHistorial('inscripciones', id);
       allow update: if false;
     }
 
@@ -48,18 +57,24 @@ service cloud.firestore {
         && textoOpcional(request.resource.data.get('mensaje', null), 2000)
         && request.resource.data.consentimiento == true
         && request.resource.data.creado == request.time;
-      allow read, delete: if esAdmin();
+      allow read: if esAdmin();
+      allow delete: if esAdmin() && borradoConHistorial('aliados', id);
       allow update: if false;
     }
 
     // Event Hub · Ponentes y dinámicas (data room). Solo la cuenta del panel lee y escribe.
     function opcional(k, max) { return textoOpcional(request.resource.data.get(k, null), max); }
     match /ponentes/{id} {
-      allow read, delete: if esAdmin();
+      allow read: if esAdmin();
+      allow delete: if esAdmin() && borradoConHistorial('ponentes', id);
       allow create, update: if esAdmin()
         && request.resource.data.keys().hasOnly([
             'eventoId', 'nombres', 'apellidos', 'cargo', 'organizacion', 'foto', 'linkedin', 'bio',
-            'participa', 'tema', 'publicar', 'correo', 'telefono', 'notas', 'actualizado'])
+            'participa', 'tema', 'publicar', 'correo', 'telefono', 'notas', 'actualizado', 'cambio'])
+        // `cambio` = id de la entrada de historial creada en este mismo batch.
+        && request.resource.data.cambio is string
+        && !exists(ruta('historial', request.resource.data.cambio))
+        && existsAfter(ruta('historial', request.resource.data.cambio))
         && request.resource.data.eventoId == 'hj-2027'
         && texto(request.resource.data.nombres, 80)
         && texto(request.resource.data.apellidos, 80)
@@ -69,6 +84,40 @@ service cloud.firestore {
         && opcional('linkedin', 300) && opcional('bio', 2000) && opcional('tema', 200)
         && opcional('correo', 120) && opcional('telefono', 20) && opcional('notas', 2000)
         && request.resource.data.actualizado == request.time;
+    }
+
+    // Historial del Hub: quién hizo qué, dónde y cuándo. Solo se agrega; nadie edita ni borra.
+    match /historial/{id} {
+      function h() { return request.resource.data; }
+      allow read: if esAdmin();
+      allow update, delete: if false;
+      allow create: if esAdmin()
+        && h().keys().hasOnly([
+            'accion', 'seccion', 'registroId', 'registro', 'cambios', 'uid', 'correo', 'nombre',
+            'ruta', 'dispositivo', 'cuando'])
+        // Quién y cuándo los pone Firebase: nadie puede firmar por otro ni cambiar la hora.
+        && h().uid == request.auth.uid
+        && h().correo == request.auth.token.email
+        && h().cuando == request.time
+        && texto(h().registroId, 100)
+        && textoOpcional(h().registro, 200)
+        && textoOpcional(h().nombre, 120)
+        && textoOpcional(h().ruta, 200)
+        && textoOpcional(h().dispositivo, 120)
+        && h().cambios is list && h().cambios.size() <= 30
+        && (
+          // Inicio de sesión: no toca datos.
+          (h().accion == 'entrar' && h().seccion == 'hub' && h().registroId == request.auth.uid)
+          // Alta o edición: el registro queda apuntando a esta entrada (no se puede inventar un cambio).
+          || (h().accion in ['crear', 'editar'] && h().seccion == 'ponentes'
+              && getAfter(ruta('ponentes', h().registroId)).data.cambio == id
+              && exists(ruta('ponentes', h().registroId)) == (h().accion == 'editar'))
+          // Borrado: id fijo y el registro deja de existir en este mismo batch.
+          || (h().accion == 'borrar' && h().seccion in ['ponentes', 'inscripciones', 'aliados']
+              && id == 'borrar_' + h().seccion + '_' + h().registroId
+              && exists(ruta(h().seccion, h().registroId))
+              && !existsAfter(ruta(h().seccion, h().registroId)))
+        );
     }
 
     // Todo lo demás, cerrado.
