@@ -1,0 +1,24 @@
+---
+// Equipo y roles: miembros con acceso y qué puede hacer cada rol (se aplicará en firestore.rules).
+import Hub from '../../layouts/Hub.astro';
+import ModuloVista from '../../components/hub/ModuloVista.astro';
+import { equipo, rolesInfo } from '../../content/hub';
+---
+<Hub titulo="Equipo y roles" activo="equipo" migas={['Sistema', 'Equipo y roles']}>
+
+  <ModuloVista modulo={equipo}>
+    <section class="hb-seccion" aria-labelledby="roles-t">
+      <h2 id="roles-t" class="hb-seccion__t">Roles</h2>
+      <dl class="hb-roles">
+        {rolesInfo.map((r) => (
+          <div class:list={{ 'hb-roles--pronto': r.proximamente }}>
+            <dt>{r.rol}{r.proximamente && <span class="hb-pronto">Próximamente</span>}</dt>
+            <dd class="hb-roles__quien">{r.quien}</dd>
+            <dd><ul>{r.puede.map((x) => <li>{x}</li>)}</ul></dd>
+          </div>
+        ))}
+      </dl>
+      <p class="hb-seccion__x">Los permisos se aplicarán en las reglas de Firebase: quien no tiene permiso no recibe los datos, aunque conozca la dirección.</p>
+    </section>
+  </ModuloVista>
+</Hub>

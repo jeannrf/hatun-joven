@@ -1,0 +1,16 @@
+---
+// Un módulo del Hub por ruta (/admin/ponentes, /admin/finanzas…), generado desde src/content/hub.ts.
+import Hub from '../../layouts/Hub.astro';
+import ModuloVista from '../../components/hub/ModuloVista.astro';
+import { modulos, navegacion, type Modulo } from '../../content/hub';
+
+export function getStaticPaths() {
+  return modulos.map((modulo) => ({ params: { slug: modulo.slug }, props: { modulo } }));
+}
+
+const { modulo } = Astro.props as { modulo: Modulo };
+const grupo = navegacion.find((g) => g.items.some((i) => i.slug === modulo.slug))?.grupo;
+---
+<Hub titulo={modulo.nav} activo={modulo.slug} migas={[grupo, modulo.nav].filter(Boolean) as string[]}>
+  <ModuloVista modulo={modulo} />
+</Hub>

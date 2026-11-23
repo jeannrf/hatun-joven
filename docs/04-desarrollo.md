@@ -45,16 +45,22 @@ Equipo ─────► /admin ──► Firebase Auth (contraseña) ──►
 src/
   pages/
     index.astro        # la landing
-    admin.astro        # panel del equipo
+    admin/             # Event Management Hub (ver docs/07-event-hub.md)
+      index.astro      # dashboard
+      [slug].astro     # un módulo por ruta, desde src/content/hub.ts
+      equipo.astro     # equipo, roles y permisos
     privacidad.astro   # política de privacidad (Ley 29733)
     condiciones.astro  # condiciones de participación (fotos, convivencia, cambios)
+  layouts/Hub.astro    # estructura del panel /admin (acceso, sidebar, header)
   layouts/Base.astro   # <head>: SEO, vista previa al compartir, datos estructurados del evento
-  content/home.ts      # TODOS los textos y datos
+  content/home.ts      # TODOS los textos y datos de la landing
+  content/hub.ts       # módulos, campos, estados y permisos del Hub
   content/legal.ts     # fechas de las páginas legales (privacidad y condiciones)
   styles/global.css    # colores, tipografía, botones, cinta
   lib/
     firebase.ts        # conexión y guardado (se carga solo al enviar un formulario)
     admin.ts           # sesión y lectura/borrado para el panel
+    hub/               # sesión, métricas en vivo, tablas y avisos del Hub
   components/          # una sección por archivo (ver tabla)
 public/                # imágenes, og.png, favicon, robots.txt (lo que se publica)
 assets/marca/          # archivos originales de la marca (no se publican)
