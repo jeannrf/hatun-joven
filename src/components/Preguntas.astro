@@ -40,8 +40,8 @@ const hayContacto = contacto.correo || contacto.whatsapp || contacto.redes.lengt
 
 <style>
   .faq { padding-block: clamp(5rem, 10vw, 9rem); }
-  .faq__in { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(2rem, 5vw, 5rem); align-items: start; }
-  .faq__t { font-size: clamp(2.75rem, 5.5vw, 5rem); position: sticky; top: 7rem; }
+  .faq__in { display: grid; gap: clamp(2rem, 4vw, 3rem); }
+  .faq__t { font-size: clamp(2.75rem, 5.5vw, 5rem); }
   .faq__lista { border-top: 4px solid var(--indigo); }
 
   details { border-bottom: 2px dashed rgb(42 27 180 / 0.35); }
@@ -59,9 +59,4 @@ const hayContacto = contacto.correo || contacto.whatsapp || contacto.redes.lengt
 
   .wsp { position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 40; width: 3.75rem; height: 3.75rem; border-radius: 50%; display: grid; place-items: center; background: var(--verde); color: var(--indigo); box-shadow: 0 10px 24px -10px rgb(10 5 60 / 0.6); transition: transform 0.3s var(--ease); }
   .wsp:hover { transform: scale(1.08); }
-
-  @media (max-width: 860px) {
-    .faq__in { grid-template-columns: 1fr; }
-    .faq__t { position: static; }
-  }
 </style>
