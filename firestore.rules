@@ -9,6 +9,7 @@ service cloud.firestore {
 
     function texto(v, max) { return v is string && v.size() > 0 && v.size() <= max; }
     function textoOpcional(v, max) { return v == null || (v is string && v.size() <= max); }
+    function celularPeru(v) { return v is string && v.matches('^9[0-9]{8}$'); }
     // Panel /admin: solo la cuenta del equipo puede leer y borrar registros.
     function esAdmin() {
       return request.auth != null && request.auth.token.email == 'admin@hatun-joven.web.app';
@@ -31,7 +32,7 @@ service cloud.firestore {
         && request.resource.data.edad is int
         && request.resource.data.edad >= 1 && request.resource.data.edad <= 120
         && texto(request.resource.data.colegio, 120)
-        && texto(request.resource.data.celular, 20)
+        && celularPeru(request.resource.data.celular)
         && request.resource.data.consentimiento == true
         // Autorización opcional para compartir con aliados (ver /privacidad).
         && request.resource.data.get('compartirAliados', false) is bool
